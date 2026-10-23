@@ -339,7 +339,7 @@ textarea::placeholder{color:#9aa8ba}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 .tabbar{
-  position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;
+  position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;
   background:rgba(255,255,255,.94);border:1px solid rgba(198,211,228,.9);border-radius:14px;
   box-shadow:0 6px 18px rgba(20,40,75,.08);backdrop-filter:blur(8px);
 }
@@ -448,8 +448,23 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 .pick-emoji{font-size:1.5rem;line-height:1}
 .pick-name{font-size:.8rem;font-weight:900;line-height:1.1}
 .pick-score{color:#1d4ed8;font-size:1.05rem;font-weight:950;font-variant-numeric:tabular-nums;line-height:1.1}
+.pick-chance{color:#63758d;font-size:.54rem;font-weight:900;line-height:1;letter-spacing:.05em;text-transform:uppercase}
 .pick-why{margin-top:2px;color:var(--muted);font-size:.56rem;line-height:1.35;overflow-wrap:anywhere}
 .pick-why b{color:#3f5168}
+.window-check{margin-top:11px;padding:9px 10px;background:#fbfdff;border:1px solid var(--line);border-radius:12px}
+.window-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:2px}
+.window-head b{color:#34445b;font-size:.72rem}
+.window-head span{color:var(--muted);font-size:.56rem;font-weight:850;letter-spacing:.04em;text-transform:uppercase}
+.window-row{display:grid;grid-template-columns:64px minmax(0,1fr);align-items:start;gap:8px;padding:7px 0;border-top:1px solid #edf1f7}
+.window-row:first-of-type{padding-top:4px;border-top:0}
+.window-label b{display:block;color:#34445b;font-size:.68rem;line-height:1.2}
+.window-label span{display:block;margin-top:1px;color:var(--muted);font-size:.57rem;font-weight:750}
+.window-picks{display:flex;flex-wrap:wrap;align-items:center;gap:3px 8px;min-width:0;color:#3f5168;font-size:.68rem;line-height:1.35}
+.window-pick{display:inline-flex;align-items:center;gap:3px;min-width:0}
+.window-pick b{color:#1d4ed8;font-variant-numeric:tabular-nums}
+.window-pick small{color:var(--muted);font-size:.55rem;font-weight:750}
+.window-sep{color:#9aa8ba}
+.window-empty{color:var(--muted);font-size:.66rem}
 .empty{padding:18px 12px;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.5;background:#f9fbfe;border:1px dashed #d8e2ef;border-radius:12px}
 
 .history-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
@@ -481,10 +496,10 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   color:var(--muted);font-size:.54rem;font-weight:900;letter-spacing:.055em;text-transform:uppercase;
   text-align:center;vertical-align:middle;
 }
-.history-table thead th:nth-child(1){width:24px;text-align:center;padding:0 1px}
-.history-table thead th:nth-child(2){width:42px;text-align:left;padding-left:3px}
-.history-table thead th:nth-child(3){width:52px;text-align:right;padding-right:3px}
-.history-table thead th:last-child{width:20px;padding:0}
+.history-table thead th:nth-child(1){width:22px;text-align:center;padding:0 1px}
+.history-table thead th:nth-child(2){width:38px;text-align:left;padding-left:3px}
+.history-table thead th:nth-child(3){width:44px;text-align:right;padding-right:3px}
+.history-table thead th:last-child{width:22px;padding:0}
 .history-table th.hist-h-face{font-size:.86rem;letter-spacing:0;text-transform:none;color:var(--ink)}
 .hist-h-stack{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1}
 .hist-h-emoji{font-size:.86rem;line-height:1;letter-spacing:0;text-transform:none}
@@ -538,11 +553,12 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 .hist-result.loss{color:var(--red)}
 .hist-result.even{color:#a16207}
 .hist-result.none{color:var(--muted)}
-.hist-delete{width:22px;height:24px;padding:0;border-radius:5px;background:transparent;color:#a33a48;font-size:.8rem;font-weight:900;line-height:1}
+.hist-delete{width:18px;height:24px;padding:0;border-radius:5px;background:transparent;color:#a33a48;font-size:.8rem;font-weight:900;line-height:1}
 .hist-delete:hover{background:#fff0f2}
 .history-empty{padding:18px 10px;text-align:center;color:var(--muted);font-size:.76rem}
 .history-footer{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:8px;flex-wrap:wrap}
 .history-footer span{color:var(--muted);font-size:.7rem;font-weight:750}
+.history-latest{color:#1d4ed8!important;background:#eef5ff!important;font-weight:900!important}
 .research-note{
   padding:13px 14px;background:linear-gradient(180deg,#fffaf0 0%,#fffdf7 100%);
   border:1px solid #ecd9a9;border-radius:15px;color:#755a1d;font-size:.78rem;line-height:1.5;
@@ -554,6 +570,19 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 .section-note{margin:10px 0 0;color:#5c6d84;font-size:.72rem;line-height:1.4}
 .section-note.alert{color:var(--red)}
 .section-note.ok{color:var(--green)}
+.settings-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:14px;padding:12px 0;border-bottom:1px solid #edf1f7}
+.settings-row:first-of-type{padding-top:0}
+.settings-row:last-of-type{border-bottom:0;padding-bottom:0}
+.settings-copy b{display:block;color:#25364d;font-size:.84rem;line-height:1.25}
+.settings-copy span{display:block;margin-top:3px;color:var(--muted);font-size:.72rem;line-height:1.4}
+.settings-number{width:88px;min-width:0;padding:9px 10px;background:#fff;border:1.5px solid var(--line);border-radius:10px;color:var(--ink);font-size:.9rem;font-weight:900;text-align:right;font-variant-numeric:tabular-nums}
+.switch{position:relative;display:inline-flex;flex-shrink:0;width:48px;height:28px;cursor:pointer}
+.switch input{position:absolute;inset:0;z-index:1;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+.switch-track{position:absolute;inset:0;border-radius:999px;background:#cbd5e1;box-shadow:inset 0 1px 2px rgba(15,23,42,.12);transition:background .16s ease}
+.switch-track::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(15,23,42,.2);transition:transform .16s ease}
+.switch input:checked + .switch-track{background:#2563eb}
+.switch input:checked + .switch-track::after{transform:translateX(20px)}
+.switch input:focus-visible + .switch-track{outline:2px solid #2563eb;outline-offset:2px}
 .pl-chart{margin-top:10px;min-height:170px}
 .pl-chart svg{display:block;width:100%;height:auto}
 .pl-empty{
@@ -615,6 +644,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 @media(max-width:380px){
   main{padding-left:9px;padding-right:9px}
   .card{padding:13px;border-radius:17px}
+  .tab-btn{font-size:.78rem;gap:4px;padding:0 2px}
   .brand-icon{width:44px;height:44px;font-size:24px}
   .brand-copy h1{font-size:1.17rem}
   .history-card-title{flex-wrap:wrap;align-items:flex-start}
@@ -679,6 +709,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
     <button type="button" class="tab-btn selected" id="tabRecord" role="tab" aria-selected="true" aria-controls="recordPanel" data-tab="record">Record</button>
     <button type="button" class="tab-btn" id="tabOverview" role="tab" aria-selected="false" aria-controls="overviewPanel" data-tab="overview">Overview</button>
     <button type="button" class="tab-btn" id="tabData" role="tab" aria-selected="false" aria-controls="dataPanel" data-tab="data">Data <span class="tab-count" id="dataCount">0</span></button>
+    <button type="button" class="tab-btn" id="tabSettings" role="tab" aria-selected="false" aria-controls="settingsPanel" data-tab="settings">Settings</button>
   </nav>
 
   <section class="tab-panel" id="recordPanel" role="tabpanel" aria-labelledby="tabRecord">
@@ -850,6 +881,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
     </div>
     <div class="history-footer">
       <span id="historyCount">0 rolls</span>
+      <button type="button" class="secondary compact history-latest hidden" id="historyLatest" title="Scroll to the newest roll">↑ Latest</button>
     </div>
     <button type="button" class="secondary" id="deleteAll" style="margin-top:11px;color:#a33a48">Delete all data</button>
   </section>
@@ -885,6 +917,35 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   <div class="research-note">
     <b>Research note:</b> The interesting question is not whether a pattern appears, but whether it survives new rolls. Record every roll. Treat any “hot” face, lucky shake sequence, or streak as a hypothesis to test, not a promise.
   </div>
+  </section>
+
+  <section class="tab-panel hidden" id="settingsPanel" role="tabpanel" aria-labelledby="tabSettings">
+    <section class="card" id="settingsCard">
+      <div class="card-title">
+        <div><h2>Settings</h2></div>
+      </div>
+
+      <div class="settings-row">
+        <div class="settings-copy">
+          <b>Shake logic</b>
+          <span id="shakeLogicNote">Off by default. Shake sequence and length are recorded but not used for next-roll picks.</span>
+        </div>
+        <label class="switch" for="shakeLogicToggle">
+          <input id="shakeLogicToggle" type="checkbox" aria-label="Shake logic" aria-describedby="shakeLogicNote">
+          <span class="switch-track" aria-hidden="true"></span>
+        </label>
+      </div>
+
+      <div class="settings-row">
+        <div class="settings-copy">
+          <b>Custom analysis window (N)</b>
+          <span>Show the last N rolls in the next-roll window check.</span>
+        </div>
+        <input id="analysisWindow" class="settings-number" type="number" min="1" max="500" step="1" inputmode="numeric" value="30" aria-label="Custom next-roll analysis window">
+      </div>
+
+      <p class="section-note">The Next-roll picks card compares the last 5, last 15, and last N rolls. Each chance number is a blended estimate of a shape reaching 2+ on the next roll; small windows are noisy.</p>
+    </section>
   </section>
   <div class="credit">made by rise ❤️</div>
 </main>
@@ -988,6 +1049,7 @@ const FACE_SCROLL_THRESHOLD = 8;
 const DELETE_WAIT = 15;
 const STAKES_KEY = STORE_KEY + "_stakes";
 const FACE_ORDER_KEY = STORE_KEY + "_face_order";
+const SETTINGS_KEY = STORE_KEY + "_settings";
 const BASE_STAKES = [5, 10, 20, 25, 40, 50, 100, 150, 200, 250, 500, 1000];
 const EDITABLE_STAKES = [10, 11];
 const PAYOUT_RULES = ["street", "lenient", "crown", "strict"];
@@ -1019,8 +1081,9 @@ let selectedBets = new Set();
 let customMode = false;
 let customBets = Array(6).fill(0);
 let payoutRule = "street";
-let historyLimit = 10;
 let historyExpanded = false;
+let shakeLogicEnabled = false;
+let analysisWindow = 30;
 let statusTimer = 0;
 let toastTimer = 0;
 let deleteTimer = 0;
@@ -1192,6 +1255,25 @@ function saveStakes() {
     else localStorage.removeItem(STAKES_KEY);
   } catch (error) {
     setStatus("Could not save stake presets in this browser.", "error");
+  }
+}
+
+function loadSettings() {
+  shakeLogicEnabled = false;
+  analysisWindow = 30;
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null"); } catch (error) { saved = null; }
+  if (!saved || typeof saved !== "object") return;
+  shakeLogicEnabled = saved.shakeLogic === true;
+  const windowSize = Math.round(Number(saved.analysisWindow));
+  if (Number.isFinite(windowSize) && windowSize >= 1 && windowSize <= 500) analysisWindow = windowSize;
+}
+
+function saveSettings() {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({shakeLogic: shakeLogicEnabled, analysisWindow}));
+  } catch (error) {
+    setStatus("Could not save settings in this browser.", "error");
   }
 }
 
@@ -1374,6 +1456,7 @@ function loadStore() {
   loadMethods();
   loadStakes();
   loadFaceOrder();
+  loadSettings();
 
   const saved = localStorage.getItem(STORE_KEY);
   if (saved) {
@@ -1535,7 +1618,7 @@ function renderHistoryHead() {
         </span>
       </th>`;
     }).join("")}
-    <th scope="col"><span class="sr-only">Actions</span></th>
+    <th scope="col" aria-label="Actions"></th>
   </tr>`;
 }
 
@@ -1678,12 +1761,26 @@ function toggleFaceOrder() {
   renderFaceOrder();
 }
 
+function renderSettings() {
+  const toggle = $("shakeLogicToggle");
+  const input = $("analysisWindow");
+  const note = $("shakeLogicNote");
+  if (toggle) toggle.checked = shakeLogicEnabled;
+  if (input && document.activeElement !== input) input.value = String(analysisWindow);
+  if (note) {
+    note.textContent = shakeLogicEnabled
+      ? "On. Next-roll picks use the shake sequence and shake-length outcomes."
+      : "Off by default. Shake sequence and length are recorded but not used for next-roll picks.";
+  }
+}
+
 function initUI() {
   renderFaceInputs();
   renderFaceOrder();
   renderHistoryHead();
   renderHistoryToggle();
   renderStakeButtons();
+  renderSettings();
   $("payoutRule").value = payoutRule;
 }
 
@@ -2022,7 +2119,7 @@ function addRoll() {
   }
 
   const sequence = shakeSequence.slice();
-  const pickModel = buildNextPickModel(rolls, shakeSequence);
+  const pickModel = buildNextPickModel(rolls, shakeSequence, {useShake: shakeLogicEnabled});
   const predictedFaces = pickModel.top.map(pick => pick.index);
   const predictedPair = rolls.length ? pickModel.picks.slice(0, 2).map(pick => pick.index) : [];
   const record = {
@@ -2246,16 +2343,17 @@ function lastDiceStateRates(records) {
   return {rates, sample};
 }
 
-function buildNextPickModel(records, sequence) {
+function buildNextPickModel(records, sequence, options = {}) {
   const currentSequence = Array.isArray(sequence) ? sequence : [];
+  const useShake = options.useShake === true;
   const blankPicks = FACES.map((face, index) => ({
-    index, face, score: 0, transition: null, state: null, shake: null,
-    win: 0, frequency: 0, recent: 0
+    index, face, score: 0, probability: 0, hits: 0, sample: 0,
+    transition: null, state: null, shake: null, win: 0, frequency: 0, recent: 0
   }));
   if (!records.length) {
     return {
       picks: blankPicks, top: [], lastWinners: [], predicted: {length: 0, sample: 0, basedOnLast: false},
-      usesCurrentSequence: currentSequence.length > 0, shakeLength: 0, shakeRecords: []
+      usesCurrentSequence: false, shakeLength: 0, shakeRecords: [], shakeLogic: useShake
     };
   }
 
@@ -2288,17 +2386,19 @@ function buildNextPickModel(records, sequence) {
   const stateData = lastDiceStateRates(records);
   const stateSample = stateData.sample.reduce((sum, value) => sum + value, 0);
 
-  const predicted = predictedShakeLength(records);
-  const usesCurrentSequence = currentSequence.length > 0;
-  const shakeLength = usesCurrentSequence ? currentSequence.length : predicted.length;
-  const shakeRecords = records.filter(record => recordShakeCount(record) === shakeLength);
+  const predicted = useShake ? predictedShakeLength(records) : {length: 0, sample: 0, basedOnLast: false};
+  const usesCurrentSequence = useShake && currentSequence.length > 0;
+  const shakeLength = usesCurrentSequence ? currentSequence.length : (useShake ? predicted.length : 0);
+  const shakeRecords = useShake && shakeLength
+    ? records.filter(record => recordShakeCount(record) === shakeLength)
+    : [];
   const shakeWins = faceWinCounts(shakeRecords);
   const shakeRates = shakeWins.map(count => shakeRecords.length ? count / shakeRecords.length : null);
 
   const weights = {
     transition: 0.32 * Math.min(1, transitionSample / 8),
     state: 0.16 * Math.min(1, stateSample / 36),
-    shake: 0.18 * Math.min(1, shakeRecords.length / 6),
+    shake: useShake ? 0.18 * Math.min(1, shakeRecords.length / 6) : 0,
     win: 0.16,
     frequency: 0.12,
     recent: 0.06
@@ -2320,10 +2420,18 @@ function buildNextPickModel(records, sequence) {
     components.push({key: "recent", value: recentRates[index], weight: weights.recent});
     const weightSum = components.reduce((sum, item) => sum + item.weight, 0);
     const score = weightSum ? components.reduce((sum, item) => sum + item.value * item.weight, 0) / weightSum : 0;
+    const outcomeComponents = components.filter(item => item.key !== "frequency");
+    const outcomeWeight = outcomeComponents.reduce((sum, item) => sum + item.weight, 0);
+    const probability = outcomeWeight
+      ? outcomeComponents.reduce((sum, item) => sum + item.value * item.weight, 0) / outcomeWeight
+      : winRates[index];
     return {
       index,
       face,
       score,
+      probability,
+      hits: overallWins[index],
+      sample: records.length,
       transition: transitionRates[index],
       state: stateData.rates[index],
       shake: shakeRates[index],
@@ -2339,7 +2447,7 @@ function buildNextPickModel(records, sequence) {
 
   return {
     picks, top, lastWinners, predicted, usesCurrentSequence, shakeLength, shakeRecords,
-    transitionSample, stateSample
+    transitionSample, stateSample, shakeLogic: useShake
   };
 }
 
@@ -2351,7 +2459,7 @@ function predictionForIndex(index) {
   const prior = rolls.slice(0, index);
   if (!prior.length) return [];
   const sequence = historyShakeNames(rolls[index - 1]);
-  const model = buildNextPickModel(prior, sequence);
+  const model = buildNextPickModel(prior, sequence, {useShake: shakeLogicEnabled});
   return model.top.map(pick => pick.index);
 }
 
@@ -2393,6 +2501,24 @@ function pickAccuracyMarkup() {
   </div>`;
 }
 
+function currentAnalysisWindow() {
+  const value = Math.round(Number(analysisWindow));
+  return Number.isFinite(value) ? Math.max(1, Math.min(500, value)) : 30;
+}
+
+function nextPickWindowRows() {
+  const custom = currentAnalysisWindow();
+  const sizes = [];
+  [5, 15, custom].forEach(size => {
+    if (!sizes.includes(size)) sizes.push(size);
+  });
+  return sizes.map(size => {
+    const records = rolls.slice(-Math.min(size, rolls.length));
+    const model = buildNextPickModel(records, shakeSequence, {useShake: shakeLogicEnabled});
+    return {size, count: records.length, picks: model.top};
+  });
+}
+
 function renderNextPicks() {
   const box = $("nextPicks");
   if (!rolls.length) {
@@ -2400,8 +2526,8 @@ function renderNextPicks() {
     return;
   }
 
-  const model = buildNextPickModel(rolls, shakeSequence);
-  const last = rolls[rolls.length - 1];
+  const pct = value => value === null || value === undefined ? "—" : Math.round(value * 100) + "%";
+  const model = buildNextPickModel(rolls, shakeSequence, {useShake: shakeLogicEnabled});
   const lastWinnerFaces = FACES.filter((face, index) => model.lastWinners[index]);
   const lastWinnerText = lastWinnerFaces.length
     ? lastWinnerFaces.map(face => `${face.emoji} ${escapeHtml(face.name)}`).join(" ")
@@ -2409,7 +2535,9 @@ function renderNextPicks() {
 
   const predicted = model.predicted;
   let shakeText;
-  if (model.usesCurrentSequence) {
+  if (!model.shakeLogic) {
+    shakeText = "Shake logic off · shakes ignored for picks";
+  } else if (model.usesCurrentSequence) {
     shakeText = `Current shake sequence: <b>${model.shakeLength}</b> ${model.shakeLength === 1 ? "shake" : "shakes"} · ${model.shakeRecords.length} matching ${model.shakeRecords.length === 1 ? "roll" : "rolls"}`;
   } else if (predicted.sample > 0) {
     shakeText = `Likely next shake length: <b>${predicted.length}</b> ${predicted.length === 1 ? "shake" : "shakes"} · ${model.shakeRecords.length} matching ${model.shakeRecords.length === 1 ? "roll" : "rolls"} (${predicted.basedOnLast ? "similar transitions" : "all rolls"})`;
@@ -2418,32 +2546,47 @@ function renderNextPicks() {
   }
 
   const summary = `<p class="next-summary">Last 2+ winner: <b>${lastWinnerText}</b> · ${shakeText}</p>`;
-  const shakeHelp = model.usesCurrentSequence
-    ? "The current shake sequence sets the shake-length assumption."
-    : "Likely next shake length is the most common next length after the same last length; if none, it uses all rolls.";
+  const modelNote = model.shakeLogic
+    ? "Signal blends last 2+ winner → next winner, the last roll's 0/1/2+ dice state, shake-length outcomes, overall and recent win rates, and face frequency."
+    : "Signal blends last 2+ winner → next winner, the last roll's 0/1/2+ dice state, overall and recent win rates, and face frequency.";
+  const windowMarkup = `<div class="window-check">
+    <div class="window-head"><b>Window check</b><span>Top pick &amp; chance</span></div>
+    ${nextPickWindowRows().map(row => {
+      const label = row.size === 5 ? "Last 5" : row.size === 15 ? "Last 15" : `Last ${row.size}`;
+      const picksMarkup = row.picks.length
+        ? row.picks.map(pick => `<span class="window-pick" title="${escapeHtml(`${pick.face.name}: ${pct(pick.probability)} chance; ${pick.hits} of ${pick.sample} rolls reached 2+ in this window.`)}">${pick.face.emoji} ${escapeHtml(pick.face.name)} <b>${pct(pick.probability)}</b> <small>${pick.hits}/${pick.sample}</small></span>`).join('<span class="window-sep" aria-hidden="true">·</span>')
+        : '<span class="window-empty">No 2+ signal</span>';
+      return `<div class="window-row">
+        <div class="window-label"><b>${label}</b><span>${row.count} ${row.count === 1 ? "roll" : "rolls"}</span></div>
+        <div class="window-picks">${picksMarkup}</div>
+      </div>`;
+    }).join("")}
+  </div>`;
   const track = pickAccuracyMarkup();
+  const note = `${modelNote} Main picks use all ${rolls.length} saved rolls; the window check compares recent samples. Chance is a blended estimate; small windows are noisy. Not a guarantee.`;
   if (!model.top.length) {
     box.innerHTML = `${summary}
       <div class="empty">No 2+ winner signal yet. Record a few rolls with at least two matching dice.</div>
       ${track}
-      <p class="next-summary">${shakeHelp} Not a guarantee.</p>`;
+      ${windowMarkup}
+      <p class="next-summary">${note}</p>`;
     return;
   }
 
-  const pct = value => value === null || value === undefined ? "—" : Math.round(value * 100) + "%";
   const pickMarkup = model.top.map((pick, position) => {
-    const parts = [];
+    const parts = [`signal ${pct(pick.score)}`];
     if (pick.transition !== null) parts.push(`A→B ${pct(pick.transition)}`);
     if (pick.state !== null) parts.push(`state ${pct(pick.state)}`);
     if (pick.shake !== null) parts.push(`shake ${pct(pick.shake)}`);
     parts.push(`win ${pct(pick.win)}`);
     parts.push(`freq ${pct(pick.frequency)}`);
     parts.push(`recent ${pct(pick.recent)}`);
-    return `<div class="next-pick${position === 0 ? " next-pick--primary" : ""}" title="${escapeHtml(`${pick.face.name}: signal ${pct(pick.score)}; ${parts.join(", ")}`)}">
+    return `<div class="next-pick${position === 0 ? " next-pick--primary" : ""}" title="${escapeHtml(`${pick.face.name}: ${pct(pick.probability)} chance; ${parts.join(", ")}`)}">
       <span class="pick-rank">#${position + 1}</span>
       <span class="pick-emoji" aria-hidden="true">${pick.face.emoji}</span>
       <span class="pick-name">${escapeHtml(pick.face.name)}</span>
-      <span class="pick-score">${pct(pick.score)}</span>
+      <span class="pick-score">${pct(pick.probability)}</span>
+      <span class="pick-chance">chance</span>
       <span class="pick-why">${escapeHtml(parts.join(" · "))}</span>
     </div>`;
   }).join("");
@@ -2451,7 +2594,8 @@ function renderNextPicks() {
   box.innerHTML = `${summary}
     <div class="next-grid">${pickMarkup}</div>
     ${track}
-    <p class="next-summary">${shakeHelp} Signal blends last 2+ winner → next winner, the last roll's 0/1/2+ dice state, shake-length outcomes, overall and recent win rates, and face frequency. Not a guarantee.</p>`;
+    ${windowMarkup}
+    <p class="next-summary">${note}</p>`;
 }
 
 function winnerFaces(record) {
@@ -2470,7 +2614,7 @@ function predictionPairForIndex(index) {
   const prior = rolls.slice(0, index);
   if (!prior.length) return [];
   const sequence = historyShakeNames(rolls[index - 1]);
-  const model = buildNextPickModel(prior, sequence);
+  const model = buildNextPickModel(prior, sequence, {useShake: shakeLogicEnabled});
   return model.picks.slice(0, 2).map(pick => pick.index);
 }
 
@@ -2823,18 +2967,25 @@ function toggleHistoryDetails() {
   renderHistory();
 }
 
+function updateHistoryLatestButton() {
+  const scroll = $("historyScroll");
+  const button = $("historyLatest");
+  if (!scroll || !button) return;
+  button.classList.toggle("hidden", scroll.scrollTop <= 24);
+}
+
 function renderHistory() {
   const total = rolls.length;
-  const start = Math.max(0, total - historyLimit);
 
   if (!total) {
     $("history").innerHTML = '<tr><td class="history-empty" colspan="10">No rolls saved yet. Your records will appear here.</td></tr>';
     $("historyCount").textContent = "0 rolls";
+    updateHistoryLatestButton();
     return;
   }
 
   const rows = [];
-  for (let index = total - 1; index >= start; index--) {
+  for (let index = total - 1; index >= 0; index--) {
     const record = rolls[index];
     const time = displayTime(record.time);
     const rowCounts = FACES.map((face, faceIndex) =>
@@ -2869,7 +3020,7 @@ function renderHistory() {
       return `<td class="hist-count-cell"><span class="hist-count${count >= 2 ? " win-" + count : ""}${bet > 0 ? " bet" : ""}" title="${FACES[faceIndex].name}: ${count}${bet > 0 ? ` · Bet ${money(bet)}` : ""}" aria-label="${FACES[faceIndex].name}: ${count}${bet > 0 ? `, bet ${money(bet)}` : ""}">${count}</span></td>`;
     }).join("");
 
-    const showDelete = historyExpanded || hasBet;
+    const showDelete = historyExpanded;
     rows.push(`<tr class="history-row hist-${resultKey}" title="${escapeHtml(title)}" aria-label="${escapeHtml(aria)}">
       <td class="hist-sn">#${index + 1}</td>
       <td class="hist-time">${escapeHtml(time)}</td>
@@ -2905,10 +3056,8 @@ function renderHistory() {
   }
 
   $("history").innerHTML = rows.join("");
-  const shown = total - start;
-  $("historyCount").textContent = total > historyLimit
-    ? `Last ${shown} of ${total} rolls`
-    : `${total} ${total === 1 ? "roll" : "rolls"}`;
+  $("historyCount").textContent = `${total} ${total === 1 ? "roll" : "rolls"} · newest first`;
+  updateHistoryLatestButton();
 }
 
 function renderAll() {
@@ -3363,7 +3512,7 @@ function saveStakePresets() {
 /* ---------- tabs + delete dialog ---------- */
 
 function setTab(tab, options = {}) {
-  const tabs = ["record", "overview", "data"];
+  const tabs = ["record", "overview", "data", "settings"];
   activeTab = tabs.includes(tab) ? tab : "record";
   tabs.forEach(name => {
     const selected = activeTab === name;
@@ -3377,6 +3526,7 @@ function setTab(tab, options = {}) {
   });
   if (activeTab === "data") renderAll();
   if (activeTab === "overview") renderOverviewCharts();
+  if (activeTab === "settings") renderSettings();
   if (options.scroll !== false) window.scrollTo({top: 0, behavior: "smooth"});
 }
 
@@ -3427,7 +3577,6 @@ function confirmDeleteAll() {
   lastSavedSequence = [];
   shakeSequence = [];
   sequenceDefaultActive = false;
-  historyLimit = 10;
   historyExpanded = false;
   saveStore();
   renderAll();
@@ -3585,6 +3734,25 @@ function bindEvents() {
   $("import").addEventListener("click", startImport);
   $("importFile").addEventListener("change", handleImportFile);
   $("historyDetailToggle").addEventListener("click", toggleHistoryDetails);
+  $("historyScroll").addEventListener("scroll", updateHistoryLatestButton, {passive: true});
+  $("historyLatest").addEventListener("click", () => {
+    $("historyScroll").scrollTo({top: 0, behavior: "smooth"});
+  });
+
+  $("shakeLogicToggle").addEventListener("change", event => {
+    shakeLogicEnabled = event.target.checked;
+    saveSettings();
+    renderSettings();
+    renderNextPicks();
+    setStatus(shakeLogicEnabled ? "Shake logic enabled." : "Shake logic disabled.", "info");
+  });
+  $("analysisWindow").addEventListener("change", event => {
+    analysisWindow = clampInt(event.target.value, 1, 500);
+    event.target.value = String(analysisWindow);
+    saveSettings();
+    renderNextPicks();
+    setStatus("Analysis window updated.", "info");
+  });
 
   $("history").addEventListener("click", event => {
     const button = event.target.closest("[data-del]");
@@ -3633,6 +3801,7 @@ function bindEvents() {
 
   let overviewResizeTimer = 0;
   window.addEventListener("resize", () => {
+    updateHistoryLatestButton();
     if (activeTab !== "overview") return;
     clearTimeout(overviewResizeTimer);
     overviewResizeTimer = window.setTimeout(renderOverviewCharts, 120);

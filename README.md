@@ -52,12 +52,14 @@ No build step is required for this static site.
 - Custom shake methods and editable face order
 - Stake presets with editable `500` / `1000` values
 - Payout rule selection and automatic return/net calculation
-- Compact 10-roll history with 24-hour times, outcome colors, and bet markers
+- Full scrollable roll history with 24-hour times, outcome colors, and bet markers; a back-to-latest button appears when you scroll away from the newest roll
+- Delete controls only appear when history details are expanded; compact rows have no delete crosses
 - Full-detail history rows showing shakes, money, per-shape bets, next-pick hit/miss, and notes
 - Face frequency shown in the history header
 - Winner-to-next-winner analysis for rolls with 2+ matching dice
-- Next-roll picks combining last-winner transitions, the last roll's 0/1/2+ dice state, shake-length outcomes, recent form, win rates, and face frequency
+- Next-roll picks with estimated hit chance, plus window checks for the last 5, last 15, and a custom last N rolls
 - Guess accuracy tracking for the next-roll picks, with the latest hit/miss and per-roll results in history details
+- Settings tab with shake logic off by default, and a custom analysis window (N)
 - Overview tab with recorded-roll stats
 - Cumulative profit/loss chart with peak and maximum-drawdown summaries
 - You-vs-computer accuracy charts for single picks and 50/50 two-shape picks, using your saved bets and the next-roll model
@@ -71,6 +73,8 @@ No build step is required for this static site.
 
 - Data is stored in the browser's `localStorage`; it is not uploaded anywhere.
 - Next-roll picks are a statistical signal, not a guarantee.
+- **Shake logic is off by default.** Shake sequence and length are still recorded in history, but next-roll picks ignore them until you enable the setting. When enabled, shake-length outcomes are included again.
+- **Chance** is a blended estimate that a shape reaches 2+ on the next roll, based on the active data. The window check recalculates it for the last 5, last 15, and custom last N rolls; small windows are noisy.
 - **You vs computer** uses your saved bets for your side: a single pick is exactly one backed shape; a 50/50 pick is exactly two backed shapes with stakes within Rs. 1 of each other. The computer uses the same next-roll model as the picks card. A hit means at least one pick reaches 2+, and only rolls where both sides had a pick are compared.
 - Guess accuracy counts a hit when at least one suggested shape reaches 2+ on the next saved roll.
 - **Export CSV** opens a dialog where the title (usually the place where you play) becomes both the file name and the `table` column. The same dialog has a copyable guide to the rules, payouts, shape names, and CSV columns.
@@ -79,5 +83,5 @@ No build step is required for this static site.
 
 ## Version History
 
-- **v3** — Current version: Overview tab with recorded-roll stats, a profit/loss chart, and you-vs-computer pick accuracy graphs; pick accuracy tracking, dice-state-aware next-roll picks, CSV import, renameable export title, copyable rules/CSV guide, last-sequence carry-over, redesigned history, header face frequency, and 2+ winner transition analysis.
+- **v3** — Current version: full scrollable history with back-to-latest, Settings with shake logic off by default, 5/15/N next-roll window checks with estimated chance, Overview stats, profit/loss chart, and you-vs-computer accuracy graphs; plus pick accuracy tracking, dice-state-aware next-roll picks, CSV import, renameable export title, copyable rules/CSV guide, last-sequence carry-over, redesigned history, header face frequency, and 2+ winner transition analysis.
 - **v2** — Previous standalone version. Removed from the current tree; it remains available in git history.
