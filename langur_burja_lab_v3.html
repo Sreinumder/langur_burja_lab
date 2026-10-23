@@ -62,22 +62,6 @@ button:active:not(:disabled){filter:brightness(.94)}
 }
 .brand-copy{min-width:0}
 .brand-copy h1{margin:0;font-size:1.3rem;line-height:1.15;letter-spacing:-.025em}
-.brand-copy p{margin:5px 0 0;font-size:.78rem;line-height:1.35;color:#ccdcf3}
-.table-chip{
-  margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;
-  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
-  border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:750;color:#dce9fb;
-  cursor:text;
-}
-.table-chip input{
-  width:3ch;max-width:14ch;min-width:2.5ch;padding:0;margin:0;border:0;
-  background:transparent;color:#fff;font:inherit;font-size:.8rem;font-weight:900;
-  line-height:1.2;text-align:left;outline:0;border-radius:4px;
-}
-.table-chip input:focus{background:rgba(255,255,255,.16);box-shadow:0 0 0 1px rgba(255,255,255,.35)}
-.table-chip .table-edit{font-size:.68rem;line-height:1;opacity:.7}
-.table-chip:focus-within .table-edit{opacity:1}
-.table-chip i{width:6px;height:6px;border-radius:50%;background:#6ee7a8;display:block;flex-shrink:0}
 
 main{
   position:relative;z-index:2;max-width:900px;margin:-15px auto 0;
@@ -138,7 +122,7 @@ main{
 .stepper-controls .plus:disabled{background:#dfe8f6;color:#9bacc4;box-shadow:none}
 .stepper-controls .minus:disabled{background:#f7f8fa;color:#b4bfcd;border-top-color:#e5eaf1}
 .shake-seq{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 9px}
-.seq-hint{margin:0 0 9px;color:var(--muted);font-size:.68rem;line-height:1.35}
+.seq-hint{margin:0 0 9px;color:var(--muted);font-size:.68rem;line-height:1.35;font-weight:750}
 .seq-chip{
   display:inline-flex;align-items:center;gap:4px;padding:5px 6px;line-height:1.2;
   background:#eef4ff;border:1.5px solid #cfe0ff;border-radius:10px;
@@ -277,10 +261,20 @@ details[open] summary::after{transform:rotate(180deg) translateY(1px)}
 
 .face-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .face-stepper{
-  aspect-ratio:1;grid-template-columns:minmax(0,1fr) 48px;min-height:0;border-width:1.5px;border-radius:14px;
+  position:relative;aspect-ratio:1;grid-template-columns:minmax(0,1fr) 48px;min-height:0;border-width:1.5px;border-radius:14px;
   overflow:hidden;box-shadow:inset 0 3px 0 var(--accent),0 2px 0 #e9eff7;
-  cursor:pointer;user-select:none;
+  cursor:pointer;user-select:none;-webkit-touch-callout:none;
+  transition:opacity .12s,background .12s,outline-color .12s;
 }
+.face-stepper .face-grip{
+  position:absolute;top:5px;left:6px;z-index:1;color:#9aa8ba;font-size:.72rem;line-height:1;
+  opacity:.7;pointer-events:none;
+}
+.face-stepper.face-dragging{opacity:.5;cursor:grabbing}
+.face-stepper.face-drop-target{
+  outline:3px solid #2c63e6;outline-offset:-3px;background:#eef4ff;
+}
+.face-stepper.face-drop-target .face-name{color:#1746c4}
 .face-stepper .stepper-body{flex-direction:column;justify-content:center;gap:0;padding:6px 3px;text-align:center;overflow:hidden}
 .face-symbol{font-size:1.45rem;line-height:1.1}
 .face-name{max-width:100%;margin-top:2px;font-size:.68rem;font-weight:850;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -345,7 +339,7 @@ textarea::placeholder{color:#9aa8ba}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 .tabbar{
-  position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;
+  position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;
   background:rgba(255,255,255,.94);border:1px solid rgba(198,211,228,.9);border-radius:14px;
   box-shadow:0 6px 18px rgba(20,40,75,.08);backdrop-filter:blur(8px);
 }
@@ -389,6 +383,26 @@ textarea::placeholder{color:#9aa8ba}
 .modal-actions .secondary,.modal-actions .primary{width:100%}
 .modal-actions .primary{min-height:50px;font-size:.92rem}
 .modal-cancel{min-height:42px;border-radius:10px;background:#eef2f8;color:#34445b;font-size:.82rem;font-weight:850}
+
+.export-field{margin-top:12px}
+.export-field label{display:block;margin-bottom:6px;color:#3b4c64;font-size:.77rem;font-weight:850}
+.export-field input{
+  width:100%;padding:10px 11px;background:#fff;border:1.5px solid var(--line);border-radius:11px;
+  color:var(--ink);font-size:.88rem;
+}
+.export-file{margin:5px 0 0;color:var(--muted);font-size:.68rem;line-height:1.35;overflow-wrap:anywhere}
+.export-guide{margin-top:12px;padding:9px 10px;background:#f8fafc;border:1px solid var(--line);border-radius:12px}
+.export-guide-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.export-guide-head b{color:#34445b;font-size:.78rem}
+.export-guide-head .mini-btn{min-height:28px;padding:0 9px;font-size:.68rem}
+.export-guide textarea{
+  width:100%;height:82px;min-height:82px;max-height:82px;resize:none;overflow:auto;
+  padding:7px 8px;background:#fff;border:1px solid var(--line);border-radius:9px;
+  color:#44546b;font-size:.7rem;line-height:1.35;
+}
+.export-actions{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr)}
+.export-actions .primary,.export-actions .secondary{white-space:nowrap}
+.export-actions .primary:disabled{opacity:.55;box-shadow:none}
 
 .preset-edit-list{display:grid;gap:8px;margin-top:12px}
 .preset-row{display:grid;grid-template-columns:minmax(0,1fr) 96px auto;align-items:center;gap:7px}
@@ -443,7 +457,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 .history-scroll{
   --hist-head:52px;
   --hist-row:38px;
-  --hist-detail:62px;
+  --hist-detail:84px;
   max-width:640px;
   max-height:calc(var(--hist-head) + (5 * var(--hist-row)) + 2px);
   overflow-y:auto;
@@ -536,6 +550,94 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 .research-note b{color:#5f4510}
 .credit{margin:0;padding:0 0 4px;text-align:center;color:var(--muted);font-size:.55rem;font-weight:700;letter-spacing:.02em;opacity:.8}
 
+.strategy-badge{
+  flex-shrink:0;padding:5px 8px;border-radius:999px;background:#eef5ff;color:#1d4ed8;
+  font-size:.64rem;font-weight:900;white-space:nowrap;
+}
+.strategy-badge.ok{background:#ecfdf5;color:#15803d}
+.strategy-badge.alert{background:#fff1f2;color:#be123c}
+.strategy-lead{margin:2px 0 0;color:var(--muted);font-size:.76rem;line-height:1.4}
+.strategy-budget-field{margin-top:12px}
+.budget-row{display:flex;align-items:center;gap:8px;margin-top:6px;max-width:380px}
+.budget-row > span{flex-shrink:0;color:#3b4c64;font-size:.82rem;font-weight:900}
+.budget-row input{
+  flex:1;min-width:0;padding:10px 11px;background:#fff;border:1.5px solid var(--line);border-radius:11px;
+  color:var(--ink);font-size:.96rem;font-weight:900;font-variant-numeric:tabular-nums;
+}
+.strategy-summary,.two-shape-odds{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-top:11px}
+.strategy-summary > div,.two-shape-odds > div{
+  min-width:0;padding:9px 8px;background:#f7faff;border:1px solid #d8e6ff;border-radius:11px;
+}
+.strategy-summary span,.two-shape-odds span{
+  display:block;color:#6b7d94;font-size:.6rem;font-weight:850;line-height:1.2;
+  text-transform:uppercase;letter-spacing:.04em;
+}
+.strategy-summary b,.two-shape-odds b{
+  display:block;margin-top:3px;font-size:.9rem;line-height:1.15;font-variant-numeric:tabular-nums;
+  overflow-wrap:anywhere;
+}
+.two-shape-odds b{color:#1d4ed8}
+.strategy-note{margin:10px 0 0;color:#5c6d84;font-size:.72rem;line-height:1.4}
+.strategy-note.alert{color:var(--red)}
+.strategy-note.ok{color:var(--green)}
+.ladder-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin-top:11px}
+.ladder-step{
+  position:relative;min-width:0;padding:8px 6px 7px;border:1px solid var(--line);border-radius:10px;
+  background:#f8fafc;
+}
+.ladder-step b{
+  display:block;font-size:.76rem;line-height:1.15;font-variant-numeric:tabular-nums;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ladder-step small{
+  display:block;margin-top:2px;color:var(--muted);font-size:.54rem;line-height:1.15;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.ladder-index{position:absolute;top:4px;right:5px;color:#9aa8ba;font-size:.5rem;font-weight:900}
+.ladder-step.passed{opacity:.55;background:#f1f5f9}
+.ladder-step.next{border-color:#2563eb;background:#eef5ff;box-shadow:inset 0 0 0 1px rgba(37,99,235,.15)}
+.ladder-step.next b{color:#1d4ed8}
+.ladder-step.over{border-color:#fecaca;background:#fff7f7}
+.ladder-step.over b{color:#b91c1c}
+.strategy-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;max-width:560px}
+.strategy-actions .primary,.strategy-actions .secondary{
+  min-height:42px;padding:0 8px;font-size:.76rem;white-space:nowrap;
+}
+.strategy-actions .primary:disabled,.strategy-actions .secondary:disabled{opacity:.5;box-shadow:none}
+#applyTwoShape{max-width:420px}
+.pl-chart{margin-top:10px;min-height:170px}
+.pl-chart svg{display:block;width:100%;height:auto}
+.pl-empty{
+  padding:24px 10px;text-align:center;color:var(--muted);font-size:.78rem;line-height:1.45;
+  background:#f9fbfe;border:1px dashed #d8e2ef;border-radius:12px;
+}
+.chart-meta{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;color:#63758d;font-size:.66rem;line-height:1.35}
+.chart-meta b{color:#34445b;font-variant-numeric:tabular-nums}
+.chart-net{
+  flex-shrink:0;padding:5px 8px;border-radius:999px;background:#eef5ff;color:#1d4ed8;
+  font-size:.7rem;font-weight:900;font-variant-numeric:tabular-nums;
+}
+.chart-net.neg{background:#fff1f2;color:#be123c}
+.two-shape-plan{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.two-shape-face{
+  display:flex;align-items:center;gap:6px;min-width:0;padding:7px 9px;border:1px solid var(--line);
+  border-radius:10px;background:#fff;font-size:.76rem;font-weight:850;
+}
+.two-shape-face small{color:var(--muted);font-size:.62rem;font-weight:800;white-space:nowrap}
+.two-shape-face .pick-emoji{font-size:1.05rem}
+.two-shape-face.total{background:#eef5ff;border-color:#bfdbfe;color:#1d4ed8}
+.two-shape-plus{display:inline-flex;align-items:center;color:var(--muted);font-size:.8rem;font-weight:900}
+.pick-track{
+  display:flex;flex-wrap:wrap;align-items:center;gap:5px 12px;margin-top:10px;padding:8px 10px;
+  border:1px solid var(--line);border-radius:11px;background:#f8fafc;color:#5c6d84;
+  font-size:.7rem;line-height:1.35;
+}
+.pick-track b{color:#34445b;font-variant-numeric:tabular-nums}
+.pick-track .hit{color:var(--green);font-weight:900}
+.pick-track .miss{color:var(--red);font-weight:900}
+.hist-pick-hit{color:var(--green);font-weight:900}
+.hist-pick-miss{color:var(--red);font-weight:900}
+
 @media(min-width:680px){
   .card{padding:18px}
   .face-grid{max-width:620px;margin-left:auto;margin-right:auto}
@@ -543,6 +645,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
   .method-btn{min-height:64px}
   .stake-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}
+  .ladder-grid{grid-template-columns:repeat(6,minmax(0,1fr))}
 }
 @media(max-width:500px){
   .face-stepper{grid-template-columns:minmax(0,1fr) 44px}
@@ -560,10 +663,9 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   .card{padding:13px;border-radius:17px}
   .brand-icon{width:44px;height:44px;font-size:24px}
   .brand-copy h1{font-size:1.17rem}
-  .brand-copy p{font-size:.72rem}
-  .table-chip{padding:6px 9px}
-  .table-chip .table-label{display:none}
-  .table-chip input{max-width:8ch}
+  .history-card-title{flex-wrap:wrap;align-items:flex-start}
+  .history-card-title h2{width:100%}
+  .history-card-title .history-actions{width:100%}
   .method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .method-btn{min-height:52px;flex-direction:row;gap:6px;font-size:.76rem}
   .stepper{grid-template-columns:minmax(0,1fr) 54px}
@@ -591,8 +693,8 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   .face-name{font-size:.55rem;letter-spacing:-.01em}
   .face-sub{font-size:.48rem}
   .face-stepper .count{font-size:1.16rem}
-  .history-scroll{--hist-head:50px;--hist-row:36px;--hist-detail:84px}
-  .history-scroll.expanded{max-height:calc(var(--hist-head) + (2 * (var(--hist-row) + var(--hist-detail))) + 2px)}
+  .history-scroll{--hist-head:50px;--hist-row:36px;--hist-detail:104px}
+  .history-scroll.expanded{max-height:calc(var(--hist-head) + (2 * (var(--hist-row) + var(--hist-detail))) + 12px)}
   .history-actions .secondary.compact{padding:0 7px;font-size:.68rem}
   .history-table thead th:nth-child(1){width:22px}
   .history-table thead th:nth-child(2){width:38px}
@@ -614,19 +716,14 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
     <div class="brand-icon" aria-hidden="true">🎲</div>
     <div class="brand-copy">
       <h1>Langur Burja Lab</h1>
-      <p>Record the roll, the shake, and the money. Let the data speak.</p>
     </div>
-    <label class="table-chip" id="tableChip" title="Edit the table where this log is played">
-      <i></i><span class="table-label">Table</span>
-      <input id="tableName" type="text" value="1" maxlength="24" autocomplete="off" spellcheck="false" aria-label="Table name">
-      <span class="table-edit" aria-hidden="true">✎</span>
-    </label>
   </div>
 </header>
 
 <main>
   <nav class="tabbar" role="tablist" aria-label="Log sections">
     <button type="button" class="tab-btn selected" id="tabRecord" role="tab" aria-selected="true" aria-controls="recordPanel" data-tab="record">Record</button>
+    <button type="button" class="tab-btn" id="tabStrategy" role="tab" aria-selected="false" aria-controls="strategyPanel" data-tab="strategy">Strategy</button>
     <button type="button" class="tab-btn" id="tabData" role="tab" aria-selected="false" aria-controls="dataPanel" data-tab="data">Data <span class="tab-count" id="dataCount">0</span></button>
   </nav>
 
@@ -642,8 +739,8 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
           <div><h2>Shake sequence</h2></div>
           <button type="button" class="icon-btn head-extra" id="shakeSettingsBtn" aria-label="Edit shake methods and order" aria-expanded="false" title="Edit shake methods and order">⚙</button>
         </div>
+        <p class="seq-hint hidden" id="shakeHint">Last sequence</p>
         <div class="shake-seq hidden" id="shakeSequence" aria-live="polite"></div>
-        <p class="seq-hint hidden" id="shakeHint">Last sequence loaded — tap a method to start a new one.</p>
         <div class="method-grid" id="methodButtons"></div>
 
         <div class="shake-settings hidden" id="shakeSettings">
@@ -734,12 +831,70 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   </section>
   </section>
 
+  <section class="tab-panel hidden" id="strategyPanel" role="tabpanel" aria-labelledby="tabStrategy">
+    <section class="card" id="strategyCard">
+      <div class="card-title">
+        <div><h2>Betting strategy</h2></div>
+        <span class="strategy-badge" id="strategyBadge">Start at Rs. 5</span>
+      </div>
+      <p class="strategy-lead">Ladder: 5 · 5 · 10 · 10 · 20 · 20 · 50 · 50 · 100 · 100 · 200 · 200. One win resets the cycle to Rs. 5. No-bet rolls are ignored.</p>
+
+      <div class="field strategy-budget-field">
+        <label for="strategyBudget">Money willing to spend</label>
+        <div class="budget-row">
+          <span>Rs.</span>
+          <input id="strategyBudget" type="number" min="0" step="1" inputmode="numeric" value="770" aria-describedby="strategyBudgetHint">
+        </div>
+        <p class="export-file" id="strategyBudgetHint">Full ladder cost: Rs. 770.</p>
+      </div>
+
+      <div class="strategy-summary">
+        <div><span>Loss streak</span><b id="strategyStreak">0</b></div>
+        <div><span>Next total</span><b id="strategyNext">Rs. 5</b></div>
+        <div><span>Cycle total</span><b id="strategyCost">Rs. 5</b></div>
+      </div>
+      <p class="strategy-note" id="strategyNote" role="status" aria-live="polite"></p>
+      <div class="ladder-grid" id="strategyLadder"></div>
+
+      <div class="strategy-actions">
+        <button type="button" class="secondary" id="strategyUse" title="Use the next ladder amount on the Record tab">Use suggested</button>
+        <button type="button" class="primary" id="strategyTwo" title="Use the next ladder amount split over the top two shapes">2-shape split</button>
+      </div>
+    </section>
+
+    <section class="card" id="profitCard">
+      <div class="card-title">
+        <div><h2>Profit / loss</h2></div>
+        <span class="chart-net" id="profitNet">Rs. 0</span>
+      </div>
+      <div class="pl-chart" id="profitChart"></div>
+      <div class="chart-meta" id="profitMeta"></div>
+    </section>
+
+    <section class="card" id="twoShapeCard">
+      <div class="card-title">
+        <div><h2>Betting on 2 shapes</h2></div>
+      </div>
+      <p class="strategy-lead">The ladder is the total stake per round. Split it across two shapes; the next rung is still the total.</p>
+      <div class="two-shape-odds">
+        <div><span>Either appears</span><b id="twoShapeEither">91.2%</b></div>
+        <div><span>At least one 2+</span><b id="twoShapeAtLeast">48.4%</b></div>
+        <div><span>Per shape 2+</span><b id="twoShapeEach">26.3%</b></div>
+      </div>
+      <p class="strategy-note">Street pays about Rs. 0.86 per Rs. 1 in the long run, whether you back one shape or two. Coverage changes the hit rate, not the edge.</p>
+      <div class="two-shape-plan" id="twoShapePlan"></div>
+      <p class="strategy-note" id="twoShapeNote"></p>
+      <button type="button" class="primary" id="applyTwoShape" style="width:100%;margin-top:11px">Apply 2-shape split</button>
+    </section>
+  </section>
+
   <section class="tab-panel hidden" id="dataPanel" role="tabpanel" aria-labelledby="tabData">
   <section class="card" id="historyCard">
-    <div class="card-title">
+    <div class="card-title history-card-title">
       <div><h2>Roll history</h2></div>
       <div class="history-actions">
-        <button type="button" class="secondary compact" id="historyDetailToggle" aria-pressed="false">Full detail</button>
+        <button type="button" class="secondary compact" id="historyDetailToggle" aria-pressed="false" title="Show full detail">Details</button>
+        <button type="button" class="secondary compact" id="import" title="Import a CSV export" aria-label="Import CSV">Import</button>
         <button type="button" class="secondary compact" id="export">Export CSV</button>
       </div>
     </div>
@@ -838,6 +993,30 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
     </div>
   </div>
 </div>
+
+<div class="modal-backdrop hidden" id="exportModal" role="dialog" aria-modal="true" aria-labelledby="exportModalTitle">
+  <div class="modal">
+    <h2 id="exportModalTitle">Export CSV</h2>
+    <div class="export-field">
+      <label for="csvTitle">CSV title / place</label>
+      <input id="csvTitle" type="text" maxlength="48" autocomplete="off" spellcheck="false" value="Table 1">
+      <p class="export-file" id="csvFileHint">File: Table 1.csv</p>
+    </div>
+    <div class="export-guide">
+      <div class="export-guide-head">
+        <b>Rules &amp; CSV guide</b>
+        <button type="button" class="mini-btn blue" id="copyRules">Copy text</button>
+      </div>
+      <textarea id="rulesText" readonly rows="4" aria-label="Rules, payout, and CSV guide"></textarea>
+    </div>
+    <div class="modal-actions export-actions">
+      <button type="button" class="secondary" id="exportCancel">Cancel</button>
+      <button type="button" class="primary" id="exportConfirm">Download CSV</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="importFile" accept=".csv,text/csv" hidden>
 <script>
 "use strict";
 const FACES = [
@@ -855,16 +1034,59 @@ const STORE_KEY = "langurBurjaLab_v3";
 const METHODS_KEY = STORE_KEY + "_methods";
 const LEGACY_KEYS = ["langurBurjaLab_v2", "langurBurjaLab_v1"];
 const RULE_KEY = STORE_KEY + "_rule";
-const TABLE_KEY = STORE_KEY + "_table";
-const DEFAULT_TABLE_VALUE = "1";
+const CSV_TITLE_KEY = STORE_KEY + "_title";
+const LEGACY_TABLE_KEY = STORE_KEY + "_table";
+const DEFAULT_CSV_TITLE = "Table 1";
+const EXPORT_GUIDE = [
+  "Rules: roll 6 dice; each die is one of 6 shapes. Bet on shapes; 2+ matches = winner.",
+  "Payout: Street 0–1 loses, 2+ pays stake×(matches+1). Lenient 1 refunds, 2+ as street.",
+  "Crown & Anchor 1+ pays stake×(matches+1). Strict 1 refunds, 2+ pays stake×matches.",
+  'CSV: one row per roll; net=returned−stake; bets=Shape:amount; *_count=dice count.'
+].join("\n");
 const DEFAULT_METHODS = ["Throw", "Normal shake", "Hard shake", "Spin shake"];
 const METHOD_ICONS = {"Throw":"🎲", "Normal shake":"🔄", "Hard shake":"💥", "Spin shake":"🌀"};
 const MAX_SEQUENCE = 24;
+const FACE_DRAG_HOLD_MS = 200;
+const FACE_DRAG_THRESHOLD = 5;
+const FACE_SCROLL_THRESHOLD = 8;
 const DELETE_WAIT = 15;
 const STAKES_KEY = STORE_KEY + "_stakes";
 const FACE_ORDER_KEY = STORE_KEY + "_face_order";
 const BASE_STAKES = [5, 10, 20, 25, 40, 50, 100, 150, 200, 250, 500, 1000];
 const EDITABLE_STAKES = [10, 11];
+const STRATEGY_KEY = STORE_KEY + "_strategy";
+const LADDER = [5, 5, 10, 10, 20, 20, 50, 50, 100, 100, 200, 200];
+const LADDER_TOTAL = LADDER.reduce((sum, value) => sum + value, 0);
+const DEFAULT_BUDGET = LADDER_TOTAL;
+const TWO_SHAPE_ODDS = (() => {
+  const faces = 6;
+  const dice = 6;
+  const factorial = value => {
+    let result = 1;
+    for (let i = 2; i <= value; i++) result *= i;
+    return result;
+  };
+  const either = 1 - Math.pow(4 / faces, dice);
+  const single2Plus = (() => {
+    let sum = 0;
+    for (let k = 2; k <= dice; k++) {
+      let choose = 1;
+      for (let i = 1; i <= k; i++) choose = choose * (dice - k + i) / i;
+      sum += choose * Math.pow(1 / faces, k) * Math.pow((faces - 1) / faces, dice - k);
+    }
+    return sum;
+  })();
+  let bothAtMostOne = 0;
+  for (let a = 0; a <= 1; a++) {
+    for (let b = 0; b <= 1; b++) {
+      const rest = dice - a - b;
+      if (rest < 0) continue;
+      bothAtMostOne += (factorial(dice) / (factorial(a) * factorial(b) * factorial(rest)))
+        * Math.pow(1 / faces, a + b) * Math.pow((faces - 2) / faces, rest);
+    }
+  }
+  return {either, atLeastOne: 1 - bothAtMostOne, each: single2Plus};
+})();
 const PAYOUT_RULES = ["street", "lenient", "crown", "strict"];
 const RULE_NAMES = {
   street: "street",
@@ -880,13 +1102,16 @@ let counts = Array(6).fill(0);
 let shakeSequence = [];
 let lastSavedSequence = [];
 let sequenceDefaultActive = false;
-let tableValue = DEFAULT_TABLE_VALUE;
+let csvTitle = DEFAULT_CSV_TITLE;
 let shakeMethods = DEFAULT_METHODS.slice();
 let methodsEditing = false;
 let stakePresets = BASE_STAKES.slice();
 let stakePreset = 0;
 let faceOrder = FACES.map((_, index) => index);
 let faceOrderEditing = false;
+let faceDrag = null;
+let facePressTimer = 0;
+let suppressFaceClickUntil = 0;
 let selectedBets = new Set();
 let customMode = false;
 let customBets = Array(6).fill(0);
@@ -898,6 +1123,7 @@ let toastTimer = 0;
 let deleteTimer = 0;
 let deleteSeconds = 0;
 let activeTab = "record";
+let strategyBudget = DEFAULT_BUDGET;
 
 function clampInt(value, min, max) {
   const n = Math.round(Number(value));
@@ -969,6 +1195,19 @@ function normalizeSequence(value) {
     .map(item => String(item || "").trim().replace(/\s+/g, " "))
     .filter(Boolean)
     .slice(0, MAX_SEQUENCE);
+}
+
+function normalizePredictedFaces(value) {
+  if (!Array.isArray(value)) return undefined;
+  const seen = new Set();
+  const faces = [];
+  value.forEach(item => {
+    const face = Number(item);
+    if (!Number.isInteger(face) || face < 0 || face >= FACES.length || seen.has(face)) return;
+    seen.add(face);
+    faces.push(face);
+  });
+  return faces.slice(0, 2);
 }
 
 function normalizeMethods(value) {
@@ -1054,10 +1293,28 @@ function saveStakes() {
   }
 }
 
+function loadStrategy() {
+  strategyBudget = DEFAULT_BUDGET;
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(STRATEGY_KEY) || "null"); } catch (error) { saved = null; }
+  if (!saved || typeof saved !== "object") return;
+  const value = Math.round(Number(saved.budget));
+  if (Number.isFinite(value) && value >= 0 && value <= 100000000) strategyBudget = value;
+}
+
+function saveStrategy() {
+  try {
+    localStorage.setItem(STRATEGY_KEY, JSON.stringify({budget: strategyBudget}));
+  } catch (error) {
+    setStatus("Could not save the strategy budget in this browser.", "error");
+  }
+}
+
 function migrateRecord(record) {
   if (!record || typeof record !== "object") return null;
 
   const sequence = normalizeSequence(record.shakeSequence);
+  const predictedFaces = normalizePredictedFaces(record.predictedFaces);
 
   if (record.v === 3 && Array.isArray(record.faces) && record.faces.length === 6) {
     return {
@@ -1071,6 +1328,7 @@ function migrateRecord(record) {
       shakes: sequence.length || Math.max(0, Math.round(Number(record.shakes) || 0)),
       method: sequence.length ? sequence.join(" → ") : String(record.method || ""),
       stake: Math.max(0, Number(record.stake) || 0),
+      predictedFaces,
       notes: String(record.notes || "")
     };
   }
@@ -1099,6 +1357,7 @@ function migrateRecord(record) {
     shakes: sequence.length || Math.max(0, Math.round(Number(record.shakes) || 0)),
     method: sequence.length ? sequence.join(" → ") : String(record.method || ""),
     stake: Math.max(0, Number(record.stake) || 0),
+    predictedFaces,
     notes: String(record.notes || "")
   };
 }
@@ -1113,58 +1372,104 @@ function saveStore() {
   }
 }
 
-function normalizeTableValue(value) {
-  let next = String(value ?? "").trim().replace(/\s+/g, " ");
-  next = next.replace(/^table\s+/i, "");
-  return next.slice(0, 24) || DEFAULT_TABLE_VALUE;
+function normalizeCsvTitle(value) {
+  return String(value ?? "").trim().replace(/\s+/g, " ").slice(0, 48) || DEFAULT_CSV_TITLE;
 }
 
-function currentTableValue() {
-  const input = $("tableName");
-  return normalizeTableValue(input ? input.value : tableValue);
+function csvFileName(title) {
+  const base = normalizeCsvTitle(title)
+    .replace(/[\\/:*?"<>|]+/g, "-")
+    .replace(/[. ]+$/g, "")
+    .trim();
+  return (base || "langur-burja") + ".csv";
 }
 
-function tableLabel() {
-  return "Table " + currentTableValue();
+function loadCsvTitle() {
+  let saved = null;
+  try { saved = localStorage.getItem(CSV_TITLE_KEY); } catch (error) { saved = null; }
+  if (saved) {
+    csvTitle = normalizeCsvTitle(saved);
+    return;
+  }
+  let legacy = null;
+  try { legacy = localStorage.getItem(LEGACY_TABLE_KEY); } catch (error) { legacy = null; }
+  if (legacy) {
+    const raw = legacy.trim();
+    csvTitle = normalizeCsvTitle(/^\d+$/.test(raw) ? "Table " + raw : raw);
+    saveCsvTitle();
+    return;
+  }
+  csvTitle = DEFAULT_CSV_TITLE;
 }
 
-function loadTable() {
+function saveCsvTitle() {
   try {
-    tableValue = normalizeTableValue(localStorage.getItem(TABLE_KEY) || DEFAULT_TABLE_VALUE);
+    localStorage.setItem(CSV_TITLE_KEY, csvTitle);
   } catch (error) {
-    tableValue = DEFAULT_TABLE_VALUE;
+    setStatus("Could not save the CSV title in this browser.", "error");
   }
 }
 
-function saveTable() {
-  try {
-    localStorage.setItem(TABLE_KEY, tableValue);
-  } catch (error) {
-    setStatus("Could not save the table name in this browser.", "error");
+function syncBodyLock() {
+  const open = ["deleteModal", "stakeModal", "exportModal"].some(id => {
+    const element = $(id);
+    return element && !element.classList.contains("hidden");
+  });
+  document.body.style.overflow = open ? "hidden" : "";
+}
+
+function updateCsvFileHint() {
+  const hint = $("csvFileHint");
+  if (!hint) return;
+  const input = $("csvTitle");
+  hint.textContent = "File: " + csvFileName(input ? input.value : csvTitle);
+}
+
+function openExportModal() {
+  const input = $("csvTitle");
+  if (input) input.value = csvTitle;
+  $("rulesText").value = EXPORT_GUIDE;
+  $("exportConfirm").disabled = !rolls.length;
+  updateCsvFileHint();
+  $("exportModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
+function closeExportModal() {
+  $("exportModal").classList.add("hidden");
+  syncBodyLock();
+}
+
+function confirmExport() {
+  if (!rolls.length) {
+    setStatus("No rolls to export yet.", "info");
+    return;
   }
+  const title = normalizeCsvTitle($("csvTitle").value);
+  csvTitle = title;
+  $("csvTitle").value = title;
+  saveCsvTitle();
+  closeExportModal();
+  exportCsv(title);
 }
 
-function sizeTableInput() {
-  const input = $("tableName");
-  if (!input) return;
-  const width = Math.max(3, Math.min(18, input.value.length + 1));
-  input.style.width = width + "ch";
-  input.title = tableLabel();
+function fallbackCopyRules() {
+  const area = $("rulesText");
+  area.focus();
+  area.select();
+  let copied = false;
+  try { copied = document.execCommand("copy"); } catch (error) { copied = false; }
+  if (window.getSelection) window.getSelection().removeAllRanges();
+  try { area.setSelectionRange(0, 0); } catch (error) {}
+  showToast(copied ? "Rules text copied" : "Select the text to copy");
 }
 
-function commitTableName(silent = false) {
-  const input = $("tableName");
-  if (!input) return;
-  const next = normalizeTableValue(input.value);
-  const changed = next !== tableValue;
-  tableValue = next;
-  input.value = next;
-  sizeTableInput();
-  if (!changed) return;
-  saveTable();
-  if (!silent) {
-    setStatus("Table set to " + tableLabel() + ".", "ok");
-    showToast(tableLabel() + " saved");
+function copyRulesText() {
+  const text = $("rulesText").value || EXPORT_GUIDE;
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(() => showToast("Rules text copied")).catch(fallbackCopyRules);
+  } else {
+    fallbackCopyRules();
   }
 }
 
@@ -1177,10 +1482,11 @@ function setDefaultSequence(sequence) {
 function loadStore() {
   rolls = [];
   payoutRule = "street";
-  loadTable();
+  loadCsvTitle();
   loadMethods();
   loadStakes();
   loadFaceOrder();
+  loadStrategy();
 
   const saved = localStorage.getItem(STORE_KEY);
   if (saved) {
@@ -1283,6 +1589,7 @@ function equalSplit() {
 function faceCardMarkup(face, index) {
   return `<div class="stepper face-stepper" id="faceCard${index}" data-face-card="${index}" style="--accent:${face.accent}">
     <div class="stepper-body">
+      <span class="face-grip" aria-hidden="true">⠿</span>
       <div class="face-symbol" aria-hidden="true">${face.emoji}</div>
       <div class="face-name">${face.name}</div>
       <div class="face-sub">${face.sub}</div>
@@ -1365,13 +1672,118 @@ function renderFaceOrder() {
 }
 
 function moveFace(position, direction) {
-  const target = position + direction;
-  if (position < 0 || position >= faceOrder.length || target < 0 || target >= faceOrder.length) return;
+  swapFacePositions(position, position + direction);
+}
+
+function swapFacePositions(position, target) {
+  if (position < 0 || target < 0 || position >= faceOrder.length || target >= faceOrder.length || position === target) return false;
   [faceOrder[position], faceOrder[target]] = [faceOrder[target], faceOrder[position]];
   saveFaceOrder();
   renderFaceInputs();
   renderFaceOrder();
   renderAll();
+  return true;
+}
+
+function clearFaceDropTarget() {
+  if (!faceDrag || !faceDrag.target) return;
+  faceDrag.target.classList.remove("face-drop-target");
+  faceDrag.target = null;
+}
+
+function cleanupFaceDrag() {
+  if (facePressTimer) {
+    window.clearTimeout(facePressTimer);
+    facePressTimer = 0;
+  }
+  if (!faceDrag) return;
+  const {card, pointerId} = faceDrag;
+  if (card) {
+    card.classList.remove("face-dragging");
+    try {
+      if (card.hasPointerCapture && card.hasPointerCapture(pointerId)) card.releasePointerCapture(pointerId);
+    } catch (error) {}
+  }
+  clearFaceDropTarget();
+  faceDrag = null;
+}
+
+function beginFaceDrag() {
+  if (!faceDrag || faceDrag.active) return;
+  if (facePressTimer) {
+    window.clearTimeout(facePressTimer);
+    facePressTimer = 0;
+  }
+  faceDrag.active = true;
+  faceDrag.card.classList.add("face-dragging");
+  try {
+    faceDrag.card.setPointerCapture(faceDrag.pointerId);
+  } catch (error) {}
+}
+
+function startFacePress(event) {
+  const card = event.target.closest("[data-face-card]");
+  if (!card || !$("observedFaces").contains(card) || event.target.closest(".stepper-controls")) return;
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+  cleanupFaceDrag();
+  faceDrag = {
+    card,
+    faceIndex: Number(card.dataset.faceCard),
+    pointerId: event.pointerId,
+    pointerType: event.pointerType || "mouse",
+    startX: event.clientX,
+    startY: event.clientY,
+    active: false,
+    target: null
+  };
+  if (faceDrag.pointerType !== "mouse") {
+    facePressTimer = window.setTimeout(beginFaceDrag, FACE_DRAG_HOLD_MS);
+  }
+}
+
+function moveFacePointer(event) {
+  if (!faceDrag || event.pointerId !== faceDrag.pointerId) return;
+  const distance = Math.hypot(event.clientX - faceDrag.startX, event.clientY - faceDrag.startY);
+  if (!faceDrag.active) {
+    if (faceDrag.pointerType === "mouse") {
+      if (distance < FACE_DRAG_THRESHOLD) return;
+      beginFaceDrag();
+    } else {
+      if (distance > FACE_SCROLL_THRESHOLD) cleanupFaceDrag();
+      return;
+    }
+  }
+  event.preventDefault();
+  const element = document.elementFromPoint(event.clientX, event.clientY);
+  const target = element && element.closest ? element.closest("[data-face-card]") : null;
+  if (target && target !== faceDrag.card && $("observedFaces").contains(target)) {
+    if (faceDrag.target !== target) {
+      if (faceDrag.target) faceDrag.target.classList.remove("face-drop-target");
+      faceDrag.target = target;
+      target.classList.add("face-drop-target");
+    }
+  } else {
+    clearFaceDropTarget();
+  }
+}
+
+function endFacePointer(event) {
+  if (!faceDrag || event.pointerId !== faceDrag.pointerId) return;
+  const active = faceDrag.active;
+  const target = faceDrag.target;
+  const sourceFace = faceDrag.faceIndex;
+  if (active) suppressFaceClickUntil = Date.now() + 350;
+  cleanupFaceDrag();
+  if (!active || !target) return;
+  const position = faceOrder.indexOf(sourceFace);
+  const targetPosition = faceOrder.indexOf(Number(target.dataset.faceCard));
+  swapFacePositions(position, targetPosition);
+}
+
+function cancelFacePointer(event) {
+  if (!faceDrag || event.pointerId !== faceDrag.pointerId) return;
+  if (faceDrag.active) suppressFaceClickUntil = Date.now() + 350;
+  cleanupFaceDrag();
 }
 
 function toggleFaceOrder() {
@@ -1386,8 +1798,6 @@ function initUI() {
   renderHistoryToggle();
   renderStakeButtons();
   $("payoutRule").value = payoutRule;
-  $("tableName").value = tableValue;
-  sizeTableInput();
 }
 
 function renderStakeButtons() {
@@ -1703,7 +2113,6 @@ function changeFace(index, delta) {
 }
 
 function addRoll() {
-  commitTableName(true);
   if (!shakeSequence.length) {
     setStatus("Add at least one shake method before saving.", "error");
     $("shakeStep").scrollIntoView({behavior: "smooth", block: "center"});
@@ -1726,6 +2135,7 @@ function addRoll() {
   }
 
   const sequence = shakeSequence.slice();
+  const predictedFaces = buildNextPickModel(rolls, shakeSequence).top.map(pick => pick.index);
   const record = {
     id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
     v: 3,
@@ -1740,7 +2150,8 @@ function addRoll() {
     bets,
     returned: returnedFor(counts, bets, payoutRule),
     payoutRule,
-    session: tableLabel(),
+    predictedFaces,
+    session: csvTitle,
     notes: $("notes").value.trim()
   };
 
@@ -1887,13 +2298,13 @@ function faceWinCounts(records) {
   return wins;
 }
 
-function winnerTransitionData() {
+function winnerTransitionData(records = rolls) {
   const size = FACES.length;
   const denominator = Array(size).fill(0);
   const matrix = Array.from({length: size}, () => Array(size).fill(0));
-  for (let i = 1; i < rolls.length; i++) {
-    const previous = rolls[i - 1].faces || [];
-    const next = rolls[i].faces || [];
+  for (let i = 1; i < records.length; i++) {
+    const previous = records[i - 1].faces || [];
+    const next = records[i].faces || [];
     const previousWinners = FACES.map((face, index) => Number(previous[index] || 0) >= 2);
     const nextWinners = FACES.map((face, index) => Number(next[index] || 0) >= 2);
     previousWinners.forEach((won, a) => {
@@ -1907,14 +2318,14 @@ function winnerTransitionData() {
   return {denominator, matrix};
 }
 
-function predictedShakeLength() {
-  if (!rolls.length) return {length: 0, sample: 0, basedOnLast: false};
-  const lastLength = recordShakeCount(rolls[rolls.length - 1]);
+function predictedShakeLength(records = rolls) {
+  if (!records.length) return {length: 0, sample: 0, basedOnLast: false};
+  const lastLength = recordShakeCount(records[records.length - 1]);
   const nextLengths = [];
-  for (let i = 1; i < rolls.length; i++) {
-    if (recordShakeCount(rolls[i - 1]) === lastLength) nextLengths.push(recordShakeCount(rolls[i]));
+  for (let i = 1; i < records.length; i++) {
+    if (recordShakeCount(records[i - 1]) === lastLength) nextLengths.push(recordShakeCount(records[i]));
   }
-  const pool = nextLengths.length ? nextLengths : rolls.map(recordShakeCount);
+  const pool = nextLengths.length ? nextLengths : records.map(recordShakeCount);
   if (!pool.length) return {length: 0, sample: 0, basedOnLast: false};
   const frequency = {};
   pool.forEach(value => { frequency[value] = (frequency[value] || 0) + 1; });
@@ -1922,32 +2333,59 @@ function predictedShakeLength() {
   return {length: Number(best[0]), sample: pool.length, basedOnLast: nextLengths.length > 0};
 }
 
-function renderNextPicks() {
-  const box = $("nextPicks");
-  if (!rolls.length) {
-    box.innerHTML = '<div class="empty">Record a roll to start the next-roll signal.</div>';
-    return;
+function lastDiceStateRates(records) {
+  const rates = Array(FACES.length).fill(null);
+  const sample = Array(FACES.length).fill(0);
+  if (!records.length) return {rates, sample};
+  const last = records[records.length - 1].faces || [];
+  const lastStates = FACES.map((face, index) => Math.min(2, Number(last[index] || 0)));
+  const wins = Array(FACES.length).fill(0);
+  for (let i = 1; i < records.length; i++) {
+    const previous = records[i - 1].faces || [];
+    const next = records[i].faces || [];
+    FACES.forEach((face, index) => {
+      const previousState = Math.min(2, Number(previous[index] || 0));
+      if (previousState !== lastStates[index]) return;
+      sample[index] += 1;
+      if (Number(next[index] || 0) >= 2) wins[index] += 1;
+    });
+  }
+  FACES.forEach((face, index) => {
+    if (sample[index] > 0) rates[index] = wins[index] / sample[index];
+  });
+  return {rates, sample};
+}
+
+function buildNextPickModel(records, sequence) {
+  const currentSequence = Array.isArray(sequence) ? sequence : [];
+  const blankPicks = FACES.map((face, index) => ({
+    index, face, score: 0, transition: null, state: null, shake: null,
+    win: 0, frequency: 0, recent: 0
+  }));
+  if (!records.length) {
+    return {
+      picks: blankPicks, top: [], lastWinners: [], predicted: {length: 0, sample: 0, basedOnLast: false},
+      usesCurrentSequence: currentSequence.length > 0, shakeLength: 0, shakeRecords: []
+    };
   }
 
-  const last = rolls[rolls.length - 1];
+  const last = records[records.length - 1];
   const lastWinners = FACES.map((face, index) => Number(last.faces && last.faces[index]) >= 2);
-  const lastWinnerFaces = FACES.filter((face, index) => lastWinners[index]);
-
-  const overallWins = faceWinCounts(rolls);
-  const winRates = overallWins.map(count => count / rolls.length);
-  const recent = rolls.slice(-Math.min(10, rolls.length));
+  const overallWins = faceWinCounts(records);
+  const winRates = overallWins.map(count => count / records.length);
+  const recent = records.slice(-Math.min(10, records.length));
   const recentWins = faceWinCounts(recent);
   const recentRates = recentWins.map(count => count / recent.length);
 
-  const totalDice = rolls.reduce((sum, record) =>
+  const totalDice = records.reduce((sum, record) =>
     sum + FACES.reduce((faceSum, face, index) => faceSum + Number((record.faces && record.faces[index]) || 0), 0), 0
   );
   const diceShare = FACES.map((face, index) => {
-    const count = rolls.reduce((sum, record) => sum + Number((record.faces && record.faces[index]) || 0), 0);
+    const count = records.reduce((sum, record) => sum + Number((record.faces && record.faces[index]) || 0), 0);
     return totalDice ? count / totalDice : 0;
   });
 
-  const {denominator, matrix} = winnerTransitionData();
+  const {denominator, matrix} = winnerTransitionData(records);
   const transitionRates = FACES.map((face, b) => {
     const values = [];
     lastWinners.forEach((won, a) => {
@@ -1957,25 +2395,32 @@ function renderNextPicks() {
   });
   const transitionSample = lastWinners.reduce((sum, won, a) => sum + (won ? denominator[a] : 0), 0);
 
-  const predicted = predictedShakeLength();
-  const usesCurrentSequence = shakeSequence.length > 0;
-  const shakeLength = usesCurrentSequence ? shakeSequence.length : predicted.length;
-  const shakeRecords = rolls.filter(record => recordShakeCount(record) === shakeLength);
+  const stateData = lastDiceStateRates(records);
+  const stateSample = stateData.sample.reduce((sum, value) => sum + value, 0);
+
+  const predicted = predictedShakeLength(records);
+  const usesCurrentSequence = currentSequence.length > 0;
+  const shakeLength = usesCurrentSequence ? currentSequence.length : predicted.length;
+  const shakeRecords = records.filter(record => recordShakeCount(record) === shakeLength);
   const shakeWins = faceWinCounts(shakeRecords);
   const shakeRates = shakeWins.map(count => shakeRecords.length ? count / shakeRecords.length : null);
 
   const weights = {
-    transition: 0.35 * Math.min(1, transitionSample / 8),
-    shake: 0.20 * Math.min(1, shakeRecords.length / 6),
-    win: 0.20,
-    frequency: 0.15,
-    recent: 0.10
+    transition: 0.32 * Math.min(1, transitionSample / 8),
+    state: 0.16 * Math.min(1, stateSample / 36),
+    shake: 0.18 * Math.min(1, shakeRecords.length / 6),
+    win: 0.16,
+    frequency: 0.12,
+    recent: 0.06
   };
 
   const picks = FACES.map((face, index) => {
     const components = [];
     if (transitionRates[index] !== null && weights.transition > 0) {
       components.push({key: "transition", value: transitionRates[index], weight: weights.transition});
+    }
+    if (stateData.rates[index] !== null && weights.state > 0) {
+      components.push({key: "state", value: stateData.rates[index], weight: weights.state});
     }
     if (shakeRates[index] !== null && weights.shake > 0) {
       components.push({key: "shake", value: shakeRates[index], weight: weights.shake});
@@ -1990,6 +2435,7 @@ function renderNextPicks() {
       face,
       score,
       transition: transitionRates[index],
+      state: stateData.rates[index],
       shake: shakeRates[index],
       win: winRates[index],
       frequency: diceShare[index],
@@ -2000,15 +2446,101 @@ function renderNextPicks() {
   const ranked = picks.filter(pick => pick.score > 0 && pick.win > 0);
   const top = ranked.slice(0, 1);
   if (ranked[1] && ranked[1].score >= ranked[0].score * 0.75) top.push(ranked[1]);
-  if (!top.length) {
-    box.innerHTML = '<div class="empty">No 2+ winner signal yet. Record a few rolls with at least two matching dice.</div>';
+
+  return {
+    picks, top, lastWinners, predicted, usesCurrentSequence, shakeLength, shakeRecords,
+    transitionSample, stateSample
+  };
+}
+
+function predictionForIndex(index) {
+  const record = rolls[index];
+  if (!record) return [];
+  if (Array.isArray(record.predictedFaces)) return normalizePredictedFaces(record.predictedFaces) || [];
+  if (index === 0) return [];
+  const prior = rolls.slice(0, index);
+  if (!prior.length) return [];
+  const sequence = historyShakeNames(rolls[index - 1]);
+  const model = buildNextPickModel(prior, sequence);
+  return model.top.map(pick => pick.index);
+}
+
+function predictionAccuracy() {
+  let tracked = 0;
+  let hits = 0;
+  let last = null;
+  rolls.forEach((record, index) => {
+    const predicted = predictionForIndex(index);
+    if (!predicted.length) return;
+    const actual = FACES.map((face, faceIndex) =>
+      Number(record.faces && record.faces[faceIndex]) >= 2 ? faceIndex : -1
+    ).filter(faceIndex => faceIndex >= 0);
+    const hit = predicted.some(faceIndex => actual.includes(faceIndex));
+    tracked += 1;
+    if (hit) hits += 1;
+    last = {index, predicted, actual, hit};
+  });
+  return {tracked, hits, last};
+}
+
+function pickAccuracyMarkup() {
+  const accuracy = predictionAccuracy();
+  if (!accuracy.tracked) {
+    return '<div class="pick-track"><span>Guess accuracy starts after the next saved roll. A hit means at least one suggested shape reaches 2+.</span></div>';
+  }
+  const percent = Math.round(accuracy.hits / accuracy.tracked * 100);
+  const last = accuracy.last;
+  const predictedNames = last.predicted.map(faceIndex => FACES[faceIndex].name).join(" / ");
+  const actualNames = last.actual.length
+    ? last.actual.map(faceIndex => `${FACES[faceIndex].emoji} ${FACES[faceIndex].name}`).join(" · ")
+    : "no 2+ winner";
+  const lastStatus = `<span class="${last.hit ? "hit" : "miss"}">Last: ${last.hit ? "✅ hit" : "❌ miss"}</span>`;
+  const lastGuess = `<span>guessed <b>${escapeHtml(predictedNames)}</b></span>`;
+  const lastActual = last.hit ? "" : `<span>actual ${escapeHtml(actualNames)}</span>`;
+  return `<div class="pick-track">
+    <span>Guess accuracy <b>${accuracy.hits}/${accuracy.tracked}</b> (${percent}%)</span>
+    ${lastStatus}${lastGuess}${lastActual}
+  </div>`;
+}
+
+function renderNextPicks() {
+  const box = $("nextPicks");
+  if (!rolls.length) {
+    box.innerHTML = '<div class="empty">Record a roll to start the next-roll signal.</div>';
+    return;
+  }
+
+  const model = buildNextPickModel(rolls, shakeSequence);
+  const last = rolls[rolls.length - 1];
+  const lastWinnerFaces = FACES.filter((face, index) => model.lastWinners[index]);
+  const lastWinnerText = lastWinnerFaces.length
+    ? lastWinnerFaces.map(face => `${face.emoji} ${escapeHtml(face.name)}`).join(" ")
+    : "none";
+
+  const predicted = model.predicted;
+  let shakeText;
+  if (model.usesCurrentSequence) {
+    shakeText = `Current shake sequence: <b>${model.shakeLength}</b> ${model.shakeLength === 1 ? "shake" : "shakes"} · ${model.shakeRecords.length} matching ${model.shakeRecords.length === 1 ? "roll" : "rolls"}`;
+  } else if (predicted.sample > 0) {
+    shakeText = `Likely next shake length: <b>${predicted.length}</b> ${predicted.length === 1 ? "shake" : "shakes"} · ${model.shakeRecords.length} matching ${model.shakeRecords.length === 1 ? "roll" : "rolls"} (${predicted.basedOnLast ? "similar transitions" : "all rolls"})`;
+  } else {
+    shakeText = "No shake history yet";
+  }
+
+  const summary = `<p class="next-summary">Last 2+ winner: <b>${lastWinnerText}</b> · ${shakeText}</p>`;
+  const track = pickAccuracyMarkup();
+  if (!model.top.length) {
+    box.innerHTML = `${summary}
+      <div class="empty">No 2+ winner signal yet. Record a few rolls with at least two matching dice.</div>
+      ${track}`;
     return;
   }
 
   const pct = value => value === null || value === undefined ? "—" : Math.round(value * 100) + "%";
-  const pickMarkup = top.map((pick, position) => {
+  const pickMarkup = model.top.map((pick, position) => {
     const parts = [];
     if (pick.transition !== null) parts.push(`A→B ${pct(pick.transition)}`);
+    if (pick.state !== null) parts.push(`state ${pct(pick.state)}`);
     if (pick.shake !== null) parts.push(`shake ${pct(pick.shake)}`);
     parts.push(`win ${pct(pick.win)}`);
     parts.push(`freq ${pct(pick.frequency)}`);
@@ -2022,19 +2554,10 @@ function renderNextPicks() {
     </div>`;
   }).join("");
 
-  const lastWinnerText = lastWinnerFaces.length ? lastWinnerFaces.map(face => `${face.emoji} ${escapeHtml(face.name)}`).join(" ") : "none";
-  let shakeText;
-  if (usesCurrentSequence) {
-    shakeText = `Current shake sequence: <b>${shakeSequence.length}</b> ${shakeSequence.length === 1 ? "shake" : "shakes"} · ${shakeRecords.length} matching ${shakeRecords.length === 1 ? "roll" : "rolls"}`;
-  } else if (predicted.sample > 0) {
-    shakeText = `Likely next shake length: <b>${predicted.length}</b> ${predicted.length === 1 ? "shake" : "shakes"} · ${shakeRecords.length} matching ${shakeRecords.length === 1 ? "roll" : "rolls"} (${predicted.basedOnLast ? "similar transitions" : "all rolls"})`;
-  } else {
-    shakeText = "No shake history yet";
-  }
-
-  box.innerHTML = `<p class="next-summary">Last 2+ winner: <b>${lastWinnerText}</b> · ${shakeText}</p>
+  box.innerHTML = `${summary}
     <div class="next-grid">${pickMarkup}</div>
-    <p class="next-summary">Signal blends winner transition, shake-length outcomes, overall and recent win rates, and face frequency. Not a guarantee.</p>`;
+    ${track}
+    <p class="next-summary">Signal blends last 2+ winner → next winner, the last roll's 0/1/2+ dice state, shake-length outcomes, overall and recent win rates, and face frequency. Not a guarantee.</p>`;
 }
 
 function renderShakeStats() {
@@ -2232,7 +2755,8 @@ function historyResult(record) {
 
 function renderHistoryToggle() {
   const toggle = $("historyDetailToggle");
-  toggle.textContent = historyExpanded ? "Compact" : "Full detail";
+  toggle.textContent = historyExpanded ? "Compact" : "Details";
+  toggle.title = historyExpanded ? "Show compact rows" : "Show full detail";
   toggle.setAttribute("aria-pressed", String(historyExpanded));
   $("historyScroll").classList.toggle("expanded", historyExpanded);
 }
@@ -2267,6 +2791,9 @@ function renderHistory() {
     const shakeNames = historyShakeNames(record);
     const shakeLabels = shakeNames.map(canonicalShakeName);
     const countLabels = faceOrder.map(faceIndex => `${FACES[faceIndex].name} ${rowCounts[faceIndex]}`).join(", ");
+    const predicted = predictionForIndex(index);
+    const actualWinners = rowCounts.map((count, faceIndex) => count >= 2 ? faceIndex : -1).filter(faceIndex => faceIndex >= 0);
+    const pickHit = predicted.length > 0 && predicted.some(faceIndex => actualWinners.includes(faceIndex));
     const detail = [`Roll #${index + 1}`, time];
     if (shakeLabels.length) detail.push(shakeLabels.join(" → "));
     if (hasBet) detail.push(`Staked ${money(stake)}`, `Returned ${money(returned)}`, `Net ${signedMoney(net)}`);
@@ -2275,6 +2802,7 @@ function renderHistory() {
       return face ? `${face.name} ${money(bet.amount)}` : money(bet.amount);
     }).join(", ");
     if (betText) detail.push(`Bet ${betText}`);
+    if (predicted.length) detail.push(`Pick ${predicted.map(faceIndex => FACES[faceIndex].name).join(" / ")} ${pickHit ? "hit" : "miss"}`);
     if (record.notes) detail.push(`Note: ${record.notes}`);
     const title = detail.join(" · ");
     const aria = `${time}. ${hasBet ? `Bet ${money(stake)}, ${resultLabel.toLowerCase()}.` : "No bet."} ${shakeLabels.length ? "Shakes: " + shakeLabels.join(", ") + "." : "No shakes."} ${countLabels}.`;
@@ -2312,6 +2840,7 @@ function renderHistory() {
               <span><b>Result</b> <span class="hist-result ${resultKey}">${resultLabel}</span></span>
             </div>
             <div class="hist-detail-line"><span class="hist-detail-label">Bets</span>${betDetail}</div>
+            ${predicted.length ? `<div class="hist-detail-line"><span class="hist-detail-label">Pick</span>${predicted.map(faceIndex => `${FACES[faceIndex].emoji} ${escapeHtml(FACES[faceIndex].name)}`).join(" / ")} <span class="${pickHit ? "hist-pick-hit" : "hist-pick-miss"}">${pickHit ? "✓ hit" : "✗ miss"}</span></div>` : ""}
             ${record.notes ? `<div class="hist-detail-note"><b>Note</b> ${escapeHtml(record.notes)}</div>` : ""}
           </div>
         </td>
@@ -2336,6 +2865,338 @@ function renderAll() {
   renderHistory();
   renderHistoryToggle();
   updatePreview();
+  renderStrategy();
+}
+
+/* ---------- strategy + profit graph ---------- */
+
+function strategyStatus() {
+  const cumulative = [];
+  let running = 0;
+  LADDER.forEach(value => {
+    running += value;
+    cumulative.push(running);
+  });
+
+  let lossStreak = 0;
+  for (let i = rolls.length - 1; i >= 0; i--) {
+    if (recordStake(rolls[i]) <= 0) continue;
+    if (historyResult(rolls[i]).key === "loss") lossStreak += 1;
+    else break;
+  }
+
+  const exhausted = lossStreak >= LADDER.length;
+  const stepIndex = exhausted ? LADDER.length - 1 : lossStreak;
+  const nextStake = exhausted ? null : LADDER[stepIndex];
+  const cycleCost = exhausted ? LADDER_TOTAL : cumulative[stepIndex];
+  const covered = nextStake !== null && cycleCost <= strategyBudget;
+  return {
+    cumulative, lossStreak, exhausted, stepIndex, nextStake, cycleCost, covered,
+    total: LADDER_TOTAL, budget: strategyBudget
+  };
+}
+
+function strategyTwoPicks() {
+  const model = buildNextPickModel(rolls, shakeSequence);
+  return model.picks.slice(0, 2);
+}
+
+function twoShapeSplit(total, faceIndices) {
+  const chosen = [...new Set(faceIndices)].sort((a, b) => a - b);
+  if (!chosen.length) return [];
+  const amount = Math.max(0, Math.round(Number(total) || 0));
+  const base = Math.floor(amount / chosen.length);
+  const remainder = amount - base * chosen.length;
+  const amounts = new Map(chosen.map((faceIndex, index) => [faceIndex, base + (index < remainder ? 1 : 0)]));
+  return faceIndices.map(faceIndex => ({faceIndex, amount: amounts.get(faceIndex) || 0}));
+}
+
+function chartShortMoney(value) {
+  const rounded = Math.round(Number(value) || 0);
+  const sign = rounded < 0 ? "−" : "";
+  const abs = Math.abs(rounded);
+  if (abs >= 10000) return sign + "Rs. " + (abs / 1000).toFixed(0) + "k";
+  if (abs >= 1000) return sign + "Rs. " + (abs / 1000).toFixed(1).replace(/\.0$/, "") + "k";
+  return sign + "Rs. " + abs;
+}
+
+function renderStrategyCard() {
+  const status = strategyStatus();
+  const budgetInput = $("strategyBudget");
+  if (budgetInput && document.activeElement !== budgetInput) budgetInput.value = status.budget;
+
+  const badge = $("strategyBadge");
+  badge.textContent = status.exhausted
+    ? "Ladder complete"
+    : !status.covered
+      ? "Above budget"
+      : `Next ${money(status.nextStake)}`;
+  badge.classList.toggle("alert", status.exhausted || !status.covered);
+  badge.classList.toggle("ok", !status.exhausted && status.covered);
+
+  const hint = $("strategyBudgetHint");
+  if (status.exhausted) {
+    hint.textContent = `Full ladder cost: ${money(status.total)}. The 12-rung ladder is complete.`;
+  } else if (status.covered) {
+    const spare = status.budget - status.cycleCost;
+    hint.textContent = `Full ladder cost: ${money(status.total)}. Your budget covers this cycle${spare > 0 ? ` with ${money(spare)} spare` : ""}.`;
+  } else {
+    hint.textContent = `Full ladder cost: ${money(status.total)}. The next rung needs ${money(status.cycleCost)} this cycle.`;
+  }
+
+  $("strategyStreak").textContent = String(status.lossStreak);
+  $("strategyNext").textContent = status.nextStake === null ? "Stop" : money(status.nextStake);
+  $("strategyCost").textContent = money(status.cycleCost);
+
+  const betCount = rolls.filter(record => recordStake(record) > 0).length;
+  const note = $("strategyNote");
+  let noteText = "";
+  let noteTone = "";
+  if (status.exhausted) {
+    noteText = "All 12 rungs are used. Stop the cycle and wait for a reset; do not chase past the ladder.";
+    noteTone = "alert";
+  } else if (!status.covered) {
+    noteText = `The next rung is ${money(status.nextStake)}, but this cycle needs ${money(status.cycleCost)} total — above your ${money(status.budget)} budget. Stop here.`;
+    noteTone = "alert";
+  } else if (!betCount) {
+    noteText = "No bet saved yet. Start at Rs. 5; any win resets the cycle.";
+  } else if (status.lossStreak === 0) {
+    noteText = "No loss is carrying over. Start this cycle at Rs. 5; any win resets to Rs. 5.";
+    noteTone = "ok";
+  } else {
+    noteText = `${status.lossStreak} ${status.lossStreak === 1 ? "loss" : "losses"} in a row. Next rung is ${money(status.nextStake)}; a win resets to Rs. 5.`;
+  }
+  note.textContent = noteText;
+  note.className = "strategy-note" + (noteTone ? " " + noteTone : "");
+
+  $("strategyLadder").innerHTML = LADDER.map((value, index) => {
+    const passed = status.exhausted || index < status.stepIndex;
+    const next = !status.exhausted && index === status.stepIndex;
+    const over = status.cumulative[index] > status.budget;
+    const classes = ["ladder-step"];
+    if (passed) classes.push("passed");
+    if (next) classes.push("next");
+    if (over) classes.push("over");
+    return `<div class="${classes.join(" ")}" title="Rung ${index + 1}: bet ${money(value)}; cumulative ${money(status.cumulative[index])}">
+      <span class="ladder-index">${index + 1}</span>
+      <b>${money(value)}</b>
+      <small>${money(status.cumulative[index])} total</small>
+    </div>`;
+  }).join("");
+
+  const canApply = status.nextStake !== null && status.covered;
+  const useButton = $("strategyUse");
+  const twoButton = $("strategyTwo");
+  useButton.disabled = !canApply;
+  twoButton.disabled = !canApply;
+  useButton.title = canApply
+    ? `Use ${money(status.nextStake)} on the Record tab`
+    : "The next rung is not covered by the current budget";
+  twoButton.title = canApply
+    ? `Use ${money(status.nextStake)} split over the top two shapes`
+    : "The next rung is not covered by the current budget";
+}
+
+function renderTwoShapeCard() {
+  $("twoShapeEither").textContent = (TWO_SHAPE_ODDS.either * 100).toFixed(1) + "%";
+  $("twoShapeAtLeast").textContent = (TWO_SHAPE_ODDS.atLeastOne * 100).toFixed(1) + "%";
+  $("twoShapeEach").textContent = (TWO_SHAPE_ODDS.each * 100).toFixed(1) + "%";
+
+  const status = strategyStatus();
+  const canApply = status.nextStake !== null && status.covered;
+  const picks = strategyTwoPicks();
+  const total = canApply ? status.nextStake : 0;
+  const split = twoShapeSplit(total, picks.map(pick => pick.index));
+  const planMarkup = split.map(item => {
+    const face = FACES[item.faceIndex];
+    return `<div class="two-shape-face" title="${escapeHtml(face.name)}: ${item.amount ? money(item.amount) : "no stake"}">
+      <span class="pick-emoji" aria-hidden="true">${face.emoji}</span>
+      <span>${escapeHtml(face.name)}</span>
+      <small>${item.amount ? money(item.amount) : "—"}</small>
+    </div>`;
+  }).join('<span class="two-shape-plus" aria-hidden="true">+</span>');
+  $("twoShapePlan").innerHTML = planMarkup
+    + `<div class="two-shape-face total"><span>Total</span><small>${total ? money(total) : "—"}</small></div>`;
+
+  const noSignal = !rolls.length || picks.every(pick => pick.score <= 0);
+  const weakSecond = picks.length > 1 && picks[1].score <= 0;
+  const note = $("twoShapeNote");
+  if (status.exhausted) {
+    note.textContent = "Ladder complete. Stop and reset after a win.";
+  } else if (!status.covered) {
+    note.textContent = "The next rung is above your budget. Lower the stake or stop.";
+  } else if (noSignal) {
+    note.textContent = "No next-roll signal yet, so the first two shapes are shown. Save a few rolls to rank them.";
+  } else if (weakSecond) {
+    note.textContent = "Only one shape has a 2+ signal; the second is the next-best fallback. A 2-match win on one half returns 3× that half.";
+  } else {
+    note.textContent = "Top two shapes by the current next-roll signal. A 2-match win on one half returns 3× that half; both halves pay if both reach 2+.";
+  }
+  note.className = "strategy-note" + (status.exhausted || !status.covered ? " alert" : "");
+
+  $("applyTwoShape").disabled = !canApply;
+  $("applyTwoShape").title = canApply
+    ? `Split ${money(status.nextStake)} over the top two shapes`
+    : "The next rung is not covered by the current budget";
+}
+
+function renderProfitChart() {
+  const box = $("profitChart");
+  const netBadge = $("profitNet");
+  const meta = $("profitMeta");
+  if (!box || !netBadge || !meta) return;
+
+  if (!rolls.length) {
+    netBadge.textContent = "Rs. 0";
+    netBadge.className = "chart-net";
+    box.innerHTML = '<div class="pl-empty">Record rolls to see the cumulative profit / loss curve.</div>';
+    meta.innerHTML = "<span>No rolls yet</span>";
+    return;
+  }
+
+  const values = [];
+  let running = 0;
+  rolls.forEach(record => {
+    running += recordReturned(record) - recordStake(record);
+    values.push(running);
+  });
+
+  const final = values[values.length - 1];
+  netBadge.textContent = signedMoney(final);
+  netBadge.className = "chart-net" + (final < 0 ? " neg" : "");
+
+  const betCount = rolls.filter(record => recordStake(record) > 0).length;
+  let peak = 0;
+  let drawdown = 0;
+  values.forEach(value => {
+    peak = Math.max(peak, value);
+    drawdown = Math.max(drawdown, peak - value);
+  });
+  meta.innerHTML = `<span>Rolls <b>${rolls.length}</b></span><span>Bets <b>${betCount}</b></span><span>Peak <b>${money(peak)}</b></span><span>Max drawdown <b>${money(drawdown)}</b></span>`;
+
+  const width = Math.max(280, Math.min(720, Math.round(box.clientWidth || 320)));
+  const height = 176;
+  const pad = {left: 48, right: 12, top: 14, bottom: 25};
+  let yTop = Math.max(0, ...values);
+  let yBottom = Math.min(0, ...values);
+  const range = yTop - yBottom;
+  const yPad = range < 1 ? 10 : Math.max(1, range * 0.12);
+  yTop += yPad;
+  yBottom -= yPad;
+  const span = yTop - yBottom || 1;
+  const plotWidth = width - pad.left - pad.right;
+  const plotHeight = height - pad.top - pad.bottom;
+  const x = index => pad.left + (values.length === 1 ? plotWidth / 2 : index * plotWidth / (values.length - 1));
+  const y = value => pad.top + (yTop - value) / span * plotHeight;
+  const zeroY = y(0);
+  const points = values.map((value, index) => `${x(index).toFixed(1)},${y(value).toFixed(1)}`).join(" ");
+  const area = `M ${x(0).toFixed(1)} ${zeroY.toFixed(1)} L ${values.map((value, index) => `${x(index).toFixed(1)} ${y(value).toFixed(1)}`).join(" L ")} L ${x(values.length - 1).toFixed(1)} ${zeroY.toFixed(1)} Z`;
+  const color = final < 0 ? "#dc2626" : "#16a34a";
+  const fill = final < 0 ? "rgba(220,38,38,.12)" : "rgba(22,163,74,.12)";
+
+  const dataTop = Math.max(0, ...values);
+  const dataBottom = Math.min(0, ...values);
+  const ticks = [...new Set([dataTop, 0, dataBottom])];
+  if (ticks.length === 1) ticks.push(yTop, yBottom);
+  const tickMarkup = ticks.map(value => {
+    const tickY = y(value);
+    return `<g>
+      <line x1="${pad.left}" x2="${width - pad.right}" y1="${tickY.toFixed(1)}" y2="${tickY.toFixed(1)}" stroke="#e6edf5" stroke-width="1"/>
+      <text x="${pad.left - 6}" y="${(tickY + 3).toFixed(1)}" text-anchor="end" font-size="9.5" fill="#7b8ca3">${chartShortMoney(value)}</text>
+    </g>`;
+  }).join("");
+
+  const xLabels = [];
+  const firstTime = displayTime(rolls[0].time);
+  const lastTime = displayTime(rolls[rolls.length - 1].time);
+  xLabels.push(`<text x="${x(0).toFixed(1)}" y="${height - 7}" text-anchor="${values.length === 1 ? "middle" : "start"}" font-size="9.5" fill="#7b8ca3">${escapeHtml(firstTime)}</text>`);
+  if (values.length > 1) {
+    xLabels.push(`<text x="${x(values.length - 1).toFixed(1)}" y="${height - 7}" text-anchor="end" font-size="9.5" fill="#7b8ca3">${escapeHtml(lastTime)}</text>`);
+  }
+
+  box.innerHTML = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Cumulative net profit or loss over ${rolls.length} rolls; current ${escapeHtml(signedMoney(final))}">
+    <title>Cumulative net profit or loss over ${rolls.length} rolls</title>
+    ${tickMarkup}
+    <line x1="${pad.left}" x2="${width - pad.right}" y1="${zeroY.toFixed(1)}" y2="${zeroY.toFixed(1)}" stroke="#b7c4d6" stroke-width="1.2" stroke-dasharray="4 4"/>
+    <path d="${area}" fill="${fill}"/>
+    <polyline points="${points}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${x(values.length - 1).toFixed(1)}" cy="${y(final).toFixed(1)}" r="3.5" fill="${color}" stroke="#fff" stroke-width="1.5"/>
+    ${xLabels.join("")}
+  </svg>`;
+}
+
+function renderStrategy() {
+  renderStrategyCard();
+  renderTwoShapeCard();
+  renderProfitChart();
+}
+
+function scrollToRecordStep(id) {
+  window.setTimeout(() => {
+    const target = $(id);
+    if (!target) return;
+    const top = target.getBoundingClientRect().top + window.scrollY - 12;
+    window.scrollTo({top: Math.max(0, top), behavior: "smooth"});
+  }, 90);
+}
+
+function applySuggestedStake() {
+  const status = strategyStatus();
+  if (status.nextStake === null) {
+    setStatus("The ladder is complete. Stop and wait for a reset.", "error");
+    showToast("Ladder complete");
+    return;
+  }
+  if (!status.covered) {
+    setStatus("The next rung is above your budget. Increase the budget or stop.", "error");
+    showToast("Next rung is above budget");
+    return;
+  }
+
+  stakePreset = status.nextStake;
+  if (selectedBets.size) {
+    customMode = false;
+    equalSplit();
+  } else {
+    customBets = Array(6).fill(0);
+  }
+  renderForm();
+  setTab("record", {scroll: false});
+  scrollToRecordStep("stakeStep");
+  setStatus(`Suggested stake ${money(stakePreset)} selected.`, "ok");
+  showToast(`Suggested total ${money(stakePreset)}`);
+}
+
+function applyTwoShapePlan() {
+  const status = strategyStatus();
+  if (status.nextStake === null) {
+    setStatus("The ladder is complete. Stop and wait for a reset.", "error");
+    showToast("Ladder complete");
+    return;
+  }
+  if (!status.covered) {
+    setStatus("The next rung is above your budget. Increase the budget or stop.", "error");
+    showToast("Next rung is above budget");
+    return;
+  }
+
+  const picks = strategyTwoPicks();
+  const chosen = [...new Set(picks.map(pick => pick.index))].slice(0, 2);
+  if (chosen.length < 2) {
+    setStatus("Two shapes could not be selected.", "error");
+    return;
+  }
+
+  stakePreset = status.nextStake;
+  selectedBets = new Set(chosen);
+  customMode = false;
+  customBets = Array(6).fill(0);
+  equalSplit();
+  renderForm();
+  setTab("record", {scroll: false});
+  scrollToRecordStep("betSection");
+  setStatus(`${money(stakePreset)} split over ${chosen.map(faceIndex => FACES[faceIndex].name).join(" and ")}.`, "ok");
+  showToast(`${money(stakePreset)} split over 2 shapes`);
 }
 
 /* ---------- CSV ---------- */
@@ -2344,13 +3205,13 @@ function csvCell(value) {
   return '"' + String(value ?? "").replace(/"/g, '""') + '"';
 }
 
-function exportCsv() {
-  commitTableName(true);
+function exportCsv(title = csvTitle) {
   if (!rolls.length) {
     setStatus("No rolls to export yet.", "info");
     return;
   }
 
+  const exportTitle = normalizeCsvTitle(title);
   const headers = [
     "time", "table", "shakes", "shake_sequence", "method", "invested", "stake", "stake_preset", "payout_rule",
     "returned", "net", "bets", ...FACES.map(face => face.name.toLowerCase() + "_count"), "notes"
@@ -2362,7 +3223,7 @@ function exportCsv() {
     const bets = recordBets(record).map(bet => `${FACES[bet.face].name}:${bet.amount}`).join("; ");
     return [
       record.time,
-      tableLabel(),
+      exportTitle,
       recordShakeCount(record),
       recordSequence(record).join(" → "),
       record.method || "",
@@ -2383,13 +3244,237 @@ function exportCsv() {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "langur-burja-rolls-" + new Date().toISOString().slice(0, 10) + ".csv";
+  link.download = csvFileName(exportTitle);
   document.body.appendChild(link);
   link.click();
   link.remove();
   setTimeout(() => URL.revokeObjectURL(url), 1200);
   setStatus("CSV exported.", "ok");
   showToast("CSV exported");
+}
+
+function parseCsvRows(text) {
+  const source = String(text || "").replace(/^\uFEFF/, "");
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+  for (let index = 0; index < source.length; index++) {
+    const char = source[index];
+    if (quoted) {
+      if (char === '"') {
+        if (source[index + 1] === '"') {
+          field += '"';
+          index++;
+        } else {
+          quoted = false;
+        }
+      } else {
+        field += char;
+      }
+    } else if (char === '"') {
+      quoted = true;
+    } else if (char === ",") {
+      row.push(field);
+      field = "";
+    } else if (char === "\n" || char === "\r") {
+      if (char === "\r" && source[index + 1] === "\n") index++;
+      row.push(field);
+      field = "";
+      if (row.length > 1 || row[0] !== "") rows.push(row);
+      row = [];
+    } else {
+      field += char;
+    }
+  }
+  row.push(field);
+  if (row.length > 1 || row[0] !== "") rows.push(row);
+  return rows;
+}
+
+function parseBetCell(value) {
+  const names = new Map();
+  FACES.forEach((face, index) => {
+    [face.name, face.key, face.sub].forEach(name => names.set(name.toLowerCase(), index));
+  });
+  return String(value || "")
+    .split(";")
+    .map(part => {
+      const match = part.match(/^\s*(.+?)\s*:\s*(.+?)\s*$/);
+      if (!match) return null;
+      const face = names.get(match[1].trim().toLowerCase());
+      const amount = Math.max(0, Math.round(Number(String(match[2]).replace(/[^\d.-]/g, "")) || 0));
+      if (face === undefined || amount <= 0) return null;
+      return {face, amount};
+    })
+    .filter(Boolean);
+}
+
+function importFingerprint(record) {
+  const bets = recordBets(record)
+    .map(bet => [bet.face, bet.amount])
+    .sort((a, b) => a[0] - b[0]);
+  return JSON.stringify([
+    String(record.time || ""),
+    record.faces || [],
+    bets,
+    recordStake(record),
+    recordSequence(record),
+    String(record.notes || "").trim()
+  ]);
+}
+
+function importCsvText(text, fileName = "CSV") {
+  const rows = parseCsvRows(text);
+  if (rows.length < 2) {
+    setStatus("No rows found in that CSV.", "error");
+    showToast("Import failed");
+    return;
+  }
+
+  const header = rows[0].map(cell => String(cell || "").trim().toLowerCase());
+  const indexOf = (...names) => {
+    for (const name of names) {
+      const index = header.indexOf(name);
+      if (index >= 0) return index;
+    }
+    return -1;
+  };
+  const timeIndex = indexOf("time");
+  const tableIndex = indexOf("table", "session");
+  const shakesIndex = indexOf("shakes");
+  const sequenceIndex = indexOf("shake_sequence");
+  const methodIndex = indexOf("method");
+  const stakeIndex = indexOf("stake");
+  const stakePresetIndex = indexOf("stake_preset");
+  const ruleIndex = indexOf("payout_rule");
+  const betsIndex = indexOf("bets");
+  const notesIndex = indexOf("notes");
+  const faceIndexes = FACES.map(face => indexOf(
+    face.name.toLowerCase() + "_count",
+    face.key + "_count",
+    face.sub.toLowerCase() + "_count"
+  ));
+
+  if (timeIndex < 0 || faceIndexes.some(index => index < 0)) {
+    setStatus("That CSV does not match the Langur Burja export format.", "error");
+    showToast("Import failed");
+    return;
+  }
+
+  const cell = (row, index) => index >= 0 && index < row.length ? String(row[index] ?? "") : "";
+  const parsed = [];
+  let invalid = 0;
+  rows.slice(1).forEach(row => {
+    if (!row.some(value => String(value ?? "").trim())) return;
+    const time = cell(row, timeIndex).trim();
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(time)) {
+      invalid++;
+      return;
+    }
+    const faces = faceIndexes.map(index => {
+      const value = Number.parseInt(cell(row, index), 10);
+      return Number.isFinite(value) ? Math.max(0, Math.min(6, value)) : 0;
+    });
+    if (faces.reduce((sum, value) => sum + value, 0) !== 6) {
+      invalid++;
+      return;
+    }
+    const stake = Math.max(0, Math.round(Number(String(cell(row, stakeIndex)).replace(/[^\d.-]/g, "")) || 0));
+    const bets = parseBetCell(cell(row, betsIndex));
+    const method = cell(row, methodIndex).trim();
+    const methodParts = method ? method.split(/\s*(?:→|->|\||,)\s*/).filter(Boolean) : [];
+    const sequenceCell = cell(row, sequenceIndex).trim();
+    const sequence = normalizeSequence(sequenceCell ? sequenceCell.split(/\s*(?:→|->|\||,)\s*/) : methodParts);
+    const shakes = Math.max(0, Math.round(Number(cell(row, shakesIndex)) || 0));
+    const ruleCell = cell(row, ruleIndex).trim().toLowerCase();
+    const recordRule = PAYOUT_RULES.includes(ruleCell) ? ruleCell : null;
+    const actualStake = stake || betTotal(bets);
+    parsed.push({
+      id: "import-" + Date.now().toString(36) + "-" + parsed.length.toString(36) + Math.random().toString(36).slice(2, 6),
+      v: 3,
+      time,
+      faces,
+      shakeSequence: sequence,
+      shakes: sequence.length || shakes,
+      method: sequence.length ? sequence.join(" → ") : method,
+      invested: actualStake > 0,
+      stake: actualStake,
+      stakePreset: Math.max(0, Math.round(Number(cell(row, stakePresetIndex)) || 0)),
+      bets,
+      returned: 0,
+      payoutRule: recordRule || payoutRule,
+      session: cell(row, tableIndex).trim() && cell(row, tableIndex).trim() !== "default-table" ? cell(row, tableIndex).trim() : csvTitle,
+      notes: cell(row, notesIndex)
+    });
+  });
+
+  if (!parsed.length) {
+    setStatus("No valid rolls found in that CSV.", "error");
+    showToast("Import failed");
+    return;
+  }
+
+  const existing = new Set(rolls.map(importFingerprint));
+  const additions = [];
+  let duplicates = 0;
+  parsed.forEach(record => {
+    const key = importFingerprint(record);
+    if (existing.has(key)) {
+      duplicates++;
+      return;
+    }
+    existing.add(key);
+    additions.push(record);
+  });
+
+  if (!additions.length) {
+    setStatus("No new rolls to import — " + duplicates + " duplicate(s) skipped.", "info");
+    showToast("No new rolls to import");
+    return;
+  }
+
+  const summary = "Import " + additions.length + " roll" + (additions.length === 1 ? "" : "s") + " from " + fileName + "?" +
+    (duplicates ? " " + duplicates + " duplicate(s) will be skipped." : "") +
+    (invalid ? " " + invalid + " invalid row(s) will be ignored." : "");
+  if (!window.confirm(summary)) return;
+
+  rolls = rolls.concat(additions).sort((a, b) => String(a.time).localeCompare(String(b.time)));
+  const importedRule = additions.find(record => record.payoutRule)?.payoutRule;
+  if (importedRule && PAYOUT_RULES.includes(importedRule)) {
+    payoutRule = importedRule;
+    $("payoutRule").value = payoutRule;
+  }
+  const importedTitle = additions.map(record => record.session).find(title => title && title !== "default-table");
+  if (importedTitle && csvTitle === DEFAULT_CSV_TITLE) {
+    csvTitle = normalizeCsvTitle(importedTitle);
+    saveCsvTitle();
+  }
+  const last = rolls[rolls.length - 1];
+  setDefaultSequence(last ? historyShakeNames(last).map(canonicalShakeName) : []);
+  saveStore();
+  renderAll();
+  renderForm();
+  setStatus("Imported " + additions.length + " roll" + (additions.length === 1 ? "" : "s") + ".", "ok");
+  showToast("Imported " + additions.length + " roll" + (additions.length === 1 ? "" : "s"));
+}
+
+function startImport() {
+  $("importFile").value = "";
+  $("importFile").click();
+}
+
+function handleImportFile(event) {
+  const file = event.target.files && event.target.files[0];
+  event.target.value = "";
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => importCsvText(String(reader.result || ""), file.name);
+  reader.onerror = () => {
+    setStatus("Could not read that CSV file.", "error");
+    showToast("Import failed");
+  };
+  reader.readAsText(file);
 }
 
 /* ---------- stake presets ---------- */
@@ -2406,7 +3491,7 @@ function openStakeModal() {
 
 function closeStakeModal() {
   $("stakeModal").classList.add("hidden");
-  document.body.style.overflow = "";
+  syncBodyLock();
 }
 
 function saveStakePresets() {
@@ -2452,15 +3537,20 @@ function saveStakePresets() {
 /* ---------- tabs + delete dialog ---------- */
 
 function setTab(tab, options = {}) {
-  activeTab = tab === "data" ? "data" : "record";
-  const isData = activeTab === "data";
-  $("recordPanel").classList.toggle("hidden", isData);
-  $("dataPanel").classList.toggle("hidden", !isData);
-  $("tabRecord").classList.toggle("selected", !isData);
-  $("tabData").classList.toggle("selected", isData);
-  $("tabRecord").setAttribute("aria-selected", String(!isData));
-  $("tabData").setAttribute("aria-selected", String(isData));
-  if (isData) renderAll();
+  const tabs = ["record", "strategy", "data"];
+  activeTab = tabs.includes(tab) ? tab : "record";
+  tabs.forEach(name => {
+    const selected = activeTab === name;
+    const panel = $(name + "Panel");
+    const button = $("tab" + name.charAt(0).toUpperCase() + name.slice(1));
+    if (panel) panel.classList.toggle("hidden", !selected);
+    if (button) {
+      button.classList.toggle("selected", selected);
+      button.setAttribute("aria-selected", String(selected));
+    }
+  });
+  if (activeTab === "data") renderAll();
+  if (activeTab === "strategy") renderStrategy();
   if (options.scroll !== false) window.scrollTo({top: 0, behavior: "smooth"});
 }
 
@@ -2502,7 +3592,7 @@ function closeDeleteModal() {
   clearInterval(deleteTimer);
   deleteTimer = 0;
   $("deleteModal").classList.add("hidden");
-  document.body.style.overflow = "";
+  syncBodyLock();
 }
 
 function confirmDeleteAll() {
@@ -2524,20 +3614,23 @@ function confirmDeleteAll() {
 /* ---------- events ---------- */
 
 function bindEvents() {
-  $("tableName").addEventListener("input", sizeTableInput);
-  $("tableName").addEventListener("change", () => commitTableName());
-  $("tableName").addEventListener("blur", () => commitTableName());
-  $("tableName").addEventListener("keydown", event => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      commitTableName();
-      event.target.blur();
-    } else if (event.key === "Escape") {
-      event.target.value = tableValue;
-      sizeTableInput();
-      event.target.blur();
-    }
+  document.addEventListener("click", event => {
+    if (Date.now() >= suppressFaceClickUntil) return;
+    suppressFaceClickUntil = 0;
+    event.preventDefault();
+    event.stopPropagation();
+  }, true);
+
+  $("observedFaces").addEventListener("pointerdown", startFacePress);
+  $("observedFaces").addEventListener("touchmove", event => {
+    if (faceDrag && faceDrag.active) event.preventDefault();
+  }, {passive: false});
+  $("observedFaces").addEventListener("contextmenu", event => {
+    if (faceDrag && faceDrag.active) event.preventDefault();
   });
+  document.addEventListener("pointermove", moveFacePointer, {passive: false});
+  document.addEventListener("pointerup", endFacePointer);
+  document.addEventListener("pointercancel", cancelFacePointer);
 
   $("methodButtons").addEventListener("click", event => {
     const button = event.target.closest("[data-method]");
@@ -2586,6 +3679,7 @@ function bindEvents() {
   });
 
   $("observedFaces").addEventListener("click", event => {
+    if (Date.now() < suppressFaceClickUntil) return;
     const minus = event.target.closest("[data-face-minus]");
     if (minus) {
       const index = Number(minus.dataset.faceMinus);
@@ -2630,6 +3724,21 @@ function bindEvents() {
   $("save").addEventListener("click", addRoll);
   $("reset").addEventListener("click", resetForm);
 
+  $("strategyBudget").addEventListener("input", event => {
+    strategyBudget = Math.min(100000000, Math.max(0, Math.round(Number(event.target.value) || 0)));
+    saveStrategy();
+    renderStrategy();
+  });
+  $("strategyBudget").addEventListener("change", event => {
+    strategyBudget = Math.min(100000000, Math.max(0, Math.round(Number(event.target.value) || 0)));
+    event.target.value = String(strategyBudget);
+    saveStrategy();
+    renderStrategy();
+  });
+  $("strategyUse").addEventListener("click", applySuggestedStake);
+  $("strategyTwo").addEventListener("click", applyTwoShapePlan);
+  $("applyTwoShape").addEventListener("click", applyTwoShapePlan);
+
   $("editStakesBtn").addEventListener("click", openStakeModal);
   $("presetCancel").addEventListener("click", closeStakeModal);
   $("presetSave").addEventListener("click", saveStakePresets);
@@ -2661,7 +3770,9 @@ function bindEvents() {
     setStatus("Payout rule changed. Statistics recalculated.", "info");
   });
 
-  $("export").addEventListener("click", exportCsv);
+  $("export").addEventListener("click", openExportModal);
+  $("import").addEventListener("click", startImport);
+  $("importFile").addEventListener("change", handleImportFile);
   $("historyDetailToggle").addEventListener("click", toggleHistoryDetails);
 
   $("history").addEventListener("click", event => {
@@ -2680,14 +3791,40 @@ function bindEvents() {
   $("deleteAll").addEventListener("click", openDeleteModal);
   $("modalCancel").addEventListener("click", closeDeleteModal);
   $("modalConfirm").addEventListener("click", confirmDeleteAll);
-  $("modalExport").addEventListener("click", exportCsv);
+  $("modalExport").addEventListener("click", openExportModal);
   $("deleteModal").addEventListener("click", event => {
     if (event.target === $("deleteModal")) closeDeleteModal();
   });
+
+  $("exportCancel").addEventListener("click", closeExportModal);
+  $("exportConfirm").addEventListener("click", confirmExport);
+  $("copyRules").addEventListener("click", copyRulesText);
+  $("csvTitle").addEventListener("input", updateCsvFileHint);
+  $("csvTitle").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      confirmExport();
+    }
+  });
+  $("exportModal").addEventListener("click", event => {
+    if (event.target === $("exportModal")) closeExportModal();
+  });
+
   document.addEventListener("keydown", event => {
     if (event.key !== "Escape") return;
+    if (!$("exportModal").classList.contains("hidden")) {
+      closeExportModal();
+      return;
+    }
     if (!$("stakeModal").classList.contains("hidden")) closeStakeModal();
     if (!$("deleteModal").classList.contains("hidden")) closeDeleteModal();
+  });
+
+  let strategyResizeTimer = 0;
+  window.addEventListener("resize", () => {
+    if (activeTab !== "strategy") return;
+    clearTimeout(strategyResizeTimer);
+    strategyResizeTimer = window.setTimeout(renderStrategy, 120);
   });
 
   document.querySelectorAll("[data-tab]").forEach(button => {
