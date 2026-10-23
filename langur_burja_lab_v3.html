@@ -1,0 +1,2586 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10213a">
+<title>Langur Burja Lab</title>
+<style>
+:root{
+  --bg:#eef2f8;
+  --card:#fff;
+  --ink:#101d2f;
+  --muted:#69778c;
+  --line:#d9e2ee;
+  --line-strong:#c6d3e4;
+  --blue:#2563eb;
+  --blue-dark:#1746c4;
+  --blue-soft:#eaf1ff;
+  --red:#d92d3f;
+  --red-dark:#b91c2c;
+  --red-soft:#fff0f1;
+  --green:#0f8a4f;
+  --green-soft:#e9f8f0;
+  --amber:#a16207;
+  --shadow:0 10px 30px rgba(20,40,75,.08);
+  --radius:20px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;color:var(--ink);
+  font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:radial-gradient(900px 420px at 50% -120px,#dbe8ff 0,rgba(219,232,255,0) 65%),var(--bg);
+  font-synthesis:none;
+}
+button,input,select,textarea{font:inherit}
+button{color:inherit;background:none;border:0;padding:0;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button:disabled{cursor:not-allowed}
+button:active:not(:disabled){filter:brightness(.94)}
+:focus-visible{outline:3px solid #80a9ff;outline-offset:2px}
+.hidden{display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.muted{color:var(--muted)}
+
+.app-header{
+  position:relative;overflow:hidden;color:#fff;
+  padding:18px 14px 32px;
+  background:linear-gradient(135deg,#0d1a2d 0%,#19345b 55%,#28568f 100%);
+}
+.app-header::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(420px 180px at 85% 0,rgba(90,150,255,.32),transparent 70%),radial-gradient(300px 160px at 8% 100%,rgba(255,190,80,.12),transparent 70%);
+}
+.header-inner{
+  position:relative;z-index:1;max-width:900px;margin:0 auto;
+  display:flex;align-items:center;gap:12px;
+}
+.brand-icon{
+  width:50px;height:50px;flex-shrink:0;border-radius:16px;display:grid;place-items:center;
+  font-size:27px;background:rgba(255,255,255,.11);border:1px solid rgba(255,255,255,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.18);
+}
+.brand-copy{min-width:0}
+.brand-copy h1{margin:0;font-size:1.3rem;line-height:1.15;letter-spacing:-.025em}
+.brand-copy p{margin:5px 0 0;font-size:.78rem;line-height:1.35;color:#ccdcf3}
+.table-chip{
+  margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:750;color:#dce9fb;
+}
+.table-chip b{color:#fff;font-size:.8rem}
+.table-chip i{width:6px;height:6px;border-radius:50%;background:#6ee7a8;display:block}
+
+main{
+  position:relative;z-index:2;max-width:900px;margin:-15px auto 0;
+  padding:0 12px calc(42px + env(safe-area-inset-bottom));
+  display:grid;gap:14px;
+}
+.card{
+  min-width:0;
+  background:var(--card);border:1px solid rgba(198,211,228,.8);border-radius:var(--radius);
+  padding:16px;box-shadow:var(--shadow);
+}
+.card-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 4px}
+.card-title h2{font-size:1.08rem;line-height:1.25;margin:0;letter-spacing:-.02em}
+.subhead{font-size:.92rem;line-height:1.25;margin:17px 0 0;letter-spacing:-.01em}
+.eyebrow{display:block;color:#70829a;font-size:.65rem;font-weight:850;letter-spacing:.09em;text-transform:uppercase;margin-bottom:3px}
+.counter-pill{
+  display:inline-grid;place-items:center;min-width:42px;height:25px;padding:0 9px;border-radius:999px;
+  background:#edf2fa;color:#3a5378;font-size:.74rem;font-weight:900;font-variant-numeric:tabular-nums;
+  vertical-align:middle;margin-left:4px;
+}
+.hint{color:var(--muted);font-size:.8rem;line-height:1.45;margin:5px 0 12px}
+.tiny{color:var(--muted);font-size:.72rem;line-height:1.4;margin:7px 0 0}
+
+.step{scroll-margin-top:12px}
+.step + .step{margin-top:18px}
+#diceStep{margin-top:18px}
+.step-head{display:flex;align-items:flex-start;gap:9px;margin:0 0 9px}
+.step-num{
+  width:26px;height:26px;flex-shrink:0;margin-top:1px;border-radius:50%;
+  display:grid;place-items:center;background:#e9eff9;color:#31527f;font-size:.75rem;font-weight:950;
+}
+.step-head h2{font-size:1rem;line-height:1.25;margin:0;letter-spacing:-.015em}
+.step-head p{margin:3px 0 0;color:var(--muted);font-size:.76rem;line-height:1.35}
+.step-head .head-extra{margin-left:auto;flex-shrink:0}
+
+.stepper{
+  display:grid;grid-template-columns:minmax(0,1fr) 74px;min-height:138px;
+  background:#fff;border:2px solid var(--line-strong);border-radius:16px;overflow:hidden;
+  box-shadow:0 2px 0 #e9eff7;
+}
+.stepper-body{display:flex;align-items:center;gap:11px;min-width:0;padding:10px 12px}
+.stepper-controls{
+  display:grid;grid-template-rows:7fr 3fr;min-height:0;
+  border-left:2px solid var(--line-strong);background:#fff;
+}
+.stepper-controls button{
+  min-height:0;display:grid;place-items:center;font-weight:950;line-height:1;
+  transition:filter .12s ease,background .12s ease;
+}
+.stepper-controls .plus{
+  background:linear-gradient(180deg,#3b7cff 0%,#1f57d8 100%);
+  color:#fff;font-size:2.15rem;box-shadow:inset 0 1px 0 rgba(255,255,255,.28);
+}
+.stepper-controls .minus{
+  background:linear-gradient(180deg,#fff7f7 0%,#ffe9ea 100%);
+  color:#c11f32;font-size:1.5rem;border-top:2px solid #f3c4c9;
+}
+.stepper-controls .plus:disabled{background:#dfe8f6;color:#9bacc4;box-shadow:none}
+.stepper-controls .minus:disabled{background:#f7f8fa;color:#b4bfcd;border-top-color:#e5eaf1}
+.shake-seq{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 9px}
+.seq-chip{
+  display:inline-flex;align-items:center;gap:4px;padding:5px 6px;line-height:1.2;
+  background:#eef4ff;border:1.5px solid #cfe0ff;border-radius:10px;
+  color:#1d4ed8;font-size:.76rem;font-weight:850;max-width:100%;
+}
+.seq-chip .seq-icon{font-size:1.05rem;line-height:1}
+.seq-del,.seq-move{
+  display:grid;place-items:center;flex-shrink:0;width:19px;height:19px;border-radius:6px;
+  background:#fff;color:#9a3d4b;font-size:.82rem;font-weight:950;line-height:1;
+}
+.seq-move{width:18px;height:18px;background:#e6efff;color:#2a57a8;font-size:.7rem}
+.seq-del:disabled,.seq-move:disabled{opacity:.3}
+
+.method-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.method-btn{
+  min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  padding:7px 4px;background:#f8fafc;border:2px solid var(--line);border-radius:14px;
+  color:#40516a;font-size:.72rem;font-weight:850;line-height:1.15;text-align:center;
+  transition:background .12s,border-color .12s,color .12s,transform .08s;
+}
+.method-btn .m-icon{font-size:1.12rem;line-height:1}
+.method-btn span{max-width:100%;overflow-wrap:anywhere}
+.method-btn:active{transform:scale(.98);background:var(--blue-soft);border-color:#8fb3f7}
+.method-btn.selected{
+  background:var(--blue-soft);border-color:#2c63e6;color:#1946ba;
+  box-shadow:inset 0 0 0 1px #2c63e6;
+}
+
+.icon-btn{
+  width:34px;height:34px;flex-shrink:0;display:grid;place-items:center;border-radius:10px;
+  background:#eef2f8;color:#31527f;font-size:1rem;line-height:1;
+}
+.icon-btn[aria-expanded="true"]{background:#e3edff;color:#1746c4;box-shadow:inset 0 0 0 1.5px #2c63e6}
+.shake-settings{margin-top:10px;padding:10px;background:#f8fafd;border:1px solid #e1e8f2;border-radius:12px}
+.settings-label{display:block;color:#51647c;font-size:.72rem;font-weight:850}
+.settings-add{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px;margin-top:7px}
+.settings-add input{
+  width:100%;min-width:0;padding:8px 10px;background:#fff;border:1.5px solid var(--line);border-radius:9px;
+  color:var(--ink);font-size:.82rem;
+}
+.method-manage{display:grid;gap:5px;margin-top:9px}
+.method-row{display:flex;align-items:center;gap:5px;min-width:0;padding:5px 6px;background:#fff;border:1px solid var(--line);border-radius:9px}
+.method-row .m-name{flex:1;min-width:0;font-size:.75rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.method-row .m-count{flex-shrink:0;color:var(--muted);font-size:.63rem;font-weight:750;white-space:nowrap}
+.row-btn{
+  width:26px;height:26px;flex-shrink:0;display:grid;place-items:center;border-radius:7px;
+  background:#eef2f8;color:#31527f;font-size:.74rem;font-weight:950;line-height:1;
+}
+.row-btn.danger{background:#fff0f2;color:#a33a48}
+.row-btn:disabled{opacity:.32}
+.settings-actions{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+
+.stake-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px}
+.stake-btn{
+  min-height:49px;border:1.5px solid var(--line);border-radius:12px;background:#f8fafc;
+  color:#34445b;font-size:.92rem;font-weight:900;font-variant-numeric:tabular-nums;
+  transition:background .12s,border-color .12s,color .12s,transform .08s,box-shadow .12s;
+}
+.stake-btn.selected{
+  background:var(--blue);border-color:var(--blue);color:#fff;
+  box-shadow:0 5px 14px rgba(37,99,235,.28);
+}
+.stake-btn:active{transform:scale(.97)}
+
+.bet-section{
+  margin-top:16px;padding:14px;background:linear-gradient(180deg,#f7faff 0%,#fff 75%);
+  border:1px solid #d9e6ff;border-radius:16px;
+}
+.bet-section .step-head{margin-bottom:8px}
+.bet-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.bet-card{
+  position:relative;aspect-ratio:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:1px;padding:8px 5px;text-align:center;background:#fff;border:2px solid var(--line);
+  border-radius:14px;transition:border-color .12s,background .12s,transform .08s,box-shadow .12s;
+}
+.bet-card .bet-emoji{font-size:1.45rem;line-height:1.1}
+.bet-card .bet-name{font-size:.72rem;font-weight:850;line-height:1.1;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bet-card .bet-name small{display:block;color:var(--muted);font-size:.6rem;font-weight:700;line-height:1.15}
+.bet-card .bet-amount{margin-top:4px;color:#31425a;font-size:.78rem;font-weight:950;font-variant-numeric:tabular-nums;line-height:1.15}
+.bet-card .bet-check{
+  position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;
+  display:grid;place-items:center;background:#e8eef7;color:transparent;font-size:.72rem;font-weight:950;
+}
+.bet-card.selected{
+  border-color:#2c63e6;background:linear-gradient(180deg,#f2f7ff 0%,#e8f1ff 100%);
+  box-shadow:inset 0 0 0 1px #2c63e6;
+}
+.bet-card.selected .bet-check{background:#2563eb;color:#fff}
+.bet-card.selected .bet-amount{color:#1746c4}
+.bet-card:active{transform:scale(.985)}
+
+.bet-warning{
+  margin-top:8px;padding:8px 10px;background:#fff8e6;border:1px solid #f2d995;
+  border-radius:10px;color:#8a5a00;font-size:.76rem;line-height:1.4;
+}
+details{scroll-margin-top:12px}
+details summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;
+  color:#2754a5;font-size:.82rem;font-weight:850;padding:3px 0;
+}
+details summary::-webkit-details-marker{display:none}
+details summary::after{
+  content:"⌄";font-size:1.05rem;line-height:1;color:#6a89b8;
+  transition:transform .18s ease;transform:translateY(-1px);
+}
+details[open] summary::after{transform:rotate(180deg) translateY(1px)}
+.custom-box{margin-top:10px;padding:11px;background:#fbfcff;border:1px dashed #c3d2e8;border-radius:12px}
+.custom-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:9px}
+.custom-item{display:flex;align-items:center;gap:6px;min-width:0;padding:7px 8px;background:#fff;border:1px solid var(--line);border-radius:10px}
+.custom-item .c-name{flex:1;min-width:0;font-size:.74rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.custom-item .c-input{display:flex;align-items:center;gap:2px;color:var(--muted);font-size:.7rem;font-weight:750}
+.custom-item input{
+  width:57px;padding:5px 4px;border:1px solid var(--line);border-radius:8px;background:#fff;
+  color:var(--ink);text-align:right;font-size:.8rem;font-weight:850;font-variant-numeric:tabular-nums;
+}
+.custom-actions{display:flex;align-items:center;gap:8px;margin-top:9px}
+.mini-btn{
+  min-height:35px;padding:0 11px;border-radius:9px;background:#edf2fa;color:#31527f;
+  font-size:.76rem;font-weight:850;
+}
+.mini-btn.blue{background:#e8f0ff;color:#1d4ed8}
+
+.result-preview{margin-top:12px;padding:11px;background:#f7faff;border:1px solid #d8e6ff;border-radius:13px}
+.preview-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.preview-box{min-width:0}
+.preview-box span{display:block;color:var(--muted);font-size:.64rem;font-weight:850;letter-spacing:.045em;text-transform:uppercase}
+.preview-box b{display:block;margin-top:3px;font-size:1rem;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.net-pos{color:var(--green)}
+.net-neg{color:var(--red)}
+.rule-row{display:flex;align-items:center;gap:8px;margin-top:9px}
+.rule-row label{font-size:.72rem;font-weight:850;color:#5c6d84;white-space:nowrap}
+.rule-row select{
+  flex:1;min-width:0;padding:7px 8px;border:1px solid var(--line);border-radius:9px;
+  background:#fff;color:#34445b;font-size:.73rem;
+}
+
+.face-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.face-stepper{
+  aspect-ratio:1;grid-template-columns:minmax(0,1fr) 48px;min-height:0;border-width:1.5px;border-radius:14px;
+  overflow:hidden;box-shadow:inset 0 3px 0 var(--accent),0 2px 0 #e9eff7;
+  cursor:pointer;user-select:none;
+}
+.face-stepper .stepper-body{flex-direction:column;justify-content:center;gap:0;padding:6px 3px;text-align:center;overflow:hidden}
+.face-symbol{font-size:1.45rem;line-height:1.1}
+.face-name{max-width:100%;margin-top:2px;font-size:.68rem;font-weight:850;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.face-sub{min-height:.7em;max-width:100%;color:var(--muted);font-size:.56rem;font-weight:700;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.face-stepper .count{margin-top:6px;padding:0;font-size:1.45rem;line-height:1;font-weight:950;font-variant-numeric:tabular-nums}
+.face-stepper.winner{
+  border-color:#d9a12a;
+  background:linear-gradient(180deg,#fffdf2 0%,#fff4d1 100%);
+  box-shadow:inset 0 3px 0 #d9a12a,0 0 0 2px rgba(217,161,42,.24),0 4px 14px rgba(180,120,10,.16);
+}
+.face-stepper.winner .stepper-controls{background:#fff9e7;border-left-color:#e8c56a}
+.face-stepper.winner .face-name{color:#6f4a05}
+.face-stepper.winner .face-sub{color:#8a6414}
+.face-stepper.winner .count{color:#8a5c05}
+.face-stepper .stepper-controls{border-left-width:1.5px}
+.face-stepper .stepper-controls .plus{font-size:1.55rem}
+.face-stepper .stepper-controls .minus{
+  width:32px;height:32px;margin:auto;border:1.5px solid #f3c4c9;border-radius:9px;
+  font-size:1.05rem;
+}
+.face-stepper .stepper-controls .minus.is-disabled{background:#f7f8fa;color:#b4bfcd;border-color:#e5eaf1}
+.face-progress{display:flex;align-items:center;gap:9px;margin-top:9px}
+.progress-track{flex:1;height:8px;background:#e8eef7;border-radius:999px;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#3b82f6,#0ea5e9);border-radius:999px;transition:width .2s ease}
+.progress-fill.complete{background:linear-gradient(90deg,#16a34a,#22c55e)}
+.face-total{white-space:nowrap;color:var(--muted);font-size:.78rem;font-weight:800;font-variant-numeric:tabular-nums}
+.face-total.complete{color:var(--green)}
+
+.more-options{margin-top:15px;padding-top:12px;border-top:1px solid #edf1f7}
+.grid-two{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:11px}
+.field label{display:block;margin-bottom:6px;color:#3b4c64;font-size:.77rem;font-weight:850}
+input[type=datetime-local],textarea{
+  width:100%;padding:10px 11px;background:#fff;border:1.5px solid var(--line);border-radius:11px;
+  color:var(--ink);font-size:.88rem;
+}
+textarea{min-height:48px;resize:vertical}
+textarea::placeholder{color:#9aa8ba}
+.form-actions{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:16px}
+.primary{
+  min-height:56px;padding:13px 18px;border-radius:14px;
+  background:linear-gradient(180deg,#2f6df0 0%,#1e53d6 100%);
+  color:#fff;font-size:1rem;font-weight:950;letter-spacing:-.01em;
+  box-shadow:0 8px 20px rgba(37,99,235,.28),inset 0 1px 0 rgba(255,255,255,.22);
+}
+.secondary{
+  min-height:48px;padding:0 15px;border-radius:12px;background:#eef2f8;color:#34445b;
+  font-size:.84rem;font-weight:850;
+}
+.secondary.compact{min-height:38px;padding:0 11px;font-size:.78rem}
+.status{min-height:1.25em;margin:8px 0 0;color:var(--muted);font-size:.8rem;line-height:1.35}
+.status.error{color:var(--red)}
+.status.ok{color:var(--green)}
+.status.info{color:#2754a5}
+.toast{
+  position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;
+  max-width:calc(100vw - 28px);padding:10px 16px;border-radius:999px;
+  background:#172b47;color:#fff;font-size:.8rem;font-weight:850;text-align:center;
+  box-shadow:0 12px 32px rgba(10,25,50,.3);
+  opacity:0;pointer-events:none;transform:translate(-50%,18px);
+  transition:opacity .2s ease,transform .2s ease;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.tabbar{
+  position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;
+  background:rgba(255,255,255,.94);border:1px solid rgba(198,211,228,.9);border-radius:14px;
+  box-shadow:0 6px 18px rgba(20,40,75,.08);backdrop-filter:blur(8px);
+}
+.tab-btn{
+  min-height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:7px;
+  color:#5c6d84;font-size:.88rem;font-weight:900;
+}
+.tab-btn.selected{background:#10213a;color:#fff;box-shadow:0 4px 12px rgba(16,33,58,.25)}
+.tab-count{
+  display:inline-grid;place-items:center;min-width:22px;height:19px;padding:0 6px;border-radius:999px;
+  background:#e8eef7;color:#3a5378;font-size:.63rem;font-weight:950;font-variant-numeric:tabular-nums;
+}
+.tab-btn.selected .tab-count{background:rgba(255,255,255,.18);color:#fff}
+.tab-panel{display:grid;gap:14px;min-width:0}
+
+.modal-backdrop{
+  position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;
+  background:rgba(9,20,38,.62);backdrop-filter:blur(2px);
+}
+.modal{
+  width:100%;max-width:420px;max-height:calc(100dvh - 32px);overflow:auto;
+  background:#fff;border-radius:18px;padding:18px;box-shadow:0 24px 60px rgba(7,16,32,.4);
+}
+.modal h2{margin:0;font-size:1.12rem;line-height:1.25;letter-spacing:-.02em}
+.modal-warning{
+  margin-top:10px;padding:11px 12px;background:var(--red-soft);border:1px solid #f3c2c7;
+  border-radius:12px;color:#8f1d2c;font-size:.82rem;line-height:1.45;
+}
+.modal-warning b{color:#7a1522}
+.modal-meta{margin-top:9px;color:#5c6d84;font-size:.78rem;line-height:1.4}
+.modal-actions{display:grid;gap:8px;margin-top:14px}
+.danger-btn{
+  min-height:50px;padding:0 14px;border-radius:12px;
+  background:linear-gradient(180deg,#e5485a 0%,#c42134 100%);
+  color:#fff;font-size:.92rem;font-weight:950;
+  box-shadow:0 6px 16px rgba(196,33,52,.24),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.danger-btn:disabled{
+  background:#f0e6e8;color:#a98a90;box-shadow:none;
+}
+.modal-actions .secondary,.modal-actions .primary{width:100%}
+.modal-actions .primary{min-height:50px;font-size:.92rem}
+.modal-cancel{min-height:42px;border-radius:10px;background:#eef2f8;color:#34445b;font-size:.82rem;font-weight:850}
+
+.preset-edit-list{display:grid;gap:8px;margin-top:12px}
+.preset-row{display:grid;grid-template-columns:minmax(0,1fr) 96px auto;align-items:center;gap:7px}
+.preset-row label{font-size:.8rem;font-weight:850;color:#3b4c64}
+.preset-row input{
+  width:100%;min-width:0;padding:8px 9px;background:#fff;border:1.5px solid var(--line);border-radius:9px;
+  color:var(--ink);font-size:.88rem;font-weight:850;text-align:right;font-variant-numeric:tabular-nums;
+}
+.preset-row .mini-btn{min-height:38px}
+.preset-msg{min-height:1.2em;margin:8px 0 0;color:var(--red);font-size:.78rem;line-height:1.35}
+
+.stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}
+.stat{min-width:0;padding:12px;background:linear-gradient(180deg,#f8fafd 0%,#f3f7fc 100%);border:1px solid #e3eaf4;border-radius:14px}
+.stat b{display:block;font-size:1.24rem;line-height:1.15;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.stat span{display:block;margin-top:4px;color:var(--muted);font-size:.7rem;font-weight:750;line-height:1.2}
+.stat .good{color:var(--green)}
+.stat .bad{color:var(--red)}
+
+.tablewrap{overflow:auto;-webkit-overflow-scrolling:touch;border:1px solid #e5ebf4;border-radius:12px;margin-top:9px}
+table{border-collapse:collapse;width:100%;font-size:.79rem}
+th,td{padding:8px 7px;border-bottom:1px solid #edf1f7;text-align:left;white-space:nowrap}
+thead th{position:sticky;top:0;background:#f7f9fd;color:#617189;font-size:.65rem;font-weight:850;letter-spacing:.045em;text-transform:uppercase}
+tbody tr:last-child td{border-bottom:0}
+tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
+.matrix td{text-align:center;font-variant-numeric:tabular-nums;min-width:30px}
+.matrix th{text-align:center;font-variant-numeric:tabular-nums}
+.matrix th:first-child,.matrix td:first-child{text-align:left}
+.relation-table th,.relation-table td{padding:6px 3px;font-size:.68rem}
+.relation-table th:first-child,.relation-table td:first-child{width:30px;min-width:30px;padding-left:2px}
+.relation-table thead th{font-size:.9rem;letter-spacing:0;text-transform:none}
+.relation-table .rel-na{color:var(--muted);text-align:center}
+.relation-links{display:grid;gap:4px;margin-top:8px;color:#3f5168;font-size:.72rem;line-height:1.35}
+.relation-links b{color:#25364d}
+.relation-summary{margin:8px 0 0;color:var(--muted);font-size:.72rem;line-height:1.4}
+#nextPicks{max-width:640px}
+.next-summary{margin:7px 0 0;color:var(--muted);font-size:.7rem;line-height:1.4}
+.next-summary b{color:#334155}
+.next-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:9px}
+.next-pick{position:relative;display:grid;gap:2px;min-width:0;padding:10px 10px 9px;background:#f8fafc;border:1.5px solid var(--line);border-radius:12px}
+.next-pick--primary{background:#eef5ff;border-color:#2563eb}
+.pick-rank{position:absolute;top:6px;right:7px;color:var(--muted);font-size:.54rem;font-weight:900;letter-spacing:.04em}
+.next-pick--primary .pick-rank{color:#1d4ed8}
+.pick-emoji{font-size:1.5rem;line-height:1}
+.pick-name{font-size:.8rem;font-weight:900;line-height:1.1}
+.pick-score{color:#1d4ed8;font-size:1.05rem;font-weight:950;font-variant-numeric:tabular-nums;line-height:1.1}
+.pick-why{margin-top:2px;color:var(--muted);font-size:.56rem;line-height:1.35;overflow-wrap:anywhere}
+.pick-why b{color:#3f5168}
+.empty{padding:18px 12px;text-align:center;color:var(--muted);font-size:.8rem;line-height:1.5;background:#f9fbfe;border:1px dashed #d8e2ef;border-radius:12px}
+
+.history-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
+.history-actions .secondary.compact{min-height:34px;padding:0 9px;font-size:.72rem}
+.history-scroll{
+  --hist-head:52px;
+  --hist-row:38px;
+  --hist-detail:62px;
+  max-width:640px;
+  max-height:calc(var(--hist-head) + (5 * var(--hist-row)) + 2px);
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior:contain;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#fff;
+  scrollbar-width:thin;
+  scrollbar-color:#cbd5e1 transparent;
+}
+.history-scroll.expanded{
+  max-height:calc(var(--hist-head) + (3 * (var(--hist-row) + var(--hist-detail))) + 2px);
+}
+.history-scroll::-webkit-scrollbar{width:7px}
+.history-scroll::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:99px}
+.history-table{width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0}
+.history-table thead th{
+  position:sticky;top:0;z-index:2;height:var(--hist-head);padding:0 2px;
+  background:#f4f8ff;border-bottom:1px solid var(--line);
+  color:var(--muted);font-size:.54rem;font-weight:900;letter-spacing:.055em;text-transform:uppercase;
+  text-align:center;vertical-align:middle;
+}
+.history-table thead th:nth-child(1){width:24px;text-align:center;padding:0 1px}
+.history-table thead th:nth-child(2){width:42px;text-align:left;padding-left:3px}
+.history-table thead th:nth-child(3){width:52px;text-align:right;padding-right:3px}
+.history-table thead th:last-child{width:20px;padding:0}
+.history-table th.hist-h-face{font-size:.86rem;letter-spacing:0;text-transform:none;color:var(--ink)}
+.hist-h-stack{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;line-height:1}
+.hist-h-emoji{font-size:.86rem;line-height:1;letter-spacing:0;text-transform:none}
+.hist-h-freq{color:#334155;font-size:.46rem;font-weight:900;letter-spacing:0;text-transform:none;white-space:nowrap}
+.hist-h-count{color:var(--muted);font-size:.44rem;font-weight:800;letter-spacing:0;text-transform:none;line-height:1}
+.history-row{height:var(--hist-row)}
+.history-row td{height:var(--hist-row);padding:0 2px;border-bottom:1px solid #edf1f7;vertical-align:middle}
+.history-row:last-child td{border-bottom:0}
+.history-row td:first-child{padding-left:2px}
+.history-table td:last-child{padding:0}
+.history-table th:last-child{text-align:center}
+.hist-sn{text-align:center;color:var(--muted);font-size:.56rem;font-weight:850;font-variant-numeric:tabular-nums;white-space:nowrap}
+.hist-time{font-size:.64rem;font-weight:850;color:#3b4c64;white-space:nowrap;font-variant-numeric:tabular-nums}
+.hist-bet{text-align:right;color:#3b4c64;font-size:.62rem;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums}
+.hist-bet.hist-bet-none{color:var(--muted);font-weight:700}
+.hist-count-cell{text-align:center}
+.hist-count{
+  display:flex;align-items:center;justify-content:center;width:100%;max-width:34px;height:23px;margin:0 auto;
+  border-radius:6px;font-size:.7rem;font-weight:900;font-variant-numeric:tabular-nums;line-height:1;
+  background:transparent;color:#334155;
+}
+.hist-count.bet{box-shadow:inset 0 0 0 1.5px #111827}
+.hist-count.win-2{background:#22C55E;color:#fff}
+.hist-count.win-3{background:#FBBF24;color:#1f2937}
+.hist-count.win-4{background:#A855F7;color:#fff}
+.hist-count.win-5{background:#3B82F6;color:#fff}
+.hist-count.win-6{background:#22D3EE;color:#0f172a}
+.history-row.hist-win td{background:#edfbf3}
+.history-row.hist-loss td{background:#fff1f2}
+.history-row.hist-even td{background:#fffbeb}
+.history-row.hist-none td{background:#fff}
+.history-row:hover td,.history-detail-row:hover td{background-image:linear-gradient(rgba(15,23,42,.025),rgba(15,23,42,.025))}
+.history-detail-row td{
+  padding:0 6px 7px;border-bottom:1px solid #edf1f7;vertical-align:top;
+}
+.history-detail-row:last-child td{border-bottom:0}
+.history-detail-row.hist-win td{background:#f6fdf8}
+.history-detail-row.hist-loss td{background:#fff8f8}
+.history-detail-row.hist-even td{background:#fffdf3}
+.history-detail-row.hist-none td{background:#fbfcfe}
+.hist-detail{display:grid;gap:4px;padding-top:5px;color:#3f5168;font-size:.68rem;line-height:1.35}
+.hist-detail-line{display:flex;flex-wrap:wrap;align-items:center;gap:3px 5px}
+.hist-detail-label{color:#6b7a8f;font-size:.56rem;font-weight:900;letter-spacing:.05em;text-transform:uppercase;margin-right:2px}
+.hist-detail-shake{white-space:normal;overflow-wrap:anywhere}
+.hist-detail-arrow{color:#94a3b8;font-size:.62rem}
+.hist-detail-meta{display:flex;flex-wrap:wrap;gap:3px 10px}
+.hist-detail-meta span{white-space:nowrap}
+.hist-detail-note{color:#5b4a20;overflow-wrap:anywhere}
+.hist-result{font-weight:900}
+.hist-result.win{color:var(--green)}
+.hist-result.loss{color:var(--red)}
+.hist-result.even{color:#a16207}
+.hist-result.none{color:var(--muted)}
+.hist-delete{width:22px;height:24px;padding:0;border-radius:5px;background:transparent;color:#a33a48;font-size:.8rem;font-weight:900;line-height:1}
+.hist-delete:hover{background:#fff0f2}
+.history-empty{padding:18px 10px;text-align:center;color:var(--muted);font-size:.76rem}
+.history-footer{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-top:8px;flex-wrap:wrap}
+.history-footer span{color:var(--muted);font-size:.7rem;font-weight:750}
+.research-note{
+  padding:13px 14px;background:linear-gradient(180deg,#fffaf0 0%,#fffdf7 100%);
+  border:1px solid #ecd9a9;border-radius:15px;color:#755a1d;font-size:.78rem;line-height:1.5;
+}
+.research-note b{color:#5f4510}
+
+@media(min-width:680px){
+  .card{padding:18px}
+  .face-grid{max-width:620px;margin-left:auto;margin-right:auto}
+  .bet-grid{max-width:500px;margin-left:auto;margin-right:auto}
+  .stats{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .method-btn{min-height:64px}
+  .stake-grid{grid-template-columns:repeat(6,minmax(0,1fr));gap:9px}
+}
+@media(max-width:500px){
+  .face-stepper{grid-template-columns:minmax(0,1fr) 44px}
+  .face-name{font-size:.64rem}
+  .face-sub{font-size:.54rem}
+  .face-symbol{font-size:1.35rem}
+  .custom-grid{grid-template-columns:1fr}
+}
+#shakeStats th,#shakeStats td{padding:7px 4px;font-size:.74rem}
+@media(max-width:600px){
+  .grid-two{grid-template-columns:1fr}
+}
+@media(max-width:380px){
+  main{padding-left:9px;padding-right:9px}
+  .card{padding:13px;border-radius:17px}
+  .brand-icon{width:44px;height:44px;font-size:24px}
+  .brand-copy h1{font-size:1.17rem}
+  .brand-copy p{font-size:.72rem}
+  .table-chip{padding:6px 9px}
+  .table-chip span{display:none}
+  .method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .method-btn{min-height:52px;flex-direction:row;gap:6px;font-size:.76rem}
+  .stepper{grid-template-columns:minmax(0,1fr) 54px}
+  .face-stepper{grid-template-columns:minmax(0,1fr) 40px}
+  .face-stepper .stepper-controls .plus{font-size:1.3rem}
+  .face-stepper .stepper-controls .minus{font-size:1rem}
+  .face-symbol{font-size:1.28rem}
+  .face-name{font-size:.6rem}
+  .face-sub{font-size:.52rem}
+  .face-stepper .count{font-size:1.32rem;margin-top:4px}
+  .stake-grid{gap:4px}
+  .stake-btn{min-height:45px;font-size:.76rem;padding:0 1px;border-radius:9px}
+  .custom-grid{grid-template-columns:1fr}
+  .preview-box b{font-size:.9rem}
+}
+@media(max-width:330px){
+  .face-grid{gap:6px}
+  .stepper{grid-template-columns:minmax(0,1fr) 50px}
+  .face-stepper{grid-template-columns:minmax(0,1fr) 34px}
+  .face-stepper .stepper-body{padding:5px 2px}
+  .face-stepper .stepper-controls .minus{width:28px;height:28px;font-size:.9rem}
+  .stake-grid{gap:3px}
+  .stake-btn{font-size:.7rem;min-height:42px}
+  .face-symbol{font-size:1.15rem}
+  .face-name{font-size:.55rem;letter-spacing:-.01em}
+  .face-sub{font-size:.48rem}
+  .face-stepper .count{font-size:1.16rem}
+  .history-scroll{--hist-head:50px;--hist-row:36px;--hist-detail:84px}
+  .history-scroll.expanded{max-height:calc(var(--hist-head) + (2 * (var(--hist-row) + var(--hist-detail))) + 2px)}
+  .history-actions .secondary.compact{padding:0 7px;font-size:.68rem}
+  .history-table thead th:nth-child(1){width:22px}
+  .history-table thead th:nth-child(2){width:38px}
+  .history-table thead th:nth-child(3){width:50px}
+  .history-table thead th:last-child{width:18px}
+  .hist-time{font-size:.6rem}
+  .hist-bet{font-size:.58rem}
+  .hist-sn{font-size:.52rem}
+  .next-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="header-inner">
+    <div class="brand-icon" aria-hidden="true">🎲</div>
+    <div class="brand-copy">
+      <h1>Langur Burja Lab</h1>
+      <p>Record the roll, the shake, and the money. Let the data speak.</p>
+    </div>
+    <div class="table-chip" title="Session / table is fixed for this log">
+      <i></i><span>Table</span><b>1</b>
+    </div>
+  </div>
+</header>
+
+<main>
+  <nav class="tabbar" role="tablist" aria-label="Log sections">
+    <button type="button" class="tab-btn selected" id="tabRecord" role="tab" aria-selected="true" aria-controls="recordPanel" data-tab="record">Record</button>
+    <button type="button" class="tab-btn" id="tabData" role="tab" aria-selected="false" aria-controls="dataPanel" data-tab="data">Data <span class="tab-count" id="dataCount">0</span></button>
+  </nav>
+
+  <section class="tab-panel" id="recordPanel" role="tabpanel" aria-labelledby="tabRecord">
+    <section class="card" id="recordCard">
+      <div class="card-title">
+        <div><h2>Record a roll <span class="counter-pill" id="rollCounter">#1</span></h2></div>
+      </div>
+
+      <div class="step" id="shakeStep">
+        <div class="step-head">
+          <span class="step-num">1</span>
+          <div><h2>Shake sequence</h2></div>
+          <button type="button" class="icon-btn head-extra" id="shakeSettingsBtn" aria-label="Edit shake methods and order" aria-expanded="false" title="Edit shake methods and order">⚙</button>
+        </div>
+        <div class="shake-seq hidden" id="shakeSequence" aria-live="polite"></div>
+        <div class="method-grid" id="methodButtons"></div>
+
+        <div class="shake-settings hidden" id="shakeSettings">
+          <label class="settings-label" for="newMethod">Add a shake method</label>
+          <div class="settings-add">
+            <input id="newMethod" maxlength="24" autocomplete="off" aria-label="New shake method name">
+            <button type="button" class="mini-btn blue" id="addMethod">Add</button>
+          </div>
+          <div class="method-manage" id="methodManage"></div>
+          <div class="settings-actions">
+            <button type="button" class="mini-btn" id="restoreMethods">Restore defaults</button>
+            <button type="button" class="mini-btn" id="clearSequence">Clear sequence</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="step" id="stakeStep">
+        <div class="step-head">
+          <span class="step-num">2</span>
+          <div><h2>Stake amount</h2></div>
+          <button type="button" class="mini-btn head-extra" id="editStakesBtn" aria-label="Edit 500 and 1000 stake presets" title="Edit 500 and 1000 stake presets">✎ Edit</button>
+        </div>
+        <div class="stake-grid" id="stakeOptions"></div>
+      </div>
+
+      <div class="bet-section hidden" id="betSection" aria-labelledby="betTitle">
+        <div class="step-head">
+          <span class="step-num">3</span>
+          <div><h2 id="betTitle">Stake on shapes</h2></div>
+        </div>
+
+      <div class="bet-grid" id="betFaces"></div>
+
+      <div class="bet-warning hidden" id="betWarning"></div>
+
+      <details id="customDetails">
+        <summary>Customise the split</summary>
+        <div class="custom-box">
+          <div class="custom-grid" id="customAmounts"></div>
+          <div class="custom-actions">
+            <button type="button" class="mini-btn blue" id="balanceBtn">Split equally</button>
+          </div>
+        </div>
+      </details>
+
+      <div class="result-preview" id="resultPreview">
+        <div class="preview-grid">
+          <div class="preview-box"><span>Staked</span><b id="previewStake">Rs. 0</b></div>
+          <div class="preview-box"><span>Returned</span><b id="previewReturned">—</b></div>
+          <div class="preview-box"><span>Net</span><b id="previewNet">—</b></div>
+        </div>
+        <div class="rule-row">
+          <label for="payoutRule">Payout rule</label>
+          <select id="payoutRule" title="Street: 0–1 matching die loses; 2+ returns stake plus stake × matches. Lenient: 1 match refunds the stake; 2+ pays as street. Crown & Anchor: 1+ pays stake × (matches + 1). Strict: 1 match refunds; 2+ pays stake × matches.">
+            <option value="street">Street · 0–1 loses, 2+ pays</option>
+            <option value="lenient">Lenient · 1 refunds, 2+ pays</option>
+            <option value="crown">Crown &amp; Anchor · 1+ pays</option>
+            <option value="strict">Strict · 1 refunds, 2+ pays</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="step" id="diceStep">
+      <div class="step-head">
+        <span class="step-num" id="diceStepNum">3</span>
+        <div><h2>Observed dice faces</h2></div>
+        <button type="button" class="icon-btn head-extra" id="faceOrderBtn" aria-label="Edit face positions" aria-expanded="false" title="Edit face positions">⚙</button>
+      </div>
+      <div class="face-grid" id="observedFaces"></div>
+      <div class="method-manage hidden" id="faceOrder"></div>
+      <div class="face-progress">
+        <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="faceProgressFill"></div></div>
+        <span class="face-total" id="faceTotalHint" aria-live="polite">0 / 6 dice</span>
+      </div>
+    </div>
+
+    <details class="more-options" id="moreOptions">
+      <summary>Notes</summary>
+      <div class="field"><label for="notes">Notes</label><textarea id="notes" rows="2"></textarea></div>
+    </details>
+
+    <div class="form-actions">
+      <button type="button" class="primary" id="save">Save roll</button>
+      <button type="button" class="secondary" id="reset">Reset</button>
+    </div>
+    <p class="status" id="formMsg" role="status" aria-live="polite"></p>
+  </section>
+  </section>
+
+  <section class="tab-panel hidden" id="dataPanel" role="tabpanel" aria-labelledby="tabData">
+  <section class="card" id="historyCard">
+    <div class="card-title">
+      <div><h2>Roll history</h2></div>
+      <div class="history-actions">
+        <button type="button" class="secondary compact" id="historyDetailToggle" aria-pressed="false">Full detail</button>
+        <button type="button" class="secondary compact" id="export">Export CSV</button>
+      </div>
+    </div>
+    <div class="history-scroll" id="historyScroll">
+      <table class="history-table">
+        <thead id="historyHead"></thead>
+        <tbody id="history"></tbody>
+      </table>
+    </div>
+    <div class="history-footer">
+      <span id="historyCount">0 rolls</span>
+    </div>
+    <button type="button" class="secondary" id="deleteAll" style="margin-top:11px;color:#a33a48">Delete all data</button>
+  </section>
+
+  <section class="card" id="overviewCard">
+    <div class="card-title">
+      <div><h2>Overview</h2></div>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="nRolls">0</b><span>Recorded rolls</span></div>
+      <div class="stat"><b id="nShakes">—</b><span>Average shakes</span></div>
+      <div class="stat"><b id="nStaked">Rs. 0</b><span>Total staked</span></div>
+      <div class="stat"><b id="nNet">Rs. 0</b><span>Net result</span></div>
+    </div>
+  </section>
+
+  <section class="card" id="picksCard">
+    <div class="card-title">
+      <div><h2>Next-roll picks</h2></div>
+    </div>
+    <div id="nextPicks"></div>
+  </section>
+
+  <section class="card" id="transitionCard">
+    <div class="card-title">
+      <div><h2>Winner → next winner</h2></div>
+    </div>
+    <div id="transition"></div>
+  </section>
+
+  <section class="card" id="shakeCard">
+    <div class="card-title">
+      <div><h2>Shake methods</h2></div>
+    </div>
+    <div id="shakeStats"></div>
+
+    <div class="card-title" style="margin-top:16px">
+      <div><h3 style="font-size:.96rem;margin:0">Length to length</h3></div>
+    </div>
+    <div id="shakeTransitions"></div>
+  </section>
+
+  <div class="research-note">
+    <b>Research note:</b> The interesting question is not whether a pattern appears, but whether it survives new rolls. Record every roll. Treat any “hot” face, lucky shake sequence, or streak as a hypothesis to test, not a promise.
+  </div>
+  </section>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-backdrop hidden" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+  <div class="modal">
+    <h2 id="deleteModalTitle">Delete all data?</h2>
+    <div class="modal-warning">
+      <b>Export a CSV backup first.</b> Every saved roll will be permanently removed from this browser. This cannot be undone.
+    </div>
+    <p class="modal-meta" id="deleteModalMeta">0 saved rolls</p>
+    <div class="modal-actions">
+      <button type="button" class="secondary" id="modalExport">Export CSV</button>
+      <button type="button" class="danger-btn" id="modalConfirm" disabled>Wait 15s…</button>
+      <button type="button" class="modal-cancel" id="modalCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop hidden" id="stakeModal" role="dialog" aria-modal="true" aria-labelledby="stakeModalTitle">
+  <div class="modal">
+    <h2 id="stakeModalTitle">Edit stake presets</h2>
+    <div class="preset-edit-list">
+      <div class="preset-row">
+        <label for="presetInput10">Preset 1</label>
+        <input id="presetInput10" type="number" inputmode="numeric" min="1" step="1" value="500">
+        <button type="button" class="mini-btn" data-preset-reset="10" title="Reset to 500" aria-label="Reset preset 1 to 500">Reset</button>
+      </div>
+      <div class="preset-row">
+        <label for="presetInput11">Preset 2</label>
+        <input id="presetInput11" type="number" inputmode="numeric" min="1" step="1" value="1000">
+        <button type="button" class="mini-btn" data-preset-reset="11" title="Reset to 1000" aria-label="Reset preset 2 to 1000">Reset</button>
+      </div>
+    </div>
+    <p class="preset-msg" id="presetMsg" role="status" aria-live="polite"></p>
+    <div class="modal-actions">
+      <button type="button" class="primary" id="presetSave">Save presets</button>
+      <button type="button" class="modal-cancel" id="presetCancel">Cancel</button>
+    </div>
+  </div>
+</div>
+<script>
+"use strict";
+const FACES = [
+  {key:"heart",   name:"Pan",    sub:"Heart",   emoji:"♥️", accent:"#d92d4b"},
+  {key:"burja",   name:"Burja",  sub:"Flag",    emoji:"🚩", accent:"#d97706"},
+  {key:"spade",   name:"Surath", sub:"Spade",   emoji:"♠️", accent:"#334155"},
+  {key:"diamond", name:"Iit",    sub:"Diamond", emoji:"♦️", accent:"#e11d48"},
+  {key:"langur",  name:"Langur", sub:"Monkey",  emoji:"🐒", accent:"#8b5e34"},
+  {key:"club",    name:"Chidi",  sub:"Club",    emoji:"♣️", accent:"#15803d"}
+];
+
+/* Old v2 face order: Langur, Burja, Iit, Pan, Surath, Chidi */
+const OLD_TO_NEW = [4, 1, 3, 0, 2, 5];
+const STORE_KEY = "langurBurjaLab_v3";
+const METHODS_KEY = STORE_KEY + "_methods";
+const LEGACY_KEYS = ["langurBurjaLab_v2", "langurBurjaLab_v1"];
+const RULE_KEY = STORE_KEY + "_rule";
+const SESSION_ID = "default-table";
+const SESSION_LABEL = "Table 1";
+const DEFAULT_METHODS = ["Throw", "Normal shake", "Hard shake", "Spin shake"];
+const METHOD_ICONS = {"Throw":"🎲", "Normal shake":"🔄", "Hard shake":"💥", "Spin shake":"🌀"};
+const MAX_SEQUENCE = 24;
+const DELETE_WAIT = 15;
+const STAKES_KEY = STORE_KEY + "_stakes";
+const FACE_ORDER_KEY = STORE_KEY + "_face_order";
+const BASE_STAKES = [5, 10, 20, 25, 40, 50, 100, 150, 200, 250, 500, 1000];
+const EDITABLE_STAKES = [10, 11];
+const PAYOUT_RULES = ["street", "lenient", "crown", "strict"];
+const RULE_NAMES = {
+  street: "street",
+  lenient: "lenient",
+  crown: "Crown & Anchor",
+  strict: "strict"
+};
+
+const $ = id => document.getElementById(id);
+
+let rolls = [];
+let counts = Array(6).fill(0);
+let shakeSequence = [];
+let shakeMethods = DEFAULT_METHODS.slice();
+let methodsEditing = false;
+let stakePresets = BASE_STAKES.slice();
+let stakePreset = 0;
+let faceOrder = FACES.map((_, index) => index);
+let faceOrderEditing = false;
+let selectedBets = new Set();
+let customMode = false;
+let customBets = Array(6).fill(0);
+let payoutRule = "street";
+let historyLimit = 10;
+let historyExpanded = false;
+let statusTimer = 0;
+let toastTimer = 0;
+let deleteTimer = 0;
+let deleteSeconds = 0;
+let activeTab = "record";
+
+function clampInt(value, min, max) {
+  const n = Math.round(Number(value));
+  if (!Number.isFinite(n)) return min;
+  return Math.max(min, Math.min(max, n));
+}
+
+function localDateValue() {
+  const d = new Date();
+  d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+  return d.toISOString().slice(0, 16);
+}
+
+function money(value) {
+  const rounded = Math.round(Number(value || 0) * 100) / 100;
+  const sign = rounded < 0 ? "−" : "";
+  const abs = Math.abs(rounded);
+  return sign + "Rs. " + abs.toLocaleString("en-IN", {maximumFractionDigits: 2});
+}
+
+function signedMoney(value) {
+  const n = Math.round(Number(value || 0) * 100) / 100;
+  if (n > 0) return "+" + money(n);
+  return money(n);
+}
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  }[c]));
+}
+
+function setStatus(message, type) {
+  clearTimeout(statusTimer);
+  const el = $("formMsg");
+  if (!el) return;
+  el.textContent = message || "";
+  el.className = "status" + (type ? " " + type : "");
+  if (message && type !== "error") {
+    const shown = message;
+    statusTimer = setTimeout(() => {
+      if (el.textContent === shown) {
+        el.textContent = "";
+        el.className = "status";
+      }
+    }, 4800);
+  }
+}
+
+function clearErrorStatus() {
+  const el = $("formMsg");
+  if (el && el.classList.contains("error")) setStatus("", "");
+}
+
+function showToast(message) {
+  const toast = $("toast");
+  if (!toast) return;
+  clearTimeout(toastTimer);
+  toast.textContent = message;
+  toast.classList.add("show");
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+}
+
+/* ---------- storage + migration ---------- */
+
+function normalizeSequence(value) {
+  if (!Array.isArray(value)) return [];
+  return value
+    .map(item => String(item || "").trim().replace(/\s+/g, " "))
+    .filter(Boolean)
+    .slice(0, MAX_SEQUENCE);
+}
+
+function normalizeMethods(value) {
+  if (!Array.isArray(value)) return DEFAULT_METHODS.slice();
+  const seen = new Set();
+  const list = [];
+  value.forEach(item => {
+    const name = String(item || "").trim().replace(/\s+/g, " ").slice(0, 24);
+    if (!name) return;
+    const key = name.toLowerCase();
+    if (seen.has(key)) return;
+    seen.add(key);
+    list.push(name);
+  });
+  return list.length ? list : DEFAULT_METHODS.slice();
+}
+
+function loadMethods() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(METHODS_KEY) || "null"); } catch (error) { saved = null; }
+  shakeMethods = normalizeMethods(saved);
+}
+
+function saveMethods() {
+  try {
+    localStorage.setItem(METHODS_KEY, JSON.stringify(shakeMethods));
+  } catch (error) {
+    setStatus("Could not save shake methods in this browser.", "error");
+  }
+}
+
+function normalizeFaceOrder(value) {
+  const fallback = FACES.map((_, index) => index);
+  if (!Array.isArray(value) || value.length !== FACES.length) return fallback;
+  const seen = new Set();
+  const order = [];
+  for (const item of value) {
+    const index = Number(item);
+    if (!Number.isInteger(index) || index < 0 || index >= FACES.length || seen.has(index)) return fallback;
+    seen.add(index);
+    order.push(index);
+  }
+  return order;
+}
+
+function loadFaceOrder() {
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(FACE_ORDER_KEY) || "null"); } catch (error) { saved = null; }
+  faceOrder = normalizeFaceOrder(saved);
+}
+
+function saveFaceOrder() {
+  try {
+    localStorage.setItem(FACE_ORDER_KEY, JSON.stringify(faceOrder));
+  } catch (error) {
+    setStatus("Could not save the face order in this browser.", "error");
+  }
+}
+
+function loadStakes() {
+  stakePresets = BASE_STAKES.slice();
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(STAKES_KEY) || "null"); } catch (error) { saved = null; }
+  if (!saved || typeof saved !== "object") return;
+  EDITABLE_STAKES.forEach(index => {
+    const value = Math.round(Number(saved[index]));
+    if (!Number.isFinite(value) || value < 1 || value > 1000000) return;
+    if (stakePresets.some((existing, existingIndex) => existingIndex !== index && existing === value)) return;
+    stakePresets[index] = value;
+  });
+}
+
+function saveStakes() {
+  const overrides = {};
+  EDITABLE_STAKES.forEach(index => {
+    if (stakePresets[index] !== BASE_STAKES[index]) overrides[index] = stakePresets[index];
+  });
+  try {
+    if (Object.keys(overrides).length) localStorage.setItem(STAKES_KEY, JSON.stringify(overrides));
+    else localStorage.removeItem(STAKES_KEY);
+  } catch (error) {
+    setStatus("Could not save stake presets in this browser.", "error");
+  }
+}
+
+function migrateRecord(record) {
+  if (!record || typeof record !== "object") return null;
+
+  const sequence = normalizeSequence(record.shakeSequence);
+
+  if (record.v === 3 && Array.isArray(record.faces) && record.faces.length === 6) {
+    return {
+      ...record,
+      v: 3,
+      faces: record.faces.map(n => clampInt(n, 0, 6)),
+      bets: (Array.isArray(record.bets) ? record.bets : [])
+        .map(b => ({face: clampInt(b && b.face, 0, 5), amount: Math.max(0, Math.round(Number(b && b.amount) || 0))}))
+        .filter(b => b.amount > 0),
+      shakeSequence: sequence,
+      shakes: sequence.length || Math.max(0, Math.round(Number(record.shakes) || 0)),
+      method: sequence.length ? sequence.join(" → ") : String(record.method || ""),
+      stake: Math.max(0, Number(record.stake) || 0),
+      notes: String(record.notes || "")
+    };
+  }
+
+  const faces = Array(6).fill(0);
+  OLD_TO_NEW.forEach((newIndex, oldIndex) => {
+    faces[newIndex] = clampInt(record.faces && record.faces[oldIndex], 0, 6);
+  });
+  const bets = (Array.isArray(record.bets) ? record.bets : [])
+    .map(b => {
+      const oldFace = Number(b && b.face);
+      const newFace = OLD_TO_NEW[oldFace];
+      return {
+        face: Number.isInteger(newFace) ? newFace : -1,
+        amount: Math.max(0, Math.round(Number(b && b.amount) || 0))
+      };
+    })
+    .filter(b => b.face >= 0 && b.face < 6 && b.amount > 0);
+
+  return {
+    ...record,
+    v: 3,
+    faces,
+    bets,
+    shakeSequence: sequence,
+    shakes: sequence.length || Math.max(0, Math.round(Number(record.shakes) || 0)),
+    method: sequence.length ? sequence.join(" → ") : String(record.method || ""),
+    stake: Math.max(0, Number(record.stake) || 0),
+    notes: String(record.notes || "")
+  };
+}
+
+function saveStore() {
+  try {
+    localStorage.setItem(STORE_KEY, JSON.stringify(rolls));
+    localStorage.setItem(METHODS_KEY, JSON.stringify(shakeMethods));
+    localStorage.setItem(RULE_KEY, payoutRule);
+  } catch (error) {
+    setStatus("Could not save to this browser. Export your data before closing.", "error");
+  }
+}
+
+function loadStore() {
+  rolls = [];
+  payoutRule = "street";
+  loadMethods();
+  loadStakes();
+  loadFaceOrder();
+
+  const saved = localStorage.getItem(STORE_KEY);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) rolls = parsed.map(migrateRecord).filter(Boolean);
+    } catch (error) {
+      rolls = [];
+    }
+    payoutRule = localStorage.getItem(RULE_KEY) || "street";
+  } else {
+    for (const key of LEGACY_KEYS) {
+      const legacy = localStorage.getItem(key);
+      if (!legacy) continue;
+      try {
+        const parsed = JSON.parse(legacy);
+        if (Array.isArray(parsed)) {
+          rolls = parsed.map(migrateRecord).filter(Boolean);
+          payoutRule = localStorage.getItem(key + "_rule") || "street";
+          saveStore();
+        }
+      } catch (error) {
+        rolls = [];
+      }
+      break;
+    }
+  }
+
+  if (!PAYOUT_RULES.includes(payoutRule)) payoutRule = "street";
+}
+
+/* ---------- money helpers ---------- */
+
+function currentBets() {
+  return [...selectedBets]
+    .map(face => ({face, amount: Math.max(0, Math.round(Number(customBets[face]) || 0))}))
+    .filter(bet => bet.amount > 0)
+    .sort((a, b) => a.face - b.face);
+}
+
+function betTotal(bets) {
+  return (bets || []).reduce((sum, bet) => sum + Number(bet.amount || 0), 0);
+}
+
+function recordBets(record) {
+  return Array.isArray(record && record.bets) ? record.bets : [];
+}
+
+function recordStake(record) {
+  const bets = recordBets(record);
+  const fromBets = betTotal(bets);
+  return fromBets > 0 ? fromBets : Math.max(0, Number(record && record.stake) || 0);
+}
+
+function recordSequence(record) {
+  return normalizeSequence(record && record.shakeSequence);
+}
+
+function recordShakeCount(record) {
+  const sequence = recordSequence(record);
+  return sequence.length || Math.max(0, Math.round(Number(record && record.shakes) || 0));
+}
+
+function grossReturn(stake, matches, rule) {
+  const amount = Number(stake) || 0;
+  const k = Math.max(0, Math.min(6, Math.round(Number(matches) || 0)));
+  if (k === 0 || amount <= 0) return 0;
+  if (rule === "crown") return amount * (k + 1);
+  if (rule === "strict") return k === 1 ? amount : amount * k;
+  if (rule === "lenient") return k === 1 ? amount : amount * (k + 1);
+  return k >= 2 ? amount * (k + 1) : 0;
+}
+
+function returnedFor(faces, bets, rule) {
+  return (bets || []).reduce((sum, bet) => {
+    return sum + grossReturn(bet.amount, faces[bet.face] || 0, rule);
+  }, 0);
+}
+
+function recordReturned(record) {
+  return returnedFor(record.faces || [], recordBets(record), payoutRule);
+}
+
+function equalSplit() {
+  customBets = Array(6).fill(0);
+  const chosen = [...selectedBets].sort((a, b) => a - b);
+  if (!chosen.length || stakePreset <= 0) return;
+  const base = Math.floor(stakePreset / chosen.length);
+  const remainder = stakePreset - base * chosen.length;
+  chosen.forEach((face, index) => {
+    customBets[face] = base + (index < remainder ? 1 : 0);
+  });
+}
+
+/* ---------- dynamic UI ---------- */
+
+function faceCardMarkup(face, index) {
+  return `<div class="stepper face-stepper" id="faceCard${index}" data-face-card="${index}" style="--accent:${face.accent}">
+    <div class="stepper-body">
+      <div class="face-symbol" aria-hidden="true">${face.emoji}</div>
+      <div class="face-name">${face.name}</div>
+      <div class="face-sub">${face.sub}</div>
+      <output class="count" id="count${index}" aria-label="${face.name} count" aria-live="polite">0</output>
+    </div>
+    <div class="stepper-controls">
+      <button type="button" class="plus" data-face-plus="${index}" aria-label="Add ${face.name}">+</button>
+      <button type="button" class="minus" data-face-minus="${index}" aria-label="Remove ${face.name}">−</button>
+    </div>
+  </div>`;
+}
+
+function betCardMarkup(face, index) {
+  return `<button type="button" class="bet-card" data-bet="${index}" id="betCard${index}" aria-pressed="false" aria-label="Bet on ${face.name}">
+    <span class="bet-check" aria-hidden="true">✓</span>
+    <span class="bet-emoji" aria-hidden="true">${face.emoji}</span>
+    <span class="bet-name">${face.name}<small>${face.sub}</small></span>
+    <span class="bet-amount" id="betAmount${index}">Rs. 0</span>
+  </button>`;
+}
+
+function customRowMarkup(face, index) {
+  return `<label class="custom-item" for="customBet${index}">
+    <span class="c-name">${face.emoji} ${face.name}</span>
+    <span class="c-input">Rs. <input id="customBet${index}" data-custom="${index}" type="number" inputmode="numeric" min="0" step="1" value="0"></span>
+  </label>`;
+}
+
+function renderFaceInputs() {
+  $("observedFaces").innerHTML = faceOrder.map(index => faceCardMarkup(FACES[index], index)).join("");
+  $("betFaces").innerHTML = faceOrder.map(index => betCardMarkup(FACES[index], index)).join("");
+  $("customAmounts").innerHTML = faceOrder.map(index => customRowMarkup(FACES[index], index)).join("");
+  renderFaces();
+  renderBets();
+}
+
+function renderHistoryHead() {
+  const totals = FACES.map((face, index) =>
+    rolls.reduce((sum, record) => sum + Number((record.faces && record.faces[index]) || 0), 0)
+  );
+  const observations = totals.reduce((sum, value) => sum + value, 0);
+
+  $("historyHead").innerHTML = `<tr>
+    <th scope="col" title="Serial number">S.N.</th>
+    <th scope="col">Time</th>
+    <th scope="col">Bet</th>
+    ${faceOrder.map(index => {
+      const face = FACES[index];
+      const count = totals[index];
+      const percent = observations ? (100 * count) / observations : 0;
+      return `<th scope="col" class="hist-h-face" title="${escapeHtml(face.name)}: ${count} dice in all rolls, ${percent.toFixed(1)}%" aria-label="${escapeHtml(face.name)}: ${percent.toFixed(1)} percent of all dice, ${count} dice">
+        <span class="hist-h-stack">
+          <span class="hist-h-emoji">${face.emoji}</span>
+          <small class="hist-h-freq">${percent.toFixed(1)}%</small>
+          <small class="hist-h-count">${count}</small>
+        </span>
+      </th>`;
+    }).join("")}
+    <th scope="col"><span class="sr-only">Actions</span></th>
+  </tr>`;
+}
+
+function renderFaceOrder() {
+  const panel = $("faceOrder");
+  panel.classList.toggle("hidden", !faceOrderEditing);
+  $("faceOrderBtn").setAttribute("aria-expanded", String(faceOrderEditing));
+  if (!faceOrderEditing) {
+    panel.innerHTML = "";
+    return;
+  }
+  panel.innerHTML = faceOrder.map((faceIndex, position) => {
+    const face = FACES[faceIndex];
+    return `<div class="method-row">
+      <span class="m-name">${face.emoji} ${escapeHtml(face.name)}</span>
+      <span class="m-count">#${position + 1}</span>
+      <button type="button" class="row-btn" data-face-move="${position}" data-direction="-1" aria-label="Move ${escapeHtml(face.name)} earlier" ${position === 0 ? "disabled" : ""}>←</button>
+      <button type="button" class="row-btn" data-face-move="${position}" data-direction="1" aria-label="Move ${escapeHtml(face.name)} later" ${position === faceOrder.length - 1 ? "disabled" : ""}>→</button>
+    </div>`;
+  }).join("");
+}
+
+function moveFace(position, direction) {
+  const target = position + direction;
+  if (position < 0 || position >= faceOrder.length || target < 0 || target >= faceOrder.length) return;
+  [faceOrder[position], faceOrder[target]] = [faceOrder[target], faceOrder[position]];
+  saveFaceOrder();
+  renderFaceInputs();
+  renderFaceOrder();
+  renderAll();
+}
+
+function toggleFaceOrder() {
+  faceOrderEditing = !faceOrderEditing;
+  renderFaceOrder();
+}
+
+function initUI() {
+  renderFaceInputs();
+  renderFaceOrder();
+  renderHistoryHead();
+  renderHistoryToggle();
+  renderStakeButtons();
+  $("payoutRule").value = payoutRule;
+}
+
+function renderStakeButtons() {
+  $("stakeOptions").innerHTML = stakePresets.map((value, index) =>
+    `<button type="button" class="stake-btn" data-stake="${value}" data-stake-index="${index}">${value}</button>`
+  ).join("");
+}
+
+/* ---------- form rendering ---------- */
+
+function methodIcon(name) {
+  return METHOD_ICONS[name] || "✳️";
+}
+
+function renderMethods() {
+  $("methodButtons").innerHTML = shakeMethods.map(name => {
+    const safe = escapeHtml(name);
+    return `<button type="button" class="method-btn" data-method="${safe}"><span class="m-icon" aria-hidden="true">${methodIcon(name)}</span><span>${safe}</span></button>`;
+  }).join("");
+
+  const manage = $("methodManage");
+  if (!methodsEditing) {
+    manage.innerHTML = "";
+    return;
+  }
+  manage.innerHTML = shakeMethods.map((name, index) => `<div class="method-row">
+    <span class="m-name">${methodIcon(name)} ${escapeHtml(name)}</span>
+    <button type="button" class="row-btn" data-method-up="${index}" aria-label="Move ${escapeHtml(name)} up" ${index === 0 ? "disabled" : ""}>↑</button>
+    <button type="button" class="row-btn" data-method-down="${index}" aria-label="Move ${escapeHtml(name)} down" ${index === shakeMethods.length - 1 ? "disabled" : ""}>↓</button>
+    <button type="button" class="row-btn danger" data-method-del="${index}" aria-label="Delete ${escapeHtml(name)}" ${shakeMethods.length === 1 ? "disabled" : ""}>×</button>
+  </div>`).join("");
+}
+
+function renderSequence() {
+  const box = $("shakeSequence");
+  box.classList.toggle("hidden", shakeSequence.length === 0);
+  if (!shakeSequence.length) {
+    box.innerHTML = "";
+    return;
+  }
+  box.innerHTML = shakeSequence.map((name, index) => {
+    const safe = escapeHtml(name);
+    const tools = methodsEditing
+      ? `<button type="button" class="seq-move" data-seq-up="${index}" aria-label="Move ${safe} earlier" ${index === 0 ? "disabled" : ""}>‹</button>
+         <button type="button" class="seq-move" data-seq-down="${index}" aria-label="Move ${safe} later" ${index === shakeSequence.length - 1 ? "disabled" : ""}>›</button>`
+      : "";
+    return `<span class="seq-chip" title="${safe}" data-seq-name="${safe}"><span class="seq-icon" aria-label="${safe}" title="${safe}">${methodIcon(name)}</span>${tools}<button type="button" class="seq-del" data-seq-del="${index}" aria-label="Remove ${safe}">×</button></span>`;
+  }).join("");
+}
+
+function renderShakeSettings() {
+  $("shakeSettings").classList.toggle("hidden", !methodsEditing);
+  $("shakeSettingsBtn").setAttribute("aria-expanded", String(methodsEditing));
+}
+
+function renderStake() {
+  document.querySelectorAll("[data-stake]").forEach(button => {
+    button.classList.toggle("selected", Number(button.dataset.stake) === stakePreset);
+  });
+  $("betSection").classList.toggle("hidden", stakePreset === 0);
+  $("diceStepNum").textContent = stakePreset === 0 ? "3" : "4";
+}
+
+function renderBets(skipInput = -1) {
+  FACES.forEach((face, index) => {
+    const card = $("betCard" + index);
+    if (!card) return;
+    const isSelected = selectedBets.has(index);
+    card.classList.toggle("selected", isSelected);
+    card.setAttribute("aria-pressed", String(isSelected));
+    $("betAmount" + index).textContent = money(customBets[index] || 0);
+    const input = $("customBet" + index);
+    if (input && index !== skipInput && document.activeElement !== input) {
+      input.value = customBets[index] || 0;
+    }
+  });
+
+  const actual = selectedBets.size
+    ? [...selectedBets].reduce((sum, face) => sum + Math.max(0, Math.round(Number(customBets[face]) || 0)), 0)
+    : 0;
+
+  const warning = $("betWarning");
+  let message = "";
+  if (selectedBets.size === 0) {
+    message = "Select at least one shape to place the stake.";
+  } else if (actual === 0) {
+    message = "The selected shapes have Rs. 0 allocated. Enter an amount or use “Split equally”.";
+  } else if (customMode && actual !== stakePreset) {
+    message = `Custom split totals ${money(actual)}, but the chosen stake is ${money(stakePreset)}. The saved stake will be ${money(actual)}.`;
+  }
+  warning.textContent = message;
+  warning.classList.toggle("hidden", !message);
+}
+
+function renderFaces() {
+  FACES.forEach((face, index) => {
+    const output = $("count" + index);
+    if (output) output.textContent = counts[index];
+    const card = $("faceCard" + index);
+    if (card) {
+      const winner = counts[index] >= 2;
+      card.classList.toggle("winner", winner);
+      card.setAttribute("title", winner
+        ? face.name + ": " + counts[index] + " matching dice — winner"
+        : face.name + ": " + counts[index] + (counts[index] === 1 ? " die" : " dice"));
+    }
+  });
+  const total = counts.reduce((sum, value) => sum + value, 0);
+  $("faceProgressFill").style.width = (Math.min(100, (total / 6) * 100)) + "%";
+  $("faceProgressFill").classList.toggle("complete", total === 6);
+  $("faceTotalHint").textContent = total === 6 ? "6 / 6 dice ✓" : total + " / 6 dice";
+  $("faceTotalHint").classList.toggle("complete", total === 6);
+  document.querySelectorAll("[data-face-plus]").forEach(button => {
+    button.disabled = total >= 6;
+  });
+  document.querySelectorAll("[data-face-minus]").forEach(button => {
+    const empty = counts[Number(button.dataset.faceMinus)] <= 0;
+    button.classList.toggle("is-disabled", empty);
+    button.setAttribute("aria-disabled", String(empty));
+  });
+}
+
+function updatePreview() {
+  if (stakePreset <= 0) return;
+  const bets = currentBets();
+  const stake = betTotal(bets);
+  const totalDice = counts.reduce((sum, value) => sum + value, 0);
+  const complete = totalDice === 6;
+  const returned = complete ? returnedFor(counts, bets, payoutRule) : null;
+  const net = complete ? returned - stake : null;
+
+  $("previewStake").textContent = money(stake);
+  $("previewReturned").textContent = complete ? money(returned) : "—";
+  $("previewNet").textContent = complete ? signedMoney(net) : "—";
+  $("previewNet").classList.toggle("net-pos", complete && net > 0);
+  $("previewNet").classList.toggle("net-neg", complete && net < 0);
+}
+
+function renderForm() {
+  renderMethods();
+  renderSequence();
+  renderShakeSettings();
+  renderStake();
+  renderBets();
+  renderFaces();
+  updatePreview();
+  $("rollCounter").textContent = "#" + (rolls.length + 1);
+}
+
+function clearForm() {
+  counts = Array(6).fill(0);
+  shakeSequence = [];
+  methodsEditing = false;
+  stakePreset = 0;
+  selectedBets.clear();
+  customMode = false;
+  customBets = Array(6).fill(0);
+  $("customDetails").open = false;
+  $("moreOptions").open = false;
+  $("notes").value = "";
+  renderForm();
+}
+
+/* ---------- form actions ---------- */
+
+function setStake(value) {
+  const next = stakePresets.includes(Number(value)) ? Number(value) : 0;
+  stakePreset = next === stakePreset ? 0 : next;
+  customMode = false;
+  if (stakePreset === 0) {
+    selectedBets.clear();
+    customBets = Array(6).fill(0);
+    $("customDetails").open = false;
+  } else {
+    equalSplit();
+  }
+  renderStake();
+  renderBets();
+  updatePreview();
+  if (stakePreset === 0) {
+    setStatus("Stake cleared.", "info");
+  } else {
+    setStatus("Stake set to " + money(stakePreset) + ".", "info");
+  }
+}
+
+function appendShake(name) {
+  clearErrorStatus();
+  if (shakeSequence.length >= MAX_SEQUENCE) {
+    setStatus("The sequence is limited to " + MAX_SEQUENCE + " shakes.", "error");
+    return;
+  }
+  shakeSequence.push(name);
+  renderSequence();
+}
+
+function removeShake(index) {
+  if (index < 0 || index >= shakeSequence.length) return;
+  clearErrorStatus();
+  shakeSequence.splice(index, 1);
+  renderSequence();
+}
+
+function moveShake(index, delta) {
+  const target = index + delta;
+  if (target < 0 || target >= shakeSequence.length) return;
+  clearErrorStatus();
+  const [item] = shakeSequence.splice(index, 1);
+  shakeSequence.splice(target, 0, item);
+  renderSequence();
+}
+
+function addMethod() {
+  const input = $("newMethod");
+  const name = input.value.trim().replace(/\s+/g, " ").slice(0, 24);
+  if (!name) {
+    setStatus("Enter a shake method name.", "error");
+    return;
+  }
+  if (shakeMethods.some(method => method.toLowerCase() === name.toLowerCase())) {
+    setStatus("That shake method already exists.", "error");
+    return;
+  }
+  shakeMethods.push(name);
+  input.value = "";
+  saveMethods();
+  renderMethods();
+  setStatus("Shake method added.", "ok");
+}
+
+function deleteMethod(index) {
+  if (shakeMethods.length <= 1 || index < 0 || index >= shakeMethods.length) return;
+  const [removed] = shakeMethods.splice(index, 1);
+  saveMethods();
+  renderMethods();
+  setStatus("“" + removed + "” removed.", "info");
+}
+
+function moveMethod(index, delta) {
+  const target = index + delta;
+  if (target < 0 || target >= shakeMethods.length) return;
+  const [item] = shakeMethods.splice(index, 1);
+  shakeMethods.splice(target, 0, item);
+  saveMethods();
+  renderMethods();
+}
+
+function restoreMethods() {
+  shakeMethods = DEFAULT_METHODS.slice();
+  saveMethods();
+  renderMethods();
+  setStatus("Default shake methods restored.", "ok");
+}
+
+function clearSequence() {
+  shakeSequence = [];
+  renderSequence();
+  setStatus("Shake sequence cleared.", "info");
+}
+
+function toggleShakeSettings() {
+  methodsEditing = !methodsEditing;
+  renderMethods();
+  renderSequence();
+  renderShakeSettings();
+}
+
+function toggleBet(index) {
+  if (stakePreset <= 0) return;
+  clearErrorStatus();
+  if (selectedBets.has(index)) {
+    selectedBets.delete(index);
+  } else {
+    const maximumShapes = Math.min(6, Math.floor(stakePreset));
+    if (!customMode && selectedBets.size + 1 > maximumShapes) {
+      setStatus("A " + money(stakePreset) + " stake can cover at most " + maximumShapes + " shapes at Rs. 1 each.", "error");
+      return;
+    }
+    selectedBets.add(index);
+  }
+  if (!customMode) equalSplit();
+  renderBets();
+  updatePreview();
+}
+
+function changeFace(index, delta) {
+  if (!Number.isInteger(index) || index < 0 || index >= 6) return;
+  clearErrorStatus();
+  const total = counts.reduce((sum, value) => sum + value, 0);
+  if (delta > 0 && total >= 6) {
+    setStatus("All six dice are already recorded. Remove one before adding another.", "info");
+    return;
+  }
+  counts[index] = clampInt(counts[index] + delta, 0, 6);
+  renderFaces();
+  updatePreview();
+}
+
+function addRoll() {
+  if (!shakeSequence.length) {
+    setStatus("Add at least one shake method before saving.", "error");
+    $("shakeStep").scrollIntoView({behavior: "smooth", block: "center"});
+    return;
+  }
+
+  const totalDice = counts.reduce((sum, value) => sum + value, 0);
+  if (totalDice !== 6) {
+    setStatus("Record exactly six dice before saving. You have " + totalDice + ".", "error");
+    $("diceStep").scrollIntoView({behavior: "smooth", block: "center"});
+    return;
+  }
+
+  const bets = currentBets();
+  const actualStake = betTotal(bets);
+  if (stakePreset > 0 && bets.length === 0) {
+    setStatus("Choose at least one shape to bet on, or clear the stake.", "error");
+    $("betSection").scrollIntoView({behavior: "smooth", block: "center"});
+    return;
+  }
+
+  const sequence = shakeSequence.slice();
+  const record = {
+    id: Date.now().toString(36) + Math.random().toString(36).slice(2, 7),
+    v: 3,
+    time: localDateValue(),
+    faces: counts.slice(),
+    shakeSequence: sequence,
+    shakes: sequence.length,
+    method: sequence.join(" → "),
+    invested: actualStake > 0,
+    stake: actualStake,
+    stakePreset,
+    bets,
+    returned: returnedFor(counts, bets, payoutRule),
+    payoutRule,
+    session: SESSION_ID,
+    notes: $("notes").value.trim()
+  };
+
+  rolls.push(record);
+  saveStore();
+  renderAll();
+  clearForm();
+  setStatus("Roll #" + rolls.length + " saved.", "ok");
+  showToast("Roll #" + rolls.length + " saved");
+  window.setTimeout(() => window.scrollTo({top: 0, behavior: "smooth"}), 80);
+}
+
+function resetForm() {
+  clearForm();
+  setStatus("Form cleared.", "info");
+}
+/* ---------- analysis + history ---------- */
+
+function renderOverview() {
+  const n = rolls.length;
+  const totalShakes = rolls.reduce((sum, record) => sum + recordShakeCount(record), 0);
+  const betRolls = rolls.filter(record => recordStake(record) > 0);
+  const staked = betRolls.reduce((sum, record) => sum + recordStake(record), 0);
+  const returned = betRolls.reduce((sum, record) => sum + recordReturned(record), 0);
+  const net = returned - staked;
+
+  $("nRolls").textContent = n;
+  $("nShakes").textContent = n ? (totalShakes / n).toFixed(2) : "—";
+  $("nStaked").textContent = money(staked);
+  $("nNet").textContent = signedMoney(net);
+  $("nNet").classList.toggle("good", net > 0);
+  $("nNet").classList.toggle("bad", net < 0);
+  $("dataCount").textContent = String(n);
+  $("rollCounter").textContent = "#" + (n + 1);
+}
+
+function renderFaceRelations() {
+  const pairs = Math.max(0, rolls.length - 1);
+  if (!pairs) {
+    $("transition").innerHTML = '<div class="empty">Record at least two rolls to compare 2+ winners with the next roll.</div>';
+    return;
+  }
+
+  const size = FACES.length;
+  const wins = Array(size).fill(0);
+  rolls.forEach(record => {
+    FACES.forEach((face, index) => {
+      if (Number((record.faces && record.faces[index]) || 0) >= 2) wins[index] += 1;
+    });
+  });
+
+  if (!wins.some(count => count > 0)) {
+    $("transition").innerHTML = '<div class="empty">No 2+ winner yet. Record a roll with at least two matching dice to start the winner-to-winner comparison.</div>';
+    return;
+  }
+
+  const denominator = Array(size).fill(0);
+  const matrix = Array.from({length: size}, () => Array(size).fill(0));
+
+  for (let i = 1; i < rolls.length; i++) {
+    const previous = rolls[i - 1].faces || [];
+    const next = rolls[i].faces || [];
+    const previousWinners = FACES.map((face, index) => Number(previous[index] || 0) >= 2);
+    const nextWinners = FACES.map((face, index) => Number(next[index] || 0) >= 2);
+    previousWinners.forEach((won, a) => {
+      if (!won) return;
+      denominator[a] += 1;
+      nextWinners.forEach((wonNext, b) => {
+        if (wonNext) matrix[a][b] += 1;
+      });
+    });
+  }
+
+  const baseline = wins.map(count => count / rolls.length);
+  const links = [];
+  const rows = faceOrder.map(a => {
+    const faceA = FACES[a];
+    const cells = faceOrder.map(b => {
+      const faceB = FACES[b];
+      if (!denominator[a]) {
+        return `<td class="rel-na" title="No previous rolls had ${escapeHtml(faceA.name)} as a 2+ winner">—</td>`;
+      }
+      const count = matrix[a][b];
+      const probability = count / denominator[a];
+      const base = baseline[b];
+      const lift = base > 0 ? probability / base : 0;
+      if (count > 0 && base > 0 && denominator[a] >= 2) {
+        links.push({a, b, count, denominator: denominator[a], probability, base, lift});
+      }
+
+      let style = "";
+      if (base > 0) {
+        if (lift >= 1) {
+          const alpha = Math.min(0.24, 0.05 + (lift - 1) * 0.16);
+          style = ` style="background:rgba(34,197,94,${alpha.toFixed(3)})"`;
+        } else {
+          const alpha = Math.min(0.18, 0.04 + (1 - lift) * 0.12);
+          style = ` style="background:rgba(239,68,68,${alpha.toFixed(3)})"`;
+        }
+      }
+
+      const title = `${faceA.name} won → ${faceB.name} won next: ${count} of ${denominator[a]} next rolls (${(probability * 100).toFixed(1)}%). Baseline ${(base * 100).toFixed(1)}%${base > 0 ? `; lift ${lift.toFixed(2)}×` : ""}.`;
+      return `<td${style} title="${escapeHtml(title)}">${Math.round(probability * 100)}%</td>`;
+    }).join("");
+    return `<tr><th scope="row" title="${escapeHtml(faceA.name)}" aria-label="${escapeHtml(faceA.name)}">${faceA.emoji}</th>${cells}</tr>`;
+  }).join("");
+
+  const head = faceOrder.map(index => {
+    const face = FACES[index];
+    return `<th scope="col" title="${escapeHtml(face.name)}" aria-label="${escapeHtml(face.name)}">${face.emoji}</th>`;
+  }).join("");
+
+  links.sort((a, b) => b.lift - a.lift);
+  const positive = links.find(link => link.lift > 1.05);
+  const negative = links.slice().sort((a, b) => a.lift - b.lift).find(link => link.lift < 0.95);
+  const describe = link => `${FACES[link.a].emoji} ${escapeHtml(FACES[link.a].name)} → ${FACES[link.b].emoji} ${escapeHtml(FACES[link.b].name)} <b>${Math.round(link.probability * 100)}%</b> (${link.lift.toFixed(2)}× baseline, ${link.count}/${link.denominator} next rolls)`;
+
+  let summary = "";
+  if (positive || negative) {
+    summary = `<div class="relation-links">
+      ${positive ? `<span><b>Strongest above-baseline link:</b> ${describe(positive)}</span>` : ""}
+      ${negative ? `<span><b>Strongest below-baseline link:</b> ${describe(negative)}</span>` : ""}
+    </div>`;
+  } else {
+    summary = `<p class="relation-summary">No clear above- or below-baseline winner link in this sample yet.</p>`;
+  }
+
+  $("transition").innerHTML = `<p class="tiny">${pairs} adjacent ${pairs === 1 ? "pair" : "pairs"} · 2+ matching dice = winner. Rows = winner in the previous roll; columns = winner in the next roll.</p>
+    ${summary}
+    <div class="tablewrap"><table class="matrix relation-table">
+      <thead><tr><th aria-hidden="true"></th>${head}</tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+
+function faceWinCounts(records) {
+  const wins = Array(FACES.length).fill(0);
+  records.forEach(record => {
+    FACES.forEach((face, index) => {
+      if (Number(record.faces && record.faces[index]) >= 2) wins[index] += 1;
+    });
+  });
+  return wins;
+}
+
+function winnerTransitionData() {
+  const size = FACES.length;
+  const denominator = Array(size).fill(0);
+  const matrix = Array.from({length: size}, () => Array(size).fill(0));
+  for (let i = 1; i < rolls.length; i++) {
+    const previous = rolls[i - 1].faces || [];
+    const next = rolls[i].faces || [];
+    const previousWinners = FACES.map((face, index) => Number(previous[index] || 0) >= 2);
+    const nextWinners = FACES.map((face, index) => Number(next[index] || 0) >= 2);
+    previousWinners.forEach((won, a) => {
+      if (!won) return;
+      denominator[a] += 1;
+      nextWinners.forEach((wonNext, b) => {
+        if (wonNext) matrix[a][b] += 1;
+      });
+    });
+  }
+  return {denominator, matrix};
+}
+
+function predictedShakeLength() {
+  if (!rolls.length) return {length: 0, sample: 0, basedOnLast: false};
+  const lastLength = recordShakeCount(rolls[rolls.length - 1]);
+  const nextLengths = [];
+  for (let i = 1; i < rolls.length; i++) {
+    if (recordShakeCount(rolls[i - 1]) === lastLength) nextLengths.push(recordShakeCount(rolls[i]));
+  }
+  const pool = nextLengths.length ? nextLengths : rolls.map(recordShakeCount);
+  if (!pool.length) return {length: 0, sample: 0, basedOnLast: false};
+  const frequency = {};
+  pool.forEach(value => { frequency[value] = (frequency[value] || 0) + 1; });
+  const best = Object.entries(frequency).sort((a, b) => b[1] - a[1] || Number(a[0]) - Number(b[0]))[0];
+  return {length: Number(best[0]), sample: pool.length, basedOnLast: nextLengths.length > 0};
+}
+
+function renderNextPicks() {
+  const box = $("nextPicks");
+  if (!rolls.length) {
+    box.innerHTML = '<div class="empty">Record a roll to start the next-roll signal.</div>';
+    return;
+  }
+
+  const last = rolls[rolls.length - 1];
+  const lastWinners = FACES.map((face, index) => Number(last.faces && last.faces[index]) >= 2);
+  const lastWinnerFaces = FACES.filter((face, index) => lastWinners[index]);
+
+  const overallWins = faceWinCounts(rolls);
+  const winRates = overallWins.map(count => count / rolls.length);
+  const recent = rolls.slice(-Math.min(10, rolls.length));
+  const recentWins = faceWinCounts(recent);
+  const recentRates = recentWins.map(count => count / recent.length);
+
+  const totalDice = rolls.reduce((sum, record) =>
+    sum + FACES.reduce((faceSum, face, index) => faceSum + Number((record.faces && record.faces[index]) || 0), 0), 0
+  );
+  const diceShare = FACES.map((face, index) => {
+    const count = rolls.reduce((sum, record) => sum + Number((record.faces && record.faces[index]) || 0), 0);
+    return totalDice ? count / totalDice : 0;
+  });
+
+  const {denominator, matrix} = winnerTransitionData();
+  const transitionRates = FACES.map((face, b) => {
+    const values = [];
+    lastWinners.forEach((won, a) => {
+      if (won && denominator[a] > 0) values.push(matrix[a][b] / denominator[a]);
+    });
+    return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : null;
+  });
+  const transitionSample = lastWinners.reduce((sum, won, a) => sum + (won ? denominator[a] : 0), 0);
+
+  const predicted = predictedShakeLength();
+  const usesCurrentSequence = shakeSequence.length > 0;
+  const shakeLength = usesCurrentSequence ? shakeSequence.length : predicted.length;
+  const shakeRecords = rolls.filter(record => recordShakeCount(record) === shakeLength);
+  const shakeWins = faceWinCounts(shakeRecords);
+  const shakeRates = shakeWins.map(count => shakeRecords.length ? count / shakeRecords.length : null);
+
+  const weights = {
+    transition: 0.35 * Math.min(1, transitionSample / 8),
+    shake: 0.20 * Math.min(1, shakeRecords.length / 6),
+    win: 0.20,
+    frequency: 0.15,
+    recent: 0.10
+  };
+
+  const picks = FACES.map((face, index) => {
+    const components = [];
+    if (transitionRates[index] !== null && weights.transition > 0) {
+      components.push({key: "transition", value: transitionRates[index], weight: weights.transition});
+    }
+    if (shakeRates[index] !== null && weights.shake > 0) {
+      components.push({key: "shake", value: shakeRates[index], weight: weights.shake});
+    }
+    components.push({key: "win", value: winRates[index], weight: weights.win});
+    components.push({key: "frequency", value: diceShare[index], weight: weights.frequency});
+    components.push({key: "recent", value: recentRates[index], weight: weights.recent});
+    const weightSum = components.reduce((sum, item) => sum + item.weight, 0);
+    const score = weightSum ? components.reduce((sum, item) => sum + item.value * item.weight, 0) / weightSum : 0;
+    return {
+      index,
+      face,
+      score,
+      transition: transitionRates[index],
+      shake: shakeRates[index],
+      win: winRates[index],
+      frequency: diceShare[index],
+      recent: recentRates[index]
+    };
+  }).sort((a, b) => b.score - a.score || b.win - a.win || a.index - b.index);
+
+  const ranked = picks.filter(pick => pick.score > 0 && pick.win > 0);
+  const top = ranked.slice(0, 1);
+  if (ranked[1] && ranked[1].score >= ranked[0].score * 0.75) top.push(ranked[1]);
+  if (!top.length) {
+    box.innerHTML = '<div class="empty">No 2+ winner signal yet. Record a few rolls with at least two matching dice.</div>';
+    return;
+  }
+
+  const pct = value => value === null || value === undefined ? "—" : Math.round(value * 100) + "%";
+  const pickMarkup = top.map((pick, position) => {
+    const parts = [];
+    if (pick.transition !== null) parts.push(`A→B ${pct(pick.transition)}`);
+    if (pick.shake !== null) parts.push(`shake ${pct(pick.shake)}`);
+    parts.push(`win ${pct(pick.win)}`);
+    parts.push(`freq ${pct(pick.frequency)}`);
+    parts.push(`recent ${pct(pick.recent)}`);
+    return `<div class="next-pick${position === 0 ? " next-pick--primary" : ""}" title="${escapeHtml(`${pick.face.name}: signal ${pct(pick.score)}; ${parts.join(", ")}`)}">
+      <span class="pick-rank">#${position + 1}</span>
+      <span class="pick-emoji" aria-hidden="true">${pick.face.emoji}</span>
+      <span class="pick-name">${escapeHtml(pick.face.name)}</span>
+      <span class="pick-score">${pct(pick.score)}</span>
+      <span class="pick-why">${escapeHtml(parts.join(" · "))}</span>
+    </div>`;
+  }).join("");
+
+  const lastWinnerText = lastWinnerFaces.length ? lastWinnerFaces.map(face => `${face.emoji} ${escapeHtml(face.name)}`).join(" ") : "none";
+  let shakeText;
+  if (usesCurrentSequence) {
+    shakeText = `Current shake sequence: <b>${shakeSequence.length}</b> ${shakeSequence.length === 1 ? "shake" : "shakes"} · ${shakeRecords.length} matching ${shakeRecords.length === 1 ? "roll" : "rolls"}`;
+  } else if (predicted.sample > 0) {
+    shakeText = `Likely next shake length: <b>${predicted.length}</b> ${predicted.length === 1 ? "shake" : "shakes"} · ${shakeRecords.length} matching ${shakeRecords.length === 1 ? "roll" : "rolls"} (${predicted.basedOnLast ? "similar transitions" : "all rolls"})`;
+  } else {
+    shakeText = "No shake history yet";
+  }
+
+  box.innerHTML = `<p class="next-summary">Last 2+ winner: <b>${lastWinnerText}</b> · ${shakeText}</p>
+    <div class="next-grid">${pickMarkup}</div>
+    <p class="next-summary">Signal blends winner transition, shake-length outcomes, overall and recent win rates, and face frequency. Not a guarantee.</p>`;
+}
+
+function renderShakeStats() {
+  if (!rolls.length) {
+    $("shakeStats").innerHTML = '<div class="empty">No shake data yet.</div>';
+    return;
+  }
+
+  const methodUse = {};
+  rolls.forEach(record => {
+    const sequence = recordSequence(record);
+    if (sequence.length) {
+      const seen = new Set();
+      sequence.forEach((name, index) => {
+        if (!methodUse[name]) methodUse[name] = {uses: 0, rolls: 0, positions: 0};
+        methodUse[name].uses += 1;
+        methodUse[name].positions += index + 1;
+        seen.add(name);
+      });
+      seen.forEach(name => { methodUse[name].rolls += 1; });
+    } else {
+      const name = String(record.method || "").trim();
+      if (name) {
+        if (!methodUse[name]) methodUse[name] = {uses: 0, rolls: 0, positions: 0};
+        methodUse[name].uses += recordShakeCount(record) || 1;
+        methodUse[name].rolls += 1;
+      }
+    }
+  });
+
+  const methodKeys = Object.keys(methodUse).sort((a, b) => methodUse[b].uses - methodUse[a].uses || a.localeCompare(b));
+  let methodTable = '<div class="empty">No shake methods recorded yet.</div>';
+  if (methodKeys.length) {
+    const methodRows = methodKeys.map(name => {
+      const data = methodUse[name];
+      const averagePosition = data.positions ? (data.positions / data.uses).toFixed(2) : "—";
+      return `<tr><th>${methodIcon(name)} ${escapeHtml(name)}</th><td>${data.uses}</td><td>${data.rolls}</td><td>${averagePosition}</td></tr>`;
+    }).join("");
+    methodTable = `<div class="tablewrap"><table>
+      <thead><tr><th>Method</th><th>Uses</th><th>Rolls</th><th>Avg. position</th></tr></thead>
+      <tbody>${methodRows}</tbody>
+    </table></div>`;
+  }
+
+  const groups = {};
+  rolls.forEach(record => {
+    const key = String(recordShakeCount(record));
+    if (!groups[key]) groups[key] = {rolls: 0, faces: Array(6).fill(0)};
+    groups[key].rolls += 1;
+    FACES.forEach((face, index) => {
+      groups[key].faces[index] += Number((record.faces && record.faces[index]) || 0);
+    });
+  });
+
+  const keys = Object.keys(groups).sort((a, b) => Number(a) - Number(b));
+  let lengthTable = '<div class="empty">No sequence lengths recorded yet.</div>';
+  if (keys.length) {
+    const lengthRows = keys.map(key => {
+      const group = groups[key];
+      const cells = faceOrder.map(index => {
+        const count = group.faces[index];
+        const percent = 100 * count / (group.rolls * 6);
+        return `<td title="${FACES[index].name}: ${count} dice">${percent.toFixed(1)}%</td>`;
+      }).join("");
+      return `<tr><th>${key}</th><td>${group.rolls}</td>${cells}</tr>`;
+    }).join("");
+    lengthTable = `<div class="tablewrap"><table>
+      <thead><tr><th>Shakes</th><th>Rolls</th>${faceOrder.map(index => {
+        const face = FACES[index];
+        return `<th title="${face.name}">${face.emoji}</th>`;
+      }).join("")}</tr></thead>
+      <tbody>${lengthRows}</tbody>
+    </table></div>`;
+  }
+
+  $("shakeStats").innerHTML = methodTable +
+    `<h3 class="subhead">Sequence length &amp; outcomes</h3>` + lengthTable;
+}
+
+function pearson(xs, ys) {
+  const n = Math.min(xs.length, ys.length);
+  if (n < 2) return null;
+  let mx = 0, my = 0;
+  for (let i = 0; i < n; i++) {
+    mx += xs[i];
+    my += ys[i];
+  }
+  mx /= n;
+  my /= n;
+  let numerator = 0, dx = 0, dy = 0;
+  for (let i = 0; i < n; i++) {
+    const a = xs[i] - mx;
+    const b = ys[i] - my;
+    numerator += a * b;
+    dx += a * a;
+    dy += b * b;
+  }
+  const denominator = Math.sqrt(dx * dy);
+  return denominator ? numerator / denominator : null;
+}
+
+function renderShakeTransitions() {
+  const previous = [];
+  const current = [];
+  const groups = {};
+
+  for (let i = 1; i < rolls.length; i++) {
+    const from = recordShakeCount(rolls[i - 1]);
+    const to = recordShakeCount(rolls[i]);
+    previous.push(from);
+    current.push(to);
+    if (!groups[from]) groups[from] = [];
+    groups[from].push(to);
+  }
+
+  if (!previous.length) {
+    $("shakeTransitions").innerHTML = '<div class="empty">Record at least two rolls to compare sequence lengths.</div>';
+    return;
+  }
+
+  const r = pearson(previous, current);
+  const rows = Object.keys(groups)
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map(from => {
+      const values = groups[from];
+      const total = values.reduce((sum, value) => sum + value, 0);
+      const average = total / values.length;
+      const same = values.filter(value => value === from).length;
+      const frequency = {};
+      values.forEach(value => { frequency[value] = (frequency[value] || 0) + 1; });
+      const most = Object.entries(frequency).sort((a, b) => b[1] - a[1] || Number(a[0]) - Number(b[0]))[0][0];
+      return `<tr><th>${from}</th><td>${values.length}</td><td>${average.toFixed(2)}</td><td>${same}</td><td>${most}</td></tr>`;
+    }).join("");
+
+  const correlation = r === null
+    ? "Not enough variation to calculate a correlation."
+    : `Correlation between last and current sequence length: <b>r = ${r.toFixed(3)}</b> (${previous.length} pairs).`;
+
+  $("shakeTransitions").innerHTML = `<p class="tiny">${correlation}</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Last length</th><th>Next rolls</th><th>Avg. next</th><th>Same length</th><th>Most common next</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+
+function displayTime(value) {
+  const raw = String(value || "").trim();
+  const match = raw.match(/(?:^|[T\s])(\d{1,2}):(\d{2})/);
+  if (!match) return raw;
+  const hour = Number(match[1]);
+  if (!Number.isFinite(hour) || hour < 0 || hour > 23) return raw;
+  return String(hour).padStart(2, "0") + ":" + match[2];
+}
+
+function canonicalShakeName(name) {
+  const cleaned = String(name || "").trim().replace(/\s+/g, " ");
+  const lower = cleaned.toLowerCase();
+  const known = DEFAULT_METHODS.find(method => method.toLowerCase() === lower);
+  if (known) return known;
+  return {
+    throw: "Throw",
+    normal: "Normal shake",
+    hard: "Hard shake",
+    spin: "Spin shake"
+  }[lower] || cleaned;
+}
+
+function historyShakeNames(record) {
+  const sequence = recordSequence(record);
+  if (sequence.length) return sequence;
+  const method = String(record.method || "").trim();
+  return method ? method.split(/\s*(?:→|->|\||,)\s*/).filter(Boolean) : [];
+}
+
+function historyShakeDetailMarkup(record) {
+  const names = historyShakeNames(record);
+  if (!names.length) return '<span class="hist-shake-empty">—</span>';
+  return names.map(name => {
+    const canonical = canonicalShakeName(name);
+    const icon = METHOD_ICONS[canonical] || "✳️";
+    return `<span class="hist-detail-shake">${icon} ${escapeHtml(canonical)}</span>`;
+  }).join('<span class="hist-detail-arrow">→</span>');
+}
+
+function historyResult(record) {
+  const stake = recordStake(record);
+  const returned = recordReturned(record);
+  const net = returned - stake;
+  if (stake <= 0) return {key: "none", label: "No bet", stake, returned, net};
+  if (net > 0) return {key: "win", label: "Win", stake, returned, net};
+  if (net < 0) return {key: "loss", label: "Loss", stake, returned, net};
+  return {key: "even", label: "Breakeven", stake, returned, net};
+}
+
+function renderHistoryToggle() {
+  const toggle = $("historyDetailToggle");
+  toggle.textContent = historyExpanded ? "Compact" : "Full detail";
+  toggle.setAttribute("aria-pressed", String(historyExpanded));
+  $("historyScroll").classList.toggle("expanded", historyExpanded);
+}
+
+function toggleHistoryDetails() {
+  historyExpanded = !historyExpanded;
+  renderHistoryToggle();
+  renderHistory();
+}
+
+function renderHistory() {
+  const total = rolls.length;
+  const start = Math.max(0, total - historyLimit);
+
+  if (!total) {
+    $("history").innerHTML = '<tr><td class="history-empty" colspan="10">No rolls saved yet. Your records will appear here.</td></tr>';
+    $("historyCount").textContent = "0 rolls";
+    return;
+  }
+
+  const rows = [];
+  for (let index = total - 1; index >= start; index--) {
+    const record = rolls[index];
+    const time = displayTime(record.time);
+    const rowCounts = FACES.map((face, faceIndex) =>
+      Math.max(0, Math.min(6, Math.round(Number((record.faces && record.faces[faceIndex]) || 0))))
+    );
+    const {key: resultKey, label: resultLabel, stake, returned, net} = historyResult(record);
+    const hasBet = stake > 0;
+    const bets = recordBets(record).filter(bet => bet.amount > 0);
+    const betByFace = new Map(bets.map(bet => [bet.face, bet.amount]));
+    const shakeNames = historyShakeNames(record);
+    const shakeLabels = shakeNames.map(canonicalShakeName);
+    const countLabels = faceOrder.map(faceIndex => `${FACES[faceIndex].name} ${rowCounts[faceIndex]}`).join(", ");
+    const detail = [`Roll #${index + 1}`, time];
+    if (shakeLabels.length) detail.push(shakeLabels.join(" → "));
+    if (hasBet) detail.push(`Staked ${money(stake)}`, `Returned ${money(returned)}`, `Net ${signedMoney(net)}`);
+    const betText = bets.map(bet => {
+      const face = FACES[bet.face];
+      return face ? `${face.name} ${money(bet.amount)}` : money(bet.amount);
+    }).join(", ");
+    if (betText) detail.push(`Bet ${betText}`);
+    if (record.notes) detail.push(`Note: ${record.notes}`);
+    const title = detail.join(" · ");
+    const aria = `${time}. ${hasBet ? `Bet ${money(stake)}, ${resultLabel.toLowerCase()}.` : "No bet."} ${shakeLabels.length ? "Shakes: " + shakeLabels.join(", ") + "." : "No shakes."} ${countLabels}.`;
+
+    const countCells = faceOrder.map(faceIndex => {
+      const count = rowCounts[faceIndex];
+      const bet = betByFace.get(faceIndex) || 0;
+      return `<td class="hist-count-cell"><span class="hist-count${count >= 2 ? " win-" + count : ""}${bet > 0 ? " bet" : ""}" title="${FACES[faceIndex].name}: ${count}${bet > 0 ? ` · Bet ${money(bet)}` : ""}" aria-label="${FACES[faceIndex].name}: ${count}${bet > 0 ? `, bet ${money(bet)}` : ""}">${count}</span></td>`;
+    }).join("");
+
+    const showDelete = historyExpanded || hasBet;
+    rows.push(`<tr class="history-row hist-${resultKey}" title="${escapeHtml(title)}" aria-label="${escapeHtml(aria)}">
+      <td class="hist-sn">#${index + 1}</td>
+      <td class="hist-time">${escapeHtml(time)}</td>
+      <td class="hist-bet${hasBet ? "" : " hist-bet-none"}" title="${hasBet ? `Total bet ${money(stake)}` : "No bet"}">${hasBet ? money(stake) : "—"}</td>
+      ${countCells}
+      <td>${showDelete ? `<button type="button" class="hist-delete" data-del="${escapeHtml(record.id)}" aria-label="Delete roll ${index + 1}" title="Delete roll ${index + 1}">×</button>` : ""}</td>
+    </tr>`);
+
+    if (historyExpanded) {
+      const betDetail = bets.length
+        ? bets.map(bet => {
+            const face = FACES[bet.face];
+            return face ? `${face.emoji} ${escapeHtml(face.name)} ${money(bet.amount)}` : money(bet.amount);
+          }).join(" · ")
+        : "No bet";
+      rows.push(`<tr class="history-detail-row hist-${resultKey}">
+        <td colspan="10">
+          <div class="hist-detail">
+            <div class="hist-detail-line"><span class="hist-detail-label">Shake</span>${historyShakeDetailMarkup(record)}</div>
+            <div class="hist-detail-meta">
+              <span><b>Staked</b> ${money(stake)}</span>
+              <span><b>Returned</b> ${money(returned)}</span>
+              <span><b>Net</b> ${signedMoney(net)}</span>
+              <span><b>Result</b> <span class="hist-result ${resultKey}">${resultLabel}</span></span>
+            </div>
+            <div class="hist-detail-line"><span class="hist-detail-label">Bets</span>${betDetail}</div>
+            ${record.notes ? `<div class="hist-detail-note"><b>Note</b> ${escapeHtml(record.notes)}</div>` : ""}
+          </div>
+        </td>
+      </tr>`);
+    }
+  }
+
+  $("history").innerHTML = rows.join("");
+  const shown = total - start;
+  $("historyCount").textContent = total > historyLimit
+    ? `Last ${shown} of ${total} rolls`
+    : `${total} ${total === 1 ? "roll" : "rolls"}`;
+}
+
+function renderAll() {
+  renderOverview();
+  renderFaceRelations();
+  renderNextPicks();
+  renderShakeStats();
+  renderShakeTransitions();
+  renderHistoryHead();
+  renderHistory();
+  renderHistoryToggle();
+  updatePreview();
+}
+
+/* ---------- CSV ---------- */
+
+function csvCell(value) {
+  return '"' + String(value ?? "").replace(/"/g, '""') + '"';
+}
+
+function exportCsv() {
+  if (!rolls.length) {
+    setStatus("No rolls to export yet.", "info");
+    return;
+  }
+
+  const headers = [
+    "time", "session", "shakes", "shake_sequence", "method", "invested", "stake", "stake_preset", "payout_rule",
+    "returned", "net", "bets", ...FACES.map(face => face.name.toLowerCase() + "_count"), "notes"
+  ];
+
+  const rows = rolls.map(record => {
+    const stake = recordStake(record);
+    const returned = recordReturned(record);
+    const bets = recordBets(record).map(bet => `${FACES[bet.face].name}:${bet.amount}`).join("; ");
+    return [
+      record.time,
+      record.session || SESSION_ID,
+      recordShakeCount(record),
+      recordSequence(record).join(" → "),
+      record.method || "",
+      stake > 0 ? "yes" : "no",
+      stake,
+      record.stakePreset ?? "",
+      payoutRule,
+      returned,
+      returned - stake,
+      bets,
+      ...FACES.map((face, index) => Number((record.faces && record.faces[index]) || 0)),
+      record.notes
+    ];
+  });
+
+  const csv = [headers, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n");
+  const blob = new Blob(["\ufeff" + csv], {type: "text/csv;charset=utf-8;"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "langur-burja-rolls-" + new Date().toISOString().slice(0, 10) + ".csv";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1200);
+  setStatus("CSV exported.", "ok");
+  showToast("CSV exported");
+}
+
+/* ---------- stake presets ---------- */
+
+function openStakeModal() {
+  $("presetInput10").value = stakePresets[10];
+  $("presetInput11").value = stakePresets[11];
+  $("presetMsg").textContent = "";
+  $("stakeModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  $("presetInput10").focus();
+  $("presetInput10").select();
+}
+
+function closeStakeModal() {
+  $("stakeModal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+function saveStakePresets() {
+  const values = {};
+  for (const index of EDITABLE_STAKES) {
+    const value = Math.round(Number($("presetInput" + index).value));
+    if (!Number.isFinite(value) || value < 1 || value > 1000000) {
+      $("presetMsg").textContent = "Enter whole amounts from 1 to 1,000,000.";
+      return;
+    }
+    values[index] = value;
+  }
+
+  const large = values[10];
+  const largest = values[11];
+  if (large === largest) {
+    $("presetMsg").textContent = "The two presets must be different amounts.";
+    return;
+  }
+  const fixed = stakePresets.filter((_, index) => !EDITABLE_STAKES.includes(index));
+  if (fixed.includes(large) || fixed.includes(largest)) {
+    $("presetMsg").textContent = "Another stake preset already uses that amount.";
+    return;
+  }
+
+  const previous = stakePresets.slice();
+  EDITABLE_STAKES.forEach(index => { stakePresets[index] = values[index]; });
+
+  const changed = {};
+  EDITABLE_STAKES.forEach(index => { changed[previous[index]] = values[index]; });
+  if (changed[stakePreset] !== undefined) stakePreset = changed[stakePreset];
+
+  saveStakes();
+  renderStakeButtons();
+  renderStake();
+  if (selectedBets.size && !customMode) equalSplit();
+  renderBets();
+  updatePreview();
+  closeStakeModal();
+  setStatus("Stake presets updated.", "ok");
+}
+
+/* ---------- tabs + delete dialog ---------- */
+
+function setTab(tab, options = {}) {
+  activeTab = tab === "data" ? "data" : "record";
+  const isData = activeTab === "data";
+  $("recordPanel").classList.toggle("hidden", isData);
+  $("dataPanel").classList.toggle("hidden", !isData);
+  $("tabRecord").classList.toggle("selected", !isData);
+  $("tabData").classList.toggle("selected", isData);
+  $("tabRecord").setAttribute("aria-selected", String(!isData));
+  $("tabData").setAttribute("aria-selected", String(isData));
+  if (isData) renderAll();
+  if (options.scroll !== false) window.scrollTo({top: 0, behavior: "smooth"});
+}
+
+function updateDeleteButton() {
+  const button = $("modalConfirm");
+  if (deleteSeconds > 0) {
+    button.disabled = true;
+    button.textContent = "Wait " + deleteSeconds + "s…";
+  } else {
+    button.disabled = false;
+    button.textContent = "Delete all " + rolls.length + (rolls.length === 1 ? " roll" : " rolls");
+  }
+}
+
+function openDeleteModal() {
+  if (!rolls.length) {
+    setStatus("There is no saved data to delete.", "info");
+    showToast("No saved data to delete");
+    return;
+  }
+  clearInterval(deleteTimer);
+  deleteSeconds = DELETE_WAIT;
+  $("deleteModalMeta").textContent = rolls.length + (rolls.length === 1 ? " saved roll" : " saved rolls");
+  $("deleteModal").classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+  updateDeleteButton();
+  $("modalCancel").focus();
+  deleteTimer = setInterval(() => {
+    deleteSeconds = Math.max(0, deleteSeconds - 1);
+    updateDeleteButton();
+    if (deleteSeconds === 0) {
+      clearInterval(deleteTimer);
+      deleteTimer = 0;
+    }
+  }, 1000);
+}
+
+function closeDeleteModal() {
+  clearInterval(deleteTimer);
+  deleteTimer = 0;
+  $("deleteModal").classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+function confirmDeleteAll() {
+  if (deleteSeconds > 0) return;
+  rolls = [];
+  historyLimit = 10;
+  historyExpanded = false;
+  saveStore();
+  renderAll();
+  renderForm();
+  closeDeleteModal();
+  setStatus("All saved rolls deleted.", "info");
+  showToast("All saved rolls deleted");
+}
+
+/* ---------- events ---------- */
+
+function bindEvents() {
+  $("methodButtons").addEventListener("click", event => {
+    const button = event.target.closest("[data-method]");
+    if (button) appendShake(button.dataset.method);
+  });
+
+  $("shakeSettingsBtn").addEventListener("click", toggleShakeSettings);
+  $("addMethod").addEventListener("click", addMethod);
+  $("newMethod").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addMethod();
+    }
+  });
+  $("restoreMethods").addEventListener("click", restoreMethods);
+  $("clearSequence").addEventListener("click", clearSequence);
+
+  $("methodManage").addEventListener("click", event => {
+    const up = event.target.closest("[data-method-up]");
+    const down = event.target.closest("[data-method-down]");
+    const remove = event.target.closest("[data-method-del]");
+    if (up) moveMethod(Number(up.dataset.methodUp), -1);
+    else if (down) moveMethod(Number(down.dataset.methodDown), 1);
+    else if (remove) deleteMethod(Number(remove.dataset.methodDel));
+  });
+
+  $("shakeSequence").addEventListener("click", event => {
+    const up = event.target.closest("[data-seq-up]");
+    const down = event.target.closest("[data-seq-down]");
+    const remove = event.target.closest("[data-seq-del]");
+    if (up) moveShake(Number(up.dataset.seqUp), -1);
+    else if (down) moveShake(Number(down.dataset.seqDown), 1);
+    else if (remove) removeShake(Number(remove.dataset.seqDel));
+  });
+
+  $("stakeOptions").addEventListener("click", event => {
+    const button = event.target.closest("[data-stake]");
+    if (button) setStake(Number(button.dataset.stake));
+  });
+
+  $("faceOrderBtn").addEventListener("click", toggleFaceOrder);
+  $("faceOrder").addEventListener("click", event => {
+    const button = event.target.closest("[data-face-move]");
+    if (!button) return;
+    moveFace(Number(button.dataset.faceMove), Number(button.dataset.direction));
+  });
+
+  $("observedFaces").addEventListener("click", event => {
+    const minus = event.target.closest("[data-face-minus]");
+    if (minus) {
+      const index = Number(minus.dataset.faceMinus);
+      if (counts[index] > 0) changeFace(index, -1);
+      return;
+    }
+    const card = event.target.closest("[data-face-card]");
+    if (card) changeFace(Number(card.dataset.faceCard), 1);
+  });
+
+  $("betFaces").addEventListener("click", event => {
+    const card = event.target.closest("[data-bet]");
+    if (card) toggleBet(Number(card.dataset.bet));
+  });
+
+  $("customAmounts").addEventListener("input", event => {
+    const input = event.target.closest("[data-custom]");
+    if (!input) return;
+    const index = Number(input.dataset.custom);
+    const value = Math.max(0, Math.round(Number(input.value) || 0));
+    customMode = true;
+    customBets[index] = value;
+    if (value > 0) selectedBets.add(index);
+    else selectedBets.delete(index);
+    renderBets(index);
+    updatePreview();
+  });
+
+  $("customAmounts").addEventListener("change", () => {
+    renderBets();
+    updatePreview();
+  });
+
+  $("balanceBtn").addEventListener("click", () => {
+    customMode = false;
+    equalSplit();
+    renderBets();
+    updatePreview();
+    setStatus("Stake split equally across the selected shapes.", "info");
+  });
+
+  $("save").addEventListener("click", addRoll);
+  $("reset").addEventListener("click", resetForm);
+
+  $("editStakesBtn").addEventListener("click", openStakeModal);
+  $("presetCancel").addEventListener("click", closeStakeModal);
+  $("presetSave").addEventListener("click", saveStakePresets);
+  $("stakeModal").addEventListener("click", event => {
+    if (event.target === $("stakeModal")) {
+      closeStakeModal();
+      return;
+    }
+    const reset = event.target.closest("[data-preset-reset]");
+    if (reset) {
+      const index = Number(reset.dataset.presetReset);
+      $("presetInput" + index).value = BASE_STAKES[index];
+      $("presetMsg").textContent = "";
+    }
+  });
+  ["presetInput10", "presetInput11"].forEach(id => {
+    $(id).addEventListener("keydown", event => {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        saveStakePresets();
+      }
+    });
+  });
+
+  $("payoutRule").addEventListener("change", event => {
+    payoutRule = PAYOUT_RULES.includes(event.target.value) ? event.target.value : "street";
+    saveStore();
+    renderAll();
+    setStatus("Payout rule changed. Statistics recalculated.", "info");
+  });
+
+  $("export").addEventListener("click", exportCsv);
+  $("historyDetailToggle").addEventListener("click", toggleHistoryDetails);
+
+  $("history").addEventListener("click", event => {
+    const button = event.target.closest("[data-del]");
+    if (!button) return;
+    const id = button.dataset.del;
+    if (!confirm("Delete this roll?")) return;
+    rolls = rolls.filter(record => record.id !== id);
+    saveStore();
+    renderAll();
+    renderForm();
+    setStatus("Roll deleted.", "info");
+    showToast("Roll deleted");
+  });
+
+  $("deleteAll").addEventListener("click", openDeleteModal);
+  $("modalCancel").addEventListener("click", closeDeleteModal);
+  $("modalConfirm").addEventListener("click", confirmDeleteAll);
+  $("modalExport").addEventListener("click", exportCsv);
+  $("deleteModal").addEventListener("click", event => {
+    if (event.target === $("deleteModal")) closeDeleteModal();
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key !== "Escape") return;
+    if (!$("stakeModal").classList.contains("hidden")) closeStakeModal();
+    if (!$("deleteModal").classList.contains("hidden")) closeDeleteModal();
+  });
+
+  document.querySelectorAll("[data-tab]").forEach(button => {
+    button.addEventListener("click", () => setTab(button.dataset.tab));
+  });
+}
+
+/* ---------- boot ---------- */
+
+loadStore();
+initUI();
+renderForm();
+renderAll();
+bindEvents();
+setTab("record", {scroll: false});
+</script>
+</body>
+</html>
