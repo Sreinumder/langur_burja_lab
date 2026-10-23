@@ -64,12 +64,20 @@ button:active:not(:disabled){filter:brightness(.94)}
 .brand-copy h1{margin:0;font-size:1.3rem;line-height:1.15;letter-spacing:-.025em}
 .brand-copy p{margin:5px 0 0;font-size:.78rem;line-height:1.35;color:#ccdcf3}
 .table-chip{
-  margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:7px;
+  margin-left:auto;flex-shrink:0;display:flex;align-items:center;gap:6px;
   background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
   border-radius:999px;padding:7px 11px;font-size:.72rem;font-weight:750;color:#dce9fb;
+  cursor:text;
 }
-.table-chip b{color:#fff;font-size:.8rem}
-.table-chip i{width:6px;height:6px;border-radius:50%;background:#6ee7a8;display:block}
+.table-chip input{
+  width:3ch;max-width:14ch;min-width:2.5ch;padding:0;margin:0;border:0;
+  background:transparent;color:#fff;font:inherit;font-size:.8rem;font-weight:900;
+  line-height:1.2;text-align:left;outline:0;border-radius:4px;
+}
+.table-chip input:focus{background:rgba(255,255,255,.16);box-shadow:0 0 0 1px rgba(255,255,255,.35)}
+.table-chip .table-edit{font-size:.68rem;line-height:1;opacity:.7}
+.table-chip:focus-within .table-edit{opacity:1}
+.table-chip i{width:6px;height:6px;border-radius:50%;background:#6ee7a8;display:block;flex-shrink:0}
 
 main{
   position:relative;z-index:2;max-width:900px;margin:-15px auto 0;
@@ -130,6 +138,7 @@ main{
 .stepper-controls .plus:disabled{background:#dfe8f6;color:#9bacc4;box-shadow:none}
 .stepper-controls .minus:disabled{background:#f7f8fa;color:#b4bfcd;border-top-color:#e5eaf1}
 .shake-seq{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 9px}
+.seq-hint{margin:0 0 9px;color:var(--muted);font-size:.68rem;line-height:1.35}
 .seq-chip{
   display:inline-flex;align-items:center;gap:4px;padding:5px 6px;line-height:1.2;
   background:#eef4ff;border:1.5px solid #cfe0ff;border-radius:10px;
@@ -525,6 +534,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   border:1px solid #ecd9a9;border-radius:15px;color:#755a1d;font-size:.78rem;line-height:1.5;
 }
 .research-note b{color:#5f4510}
+.credit{margin:0;padding:0 0 4px;text-align:center;color:var(--muted);font-size:.55rem;font-weight:700;letter-spacing:.02em;opacity:.8}
 
 @media(min-width:680px){
   .card{padding:18px}
@@ -552,7 +562,8 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   .brand-copy h1{font-size:1.17rem}
   .brand-copy p{font-size:.72rem}
   .table-chip{padding:6px 9px}
-  .table-chip span{display:none}
+  .table-chip .table-label{display:none}
+  .table-chip input{max-width:8ch}
   .method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .method-btn{min-height:52px;flex-direction:row;gap:6px;font-size:.76rem}
   .stepper{grid-template-columns:minmax(0,1fr) 54px}
@@ -605,9 +616,11 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
       <h1>Langur Burja Lab</h1>
       <p>Record the roll, the shake, and the money. Let the data speak.</p>
     </div>
-    <div class="table-chip" title="Session / table is fixed for this log">
-      <i></i><span>Table</span><b>1</b>
-    </div>
+    <label class="table-chip" id="tableChip" title="Edit the table where this log is played">
+      <i></i><span class="table-label">Table</span>
+      <input id="tableName" type="text" value="1" maxlength="24" autocomplete="off" spellcheck="false" aria-label="Table name">
+      <span class="table-edit" aria-hidden="true">✎</span>
+    </label>
   </div>
 </header>
 
@@ -630,6 +643,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
           <button type="button" class="icon-btn head-extra" id="shakeSettingsBtn" aria-label="Edit shake methods and order" aria-expanded="false" title="Edit shake methods and order">⚙</button>
         </div>
         <div class="shake-seq hidden" id="shakeSequence" aria-live="polite"></div>
+        <p class="seq-hint hidden" id="shakeHint">Last sequence loaded — tap a method to start a new one.</p>
         <div class="method-grid" id="methodButtons"></div>
 
         <div class="shake-settings hidden" id="shakeSettings">
@@ -783,6 +797,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
     <b>Research note:</b> The interesting question is not whether a pattern appears, but whether it survives new rolls. Record every roll. Treat any “hot” face, lucky shake sequence, or streak as a hypothesis to test, not a promise.
   </div>
   </section>
+  <div class="credit">made by rise ❤️</div>
 </main>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -840,8 +855,8 @@ const STORE_KEY = "langurBurjaLab_v3";
 const METHODS_KEY = STORE_KEY + "_methods";
 const LEGACY_KEYS = ["langurBurjaLab_v2", "langurBurjaLab_v1"];
 const RULE_KEY = STORE_KEY + "_rule";
-const SESSION_ID = "default-table";
-const SESSION_LABEL = "Table 1";
+const TABLE_KEY = STORE_KEY + "_table";
+const DEFAULT_TABLE_VALUE = "1";
 const DEFAULT_METHODS = ["Throw", "Normal shake", "Hard shake", "Spin shake"];
 const METHOD_ICONS = {"Throw":"🎲", "Normal shake":"🔄", "Hard shake":"💥", "Spin shake":"🌀"};
 const MAX_SEQUENCE = 24;
@@ -863,6 +878,9 @@ const $ = id => document.getElementById(id);
 let rolls = [];
 let counts = Array(6).fill(0);
 let shakeSequence = [];
+let lastSavedSequence = [];
+let sequenceDefaultActive = false;
+let tableValue = DEFAULT_TABLE_VALUE;
 let shakeMethods = DEFAULT_METHODS.slice();
 let methodsEditing = false;
 let stakePresets = BASE_STAKES.slice();
@@ -1095,9 +1113,71 @@ function saveStore() {
   }
 }
 
+function normalizeTableValue(value) {
+  let next = String(value ?? "").trim().replace(/\s+/g, " ");
+  next = next.replace(/^table\s+/i, "");
+  return next.slice(0, 24) || DEFAULT_TABLE_VALUE;
+}
+
+function currentTableValue() {
+  const input = $("tableName");
+  return normalizeTableValue(input ? input.value : tableValue);
+}
+
+function tableLabel() {
+  return "Table " + currentTableValue();
+}
+
+function loadTable() {
+  try {
+    tableValue = normalizeTableValue(localStorage.getItem(TABLE_KEY) || DEFAULT_TABLE_VALUE);
+  } catch (error) {
+    tableValue = DEFAULT_TABLE_VALUE;
+  }
+}
+
+function saveTable() {
+  try {
+    localStorage.setItem(TABLE_KEY, tableValue);
+  } catch (error) {
+    setStatus("Could not save the table name in this browser.", "error");
+  }
+}
+
+function sizeTableInput() {
+  const input = $("tableName");
+  if (!input) return;
+  const width = Math.max(3, Math.min(18, input.value.length + 1));
+  input.style.width = width + "ch";
+  input.title = tableLabel();
+}
+
+function commitTableName(silent = false) {
+  const input = $("tableName");
+  if (!input) return;
+  const next = normalizeTableValue(input.value);
+  const changed = next !== tableValue;
+  tableValue = next;
+  input.value = next;
+  sizeTableInput();
+  if (!changed) return;
+  saveTable();
+  if (!silent) {
+    setStatus("Table set to " + tableLabel() + ".", "ok");
+    showToast(tableLabel() + " saved");
+  }
+}
+
+function setDefaultSequence(sequence) {
+  lastSavedSequence = normalizeSequence(sequence);
+  shakeSequence = lastSavedSequence.slice();
+  sequenceDefaultActive = shakeSequence.length > 0;
+}
+
 function loadStore() {
   rolls = [];
   payoutRule = "street";
+  loadTable();
   loadMethods();
   loadStakes();
   loadFaceOrder();
@@ -1130,6 +1210,9 @@ function loadStore() {
   }
 
   if (!PAYOUT_RULES.includes(payoutRule)) payoutRule = "street";
+
+  const last = rolls[rolls.length - 1];
+  setDefaultSequence(last ? historyShakeNames(last).map(canonicalShakeName) : []);
 }
 
 /* ---------- money helpers ---------- */
@@ -1303,6 +1386,8 @@ function initUI() {
   renderHistoryToggle();
   renderStakeButtons();
   $("payoutRule").value = payoutRule;
+  $("tableName").value = tableValue;
+  sizeTableInput();
 }
 
 function renderStakeButtons() {
@@ -1339,6 +1424,8 @@ function renderMethods() {
 function renderSequence() {
   const box = $("shakeSequence");
   box.classList.toggle("hidden", shakeSequence.length === 0);
+  const hint = $("shakeHint");
+  if (hint) hint.classList.toggle("hidden", !(sequenceDefaultActive && shakeSequence.length));
   if (!shakeSequence.length) {
     box.innerHTML = "";
     return;
@@ -1452,9 +1539,16 @@ function renderForm() {
   $("rollCounter").textContent = "#" + (rolls.length + 1);
 }
 
-function clearForm() {
+function clearForm(options = {}) {
+  const preserveSequence = options.preserveSequence !== false;
   counts = Array(6).fill(0);
-  shakeSequence = [];
+  if (preserveSequence && lastSavedSequence.length) {
+    shakeSequence = lastSavedSequence.slice();
+    sequenceDefaultActive = true;
+  } else {
+    shakeSequence = [];
+    sequenceDefaultActive = false;
+  }
   methodsEditing = false;
   stakePreset = 0;
   selectedBets.clear();
@@ -1491,6 +1585,10 @@ function setStake(value) {
 
 function appendShake(name) {
   clearErrorStatus();
+  if (sequenceDefaultActive) {
+    shakeSequence = [];
+    sequenceDefaultActive = false;
+  }
   if (shakeSequence.length >= MAX_SEQUENCE) {
     setStatus("The sequence is limited to " + MAX_SEQUENCE + " shakes.", "error");
     return;
@@ -1502,6 +1600,7 @@ function appendShake(name) {
 function removeShake(index) {
   if (index < 0 || index >= shakeSequence.length) return;
   clearErrorStatus();
+  sequenceDefaultActive = false;
   shakeSequence.splice(index, 1);
   renderSequence();
 }
@@ -1510,6 +1609,7 @@ function moveShake(index, delta) {
   const target = index + delta;
   if (target < 0 || target >= shakeSequence.length) return;
   clearErrorStatus();
+  sequenceDefaultActive = false;
   const [item] = shakeSequence.splice(index, 1);
   shakeSequence.splice(target, 0, item);
   renderSequence();
@@ -1559,6 +1659,7 @@ function restoreMethods() {
 
 function clearSequence() {
   shakeSequence = [];
+  sequenceDefaultActive = false;
   renderSequence();
   setStatus("Shake sequence cleared.", "info");
 }
@@ -1602,6 +1703,7 @@ function changeFace(index, delta) {
 }
 
 function addRoll() {
+  commitTableName(true);
   if (!shakeSequence.length) {
     setStatus("Add at least one shake method before saving.", "error");
     $("shakeStep").scrollIntoView({behavior: "smooth", block: "center"});
@@ -1638,11 +1740,12 @@ function addRoll() {
     bets,
     returned: returnedFor(counts, bets, payoutRule),
     payoutRule,
-    session: SESSION_ID,
+    session: tableLabel(),
     notes: $("notes").value.trim()
   };
 
   rolls.push(record);
+  lastSavedSequence = sequence.slice();
   saveStore();
   renderAll();
   clearForm();
@@ -1652,7 +1755,7 @@ function addRoll() {
 }
 
 function resetForm() {
-  clearForm();
+  clearForm({preserveSequence: false});
   setStatus("Form cleared.", "info");
 }
 /* ---------- analysis + history ---------- */
@@ -2242,13 +2345,14 @@ function csvCell(value) {
 }
 
 function exportCsv() {
+  commitTableName(true);
   if (!rolls.length) {
     setStatus("No rolls to export yet.", "info");
     return;
   }
 
   const headers = [
-    "time", "session", "shakes", "shake_sequence", "method", "invested", "stake", "stake_preset", "payout_rule",
+    "time", "table", "shakes", "shake_sequence", "method", "invested", "stake", "stake_preset", "payout_rule",
     "returned", "net", "bets", ...FACES.map(face => face.name.toLowerCase() + "_count"), "notes"
   ];
 
@@ -2258,7 +2362,7 @@ function exportCsv() {
     const bets = recordBets(record).map(bet => `${FACES[bet.face].name}:${bet.amount}`).join("; ");
     return [
       record.time,
-      record.session || SESSION_ID,
+      tableLabel(),
       recordShakeCount(record),
       recordSequence(record).join(" → "),
       record.method || "",
@@ -2404,6 +2508,9 @@ function closeDeleteModal() {
 function confirmDeleteAll() {
   if (deleteSeconds > 0) return;
   rolls = [];
+  lastSavedSequence = [];
+  shakeSequence = [];
+  sequenceDefaultActive = false;
   historyLimit = 10;
   historyExpanded = false;
   saveStore();
@@ -2417,6 +2524,21 @@ function confirmDeleteAll() {
 /* ---------- events ---------- */
 
 function bindEvents() {
+  $("tableName").addEventListener("input", sizeTableInput);
+  $("tableName").addEventListener("change", () => commitTableName());
+  $("tableName").addEventListener("blur", () => commitTableName());
+  $("tableName").addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      commitTableName();
+      event.target.blur();
+    } else if (event.key === "Escape") {
+      event.target.value = tableValue;
+      sizeTableInput();
+      event.target.blur();
+    }
+  });
+
   $("methodButtons").addEventListener("click", event => {
     const button = event.target.closest("[data-method]");
     if (button) appendShake(button.dataset.method);

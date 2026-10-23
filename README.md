@@ -48,7 +48,8 @@ No build step is required for this static site.
 
 ## Features
 
-- Record six dice per roll, with a configurable shake sequence
+- Record six dice per roll, with a configurable shake sequence; the last sequence is ready for the next roll, and tapping a method starts a new one
+- Editable table label in the header, included in CSV exports
 - Custom shake methods and editable face order
 - Stake presets with editable `500` / `1000` values
 - Payout rule selection and automatic return/net calculation
@@ -69,5 +70,5 @@ No build step is required for this static site.
 
 ## Version History
 
-- **v3** — Current version: redesigned history, header face frequency, 2+ winner transition analysis, and combined next-roll picks.
+- **v3** — Current version: editable table label, last-sequence carry-over, redesigned history, header face frequency, 2+ winner transition analysis, and combined next-roll picks.
 - **v2** — Previous standalone version. Removed from the current tree; it remains available in git history.
