@@ -2,16 +2,49 @@
 
 A single-file, offline-friendly Langur Burja (Crown & Anchor) tracker for recording rolls, shake sequences, stakes, and outcomes.
 
-## Files
+## Project Files
 
-| File | Status |
+| File | Purpose |
 | --- | --- |
-| [`langur_burja_lab_v3.html`](langur_burja_lab_v3.html) | Current version |
-| [`langur_burja_lab_v2.html`](langur_burja_lab_v2.html) | Older version, kept for reference |
+| [`langur_burja_lab_v3.html`](langur_burja_lab_v3.html) | Current application |
+| [`vercel.json`](vercel.json) | Vercel static deployment config |
+| [`README.md`](README.md) | Project documentation |
 
-## Run
+## Run Locally
 
 Open `langur_burja_lab_v3.html` directly in a modern browser. No build step, server, or dependency is required.
+
+If you prefer a local server:
+
+```bash
+python3 -m http.server 8000
+```
+
+Then open <http://localhost:8000/langur_burja_lab_v3.html>.
+
+## Deploy on Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Sreinumder/langur_burja_lab&project-name=langur-burja-lab)
+
+### Import from GitHub
+
+1. In Vercel, choose **Add New → Project**.
+2. Import `Sreinumder/langur_burja_lab`.
+3. Use **Other** as the framework preset.
+4. Leave the build command empty and set the output directory to `.`.
+5. Deploy.
+
+`vercel.json` maps `/` to `langur_burja_lab_v3.html`, so the deployment root opens the tracker directly.
+
+### Deploy with the Vercel CLI
+
+```bash
+npm install -g vercel
+vercel
+vercel --prod
+```
+
+No build step is required for this static site.
 
 ## Features
 
@@ -37,4 +70,4 @@ Open `langur_burja_lab_v3.html` directly in a modern browser. No build step, ser
 ## Version History
 
 - **v3** — Current version: redesigned history, header face frequency, 2+ winner transition analysis, and combined next-roll picks.
-- **v2** — Older standalone version retained for reference.
+- **v2** — Previous standalone version. Removed from the current tree; it remains available in git history.
