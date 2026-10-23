@@ -58,8 +58,7 @@ No build step is required for this static site.
 - Winner-to-next-winner analysis for rolls with 2+ matching dice
 - Next-roll picks combining last-winner transitions, the last roll's 0/1/2+ dice state, shake-length outcomes, recent form, win rates, and face frequency
 - Guess accuracy tracking for the next-roll picks, with the latest hit/miss and per-roll results in history details
-- Overview tab with recorded-roll stats, a Rs. 5, 5, 10, 10, 20, 20, 50, 50, 100, 100, 200, 200 ladder that resets after a win, and a saved budget
-- Two-shape plan with exact 6-dice odds, an automatic split of the next ladder rung, and an apply action
+- Overview tab with recorded-roll stats
 - Cumulative profit/loss chart with peak and maximum-drawdown summaries
 - You-vs-computer accuracy charts for single picks and 50/50 two-shape picks, using your saved bets and the next-roll model
 - Shake method, sequence-length, and length-transition statistics with plain-language reading guides
@@ -72,8 +71,6 @@ No build step is required for this static site.
 
 - Data is stored in the browser's `localStorage`; it is not uploaded anywhere.
 - Next-roll picks are a statistical signal, not a guarantee.
-- **The ladder in Overview** reads the saved bet rolls: only consecutive losses advance the ladder, a win or breakeven resets it to Rs. 5, and no-bet rolls are ignored. The budget covers one full ladder cycle (Rs. 770 by default), not a guaranteed profit.
-- **2-shape split** divides the next ladder total across the top two current picks. The odds panel uses the 6-dice model: 48.4% chance at least one of the two reaches 2+, and 26.3% for a specific shape. Splitting does not change the underlying house edge.
 - **You vs computer** uses your saved bets for your side: a single pick is exactly one backed shape; a 50/50 pick is exactly two backed shapes with stakes within Rs. 1 of each other. The computer uses the same next-roll model as the picks card. A hit means at least one pick reaches 2+, and only rolls where both sides had a pick are compared.
 - Guess accuracy counts a hit when at least one suggested shape reaches 2+ on the next saved roll.
 - **Export CSV** opens a dialog where the title (usually the place where you play) becomes both the file name and the `table` column. The same dialog has a copyable guide to the rules, payouts, shape names, and CSV columns.
@@ -82,5 +79,5 @@ No build step is required for this static site.
 
 ## Version History
 
-- **v3** — Current version: Overview tab with a bankroll-aware ladder, two-shape plan, profit/loss chart, you-vs-computer pick accuracy graphs, pick accuracy tracking, dice-state-aware next-roll picks, CSV import, renameable export title, copyable rules/CSV guide, last-sequence carry-over, redesigned history, header face frequency, and 2+ winner transition analysis.
+- **v3** — Current version: Overview tab with recorded-roll stats, a profit/loss chart, and you-vs-computer pick accuracy graphs; pick accuracy tracking, dice-state-aware next-roll picks, CSV import, renameable export title, copyable rules/CSV guide, last-sequence carry-over, redesigned history, header face frequency, and 2+ winner transition analysis.
 - **v2** — Previous standalone version. Removed from the current tree; it remains available in git history.
