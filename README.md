@@ -52,18 +52,19 @@ No build step is required for this static site.
 - Custom shake methods and editable face order
 - Stake presets with editable `500` / `1000` values
 - Payout rule selection and automatic return/net calculation
-- Full scrollable roll history with 24-hour times, outcome colors, and bet markers; a back-to-latest button appears when you scroll away from the newest roll
+- Full scrollable roll history with 24-hour times, outcome colors, and bet markers; the Data tab is now a full-height history view, and a back-to-latest button appears when you scroll away from the newest roll
+- Data-tab **Copy CSV** button copies the entire saved log to the clipboard in one tap, using the current CSV title; it falls back to a temporary textarea when the clipboard API is unavailable
 - Delete controls only appear when history details are expanded; compact rows have no delete crosses
 - Full-detail history rows showing shakes, money, per-shape bets, next-pick hit/miss, and notes
 - Face frequency shown in the history header
 - Winner-to-next-winner analysis for rolls with 2+ matching dice
-- Next-roll picks with estimated hit chance, plus window checks for the last 5, last 15, and a custom last N rolls
+- Prediction tab with next-roll picks, estimated hit chance, and window checks for the last 5, last 15, and a custom last N rolls
 - Guess accuracy tracking for the next-roll picks, with the latest hit/miss and per-roll results in history details
+- Statistics tab with winner transitions, shake method and sequence-length analysis, length-to-length transitions, plain-language reading guides, and the research note
 - Settings tab with shake logic off by default, and a custom analysis window (N)
 - Overview tab with recorded-roll stats
 - Cumulative profit/loss chart with peak and maximum-drawdown summaries
 - You-vs-computer accuracy charts for single picks and 50/50 two-shape picks, using your saved bets and the next-roll model
-- Shake method, sequence-length, and length-transition statistics with plain-language reading guides
 - CSV export dialog with a renameable title/place and a compact, copyable guide to the rules, payouts, and CSV columns
 - CSV import to restore or merge a previous export; duplicate rolls are skipped
 - Guarded delete-all action
@@ -78,10 +79,11 @@ No build step is required for this static site.
 - **You vs computer** uses your saved bets for your side: a single pick is exactly one backed shape; a 50/50 pick is exactly two backed shapes with stakes within Rs. 1 of each other. The computer uses the same next-roll model as the picks card. A hit means at least one pick reaches 2+, and only rolls where both sides had a pick are compared.
 - Guess accuracy counts a hit when at least one suggested shape reaches 2+ on the next saved roll.
 - **Export CSV** opens a dialog where the title (usually the place where you play) becomes both the file name and the `table` column. The same dialog has a copyable guide to the rules, payouts, shape names, and CSV columns.
+- **Copy CSV** copies the header and every saved roll to the clipboard without downloading. It uses the current saved CSV title; the copied text has no byte-order mark.
 - **Import** accepts a CSV exported by this app, adds the rows to the current log, skips duplicate rolls, and restores the payout rule and title where possible.
 - Export important data with **Export CSV** before clearing browser storage.
 
 ## Version History
 
-- **v3** — Current version: full scrollable history with back-to-latest, Settings with shake logic off by default, 5/15/N next-roll window checks with estimated chance, Overview stats, profit/loss chart, and you-vs-computer accuracy graphs; plus pick accuracy tracking, dice-state-aware next-roll picks, CSV import, renameable export title, copyable rules/CSV guide, last-sequence carry-over, redesigned history, header face frequency, and 2+ winner transition analysis.
+- **v3** — Current version: full-screen Data history, Prediction and Statistics tabs for the analysis cards, one-tap Copy CSV with clipboard fallback, full scrollable history with back-to-latest, Settings with shake logic off by default, 5/15/N next-roll window checks with estimated chance, Overview stats, profit/loss chart, and you-vs-computer accuracy graphs; plus pick accuracy tracking, dice-state-aware next-roll picks, CSV import, renameable export title, copyable rules/CSV guide, last-sequence carry-over, redesigned history, header face frequency, and 2+ winner transition analysis.
 - **v2** — Previous standalone version. Removed from the current tree; it remains available in git history.

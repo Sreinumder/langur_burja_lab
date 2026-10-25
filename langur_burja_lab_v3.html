@@ -339,7 +339,7 @@ textarea::placeholder{color:#9aa8ba}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 .tabbar{
-  position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:4px;
+  position:sticky;top:8px;z-index:30;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;padding:4px;
   background:rgba(255,255,255,.94);border:1px solid rgba(198,211,228,.9);border-radius:14px;
   box-shadow:0 6px 18px rgba(20,40,75,.08);backdrop-filter:blur(8px);
 }
@@ -354,6 +354,18 @@ textarea::placeholder{color:#9aa8ba}
 }
 .tab-btn.selected .tab-count{background:rgba(255,255,255,.18);color:#fff}
 .tab-panel{display:grid;gap:14px;min-width:0}
+#dataPanel{
+  gap:0;
+  min-height:var(--data-panel-height,calc(100dvh - 172px));
+}
+#dataPanel #historyCard{
+  display:flex;flex-direction:column;
+  height:var(--data-panel-height,calc(100dvh - 172px));
+  min-height:360px;
+}
+#dataPanel #historyScroll{
+  flex:1 1 auto;min-height:0;max-width:none;max-height:none;
+}
 
 .modal-backdrop{
   position:fixed;inset:0;z-index:80;display:grid;place-items:center;padding:16px;
@@ -469,6 +481,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 
 .history-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:5px}
 .history-actions .secondary.compact{min-height:34px;padding:0 9px;font-size:.72rem}
+#copyCsv:disabled{opacity:.45}
 .history-scroll{
   --hist-head:52px;
   --hist-row:38px;
@@ -640,6 +653,12 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
 #shakeStats th,#shakeStats td{padding:7px 4px;font-size:.74rem}
 @media(max-width:600px){
   .grid-two{grid-template-columns:1fr}
+  .tabbar{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:480px){
+  .history-card-title{flex-wrap:wrap;align-items:flex-start}
+  .history-card-title > div:first-child{width:100%}
+  .history-card-title .history-actions{width:100%}
 }
 @media(max-width:380px){
   main{padding-left:9px;padding-right:9px}
@@ -647,9 +666,6 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
   .tab-btn{font-size:.78rem;gap:4px;padding:0 2px}
   .brand-icon{width:44px;height:44px;font-size:24px}
   .brand-copy h1{font-size:1.17rem}
-  .history-card-title{flex-wrap:wrap;align-items:flex-start}
-  .history-card-title h2{width:100%}
-  .history-card-title .history-actions{width:100%}
   .method-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
   .method-btn{min-height:52px;flex-direction:row;gap:6px;font-size:.76rem}
   .stepper{grid-template-columns:minmax(0,1fr) 54px}
@@ -709,6 +725,8 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
     <button type="button" class="tab-btn selected" id="tabRecord" role="tab" aria-selected="true" aria-controls="recordPanel" data-tab="record">Record</button>
     <button type="button" class="tab-btn" id="tabOverview" role="tab" aria-selected="false" aria-controls="overviewPanel" data-tab="overview">Overview</button>
     <button type="button" class="tab-btn" id="tabData" role="tab" aria-selected="false" aria-controls="dataPanel" data-tab="data">Data <span class="tab-count" id="dataCount">0</span></button>
+    <button type="button" class="tab-btn" id="tabPrediction" role="tab" aria-selected="false" aria-controls="predictionPanel" data-tab="prediction">Prediction</button>
+    <button type="button" class="tab-btn" id="tabStatistics" role="tab" aria-selected="false" aria-controls="statisticsPanel" data-tab="statistics">Statistics</button>
     <button type="button" class="tab-btn" id="tabSettings" role="tab" aria-selected="false" aria-controls="settingsPanel" data-tab="settings">Settings</button>
   </nav>
 
@@ -871,6 +889,7 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
         <button type="button" class="secondary compact" id="historyDetailToggle" aria-pressed="false" title="Show full detail">Details</button>
         <button type="button" class="secondary compact" id="import" title="Import a CSV export" aria-label="Import CSV">Import</button>
         <button type="button" class="secondary compact" id="export">Export CSV</button>
+        <button type="button" class="secondary compact" id="copyCsv" title="Copy all saved rolls as CSV">Copy CSV</button>
       </div>
     </div>
     <div class="history-scroll" id="historyScroll">
@@ -885,14 +904,18 @@ tbody th{font-weight:850;color:#34445b;background:#fbfcfe}
     </div>
     <button type="button" class="secondary" id="deleteAll" style="margin-top:11px;color:#a33a48">Delete all data</button>
   </section>
+  </section>
 
+  <section class="tab-panel hidden" id="predictionPanel" role="tabpanel" aria-labelledby="tabPrediction">
   <section class="card" id="picksCard">
     <div class="card-title">
       <div><h2>Next-roll picks</h2></div>
     </div>
     <div id="nextPicks"></div>
   </section>
+  </section>
 
+  <section class="tab-panel hidden" id="statisticsPanel" role="tabpanel" aria-labelledby="tabStatistics">
   <section class="card" id="transitionCard">
     <div class="card-title">
       <div><h2>Winner → next winner</h2></div>
@@ -2976,6 +2999,8 @@ function updateHistoryLatestButton() {
 
 function renderHistory() {
   const total = rolls.length;
+  const copyButton = $("copyCsv");
+  if (copyButton) copyButton.disabled = total === 0;
 
   if (!total) {
     $("history").innerHTML = '<tr><td class="history-empty" colspan="10">No rolls saved yet. Your records will appear here.</td></tr>';
@@ -3180,12 +3205,7 @@ function csvCell(value) {
   return '"' + String(value ?? "").replace(/"/g, '""') + '"';
 }
 
-function exportCsv(title = csvTitle) {
-  if (!rolls.length) {
-    setStatus("No rolls to export yet.", "info");
-    return;
-  }
-
+function buildCsv(title = csvTitle) {
   const exportTitle = normalizeCsvTitle(title);
   const headers = [
     "time", "table", "shakes", "shake_sequence", "method", "invested", "stake", "stake_preset", "payout_rule",
@@ -3214,7 +3234,17 @@ function exportCsv(title = csvTitle) {
     ];
   });
 
-  const csv = [headers, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n");
+  return [headers, ...rows].map(row => row.map(csvCell).join(",")).join("\r\n");
+}
+
+function exportCsv(title = csvTitle) {
+  if (!rolls.length) {
+    setStatus("No rolls to export yet.", "info");
+    return;
+  }
+
+  const exportTitle = normalizeCsvTitle(title);
+  const csv = buildCsv(exportTitle);
   const blob = new Blob(["\ufeff" + csv], {type: "text/csv;charset=utf-8;"});
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -3226,6 +3256,50 @@ function exportCsv(title = csvTitle) {
   setTimeout(() => URL.revokeObjectURL(url), 1200);
   setStatus("CSV exported.", "ok");
   showToast("CSV exported");
+}
+
+function fallbackCopyCsv(text) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.position = "fixed";
+  area.style.top = "0";
+  area.style.left = "-9999px";
+  area.style.opacity = "0";
+  document.body.appendChild(area);
+  area.focus();
+  area.select();
+  let copied = false;
+  try { copied = document.execCommand("copy"); } catch (error) { copied = false; }
+  area.remove();
+  if (copied) {
+    setStatus("CSV copied.", "ok");
+    showToast("CSV copied");
+  } else {
+    setStatus("Could not copy CSV. Use Export CSV instead.", "error");
+    showToast("Could not copy CSV");
+  }
+}
+
+function copyCsvText(title = csvTitle) {
+  if (!rolls.length) {
+    setStatus("No rolls to copy yet.", "info");
+    return;
+  }
+  const csv = buildCsv(normalizeCsvTitle(title));
+  const done = () => {
+    setStatus("CSV copied.", "ok");
+    showToast("CSV copied");
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    try {
+      navigator.clipboard.writeText(csv).then(done).catch(() => fallbackCopyCsv(csv));
+    } catch (error) {
+      fallbackCopyCsv(csv);
+    }
+  } else {
+    fallbackCopyCsv(csv);
+  }
 }
 
 function parseCsvRows(text) {
@@ -3511,8 +3585,17 @@ function saveStakePresets() {
 
 /* ---------- tabs + delete dialog ---------- */
 
+function syncDataPanelHeight() {
+  const panel = $("dataPanel");
+  if (!panel || activeTab !== "data") return;
+  const rect = panel.getBoundingClientRect();
+  const top = rect.top + window.scrollY;
+  const available = Math.max(360, Math.round(window.innerHeight - top - 16));
+  panel.style.setProperty("--data-panel-height", available + "px");
+}
+
 function setTab(tab, options = {}) {
-  const tabs = ["record", "overview", "data", "settings"];
+  const tabs = ["record", "overview", "data", "prediction", "statistics", "settings"];
   activeTab = tabs.includes(tab) ? tab : "record";
   tabs.forEach(name => {
     const selected = activeTab === name;
@@ -3524,7 +3607,10 @@ function setTab(tab, options = {}) {
       button.setAttribute("aria-selected", String(selected));
     }
   });
-  if (activeTab === "data") renderAll();
+  if (activeTab === "data") {
+    renderAll();
+    syncDataPanelHeight();
+  }
   if (activeTab === "overview") renderOverviewCharts();
   if (activeTab === "settings") renderSettings();
   if (options.scroll !== false) window.scrollTo({top: 0, behavior: "smooth"});
@@ -3731,6 +3817,7 @@ function bindEvents() {
   });
 
   $("export").addEventListener("click", openExportModal);
+  $("copyCsv").addEventListener("click", () => copyCsvText());
   $("import").addEventListener("click", startImport);
   $("importFile").addEventListener("change", handleImportFile);
   $("historyDetailToggle").addEventListener("click", toggleHistoryDetails);
@@ -3802,6 +3889,7 @@ function bindEvents() {
   let overviewResizeTimer = 0;
   window.addEventListener("resize", () => {
     updateHistoryLatestButton();
+    if (activeTab === "data") window.requestAnimationFrame(syncDataPanelHeight);
     if (activeTab !== "overview") return;
     clearTimeout(overviewResizeTimer);
     overviewResizeTimer = window.setTimeout(renderOverviewCharts, 120);
